@@ -1,0 +1,257 @@
+schema: spec-driven
+
+# Project context. Injected into every artifact instruction and into the
+# apply / archive operations.
+context: |
+  ## Workflow
+
+  Plan every change as an OpenSpec change before writing code, and drive it
+  with the `/opsx:*` commands. One change is one git-flow `feature/` branch
+  sharing its id, and `/opsx:sync` runs before `/opsx:archive`.
+
+  A session either plans or implements, never both, and is cleared (`/clear`)
+  once its work is done. With an Opus-class model, planning runs at effort max
+  and implementation at effort high; every agent a session starts runs at the
+  session's effort.
+
+  Commit messages follow Conventional Commits, in English:
+  `type(scope): description`. The scope names the area of code or the
+  tracker's task id - `feat(catalog): …`, `fix(PROJ-32): …` - and is left
+  out only where nothing narrower than the whole project fits, as in
+  `chore: release 2026.10.0`. The subject is in the imperative mood,
+  lowercase after the prefix, without a closing period, 72 characters at
+  most and 50 where it can be.
+
+  A commit carries no body: the message is the subject line alone, and
+  trailers, if any, follow it after a blank line. No line credits an AI
+  agent or model in any form - no `Co-Authored-By:` trailer for a machine address, no "Generated
+  with" line; every other trailer is allowed.
+
+  A release is named `YYYY.M.MICRO`: the year, the month without a leading
+  zero, and the count of releases cut earlier that month, from 0. Without
+  the leading zero the name is valid SemVer, and a later release sorts above
+  an earlier one. Its tag is `v` followed by the name - `v2026.10.0`, put by
+  `git flow release finish 2026.10.0`, whose `tagPrefix` is `v` in
+  `.gitflow`. The sources carry the name, never the `v`.
+
+  Generated, never hand-edited: `openspec/` apart from this file, and the
+  `opsx` / `openspec-*` glue under `.claude/`; regenerate them with
+  `mise exec -- openspec update`. General mise / OpenSpec / git-flow usage
+  lives in the skills installed under `.claude/skills/`.
+
+  ## Working agreement
+
+  The reader is a peer, not a customer. No basics, no hand-holding, no restating
+  what the code already says. Name the trade-off instead of listing every
+  option. Push back on a decision that looks wrong and say why; silent
+  agreement is worse than an argument.
+
+  This project is young and most of it is undecided. A rule is written here
+  only once it has been settled, and everything absent is still open. Do not
+  invent a domain fact, a file layout or a dependency to fill a gap - propose
+  it as a decision and ask, or say plainly that the change cannot be
+  specified until that decision is made.
+
+  ## Scope
+
+  A change fits in one head and is checked in one sitting. Content that will
+  not fit the budgets under Writing means the change is split along capability
+  boundaries; a scenario is never dropped to fit.
+
+  ## Writing
+
+  Words cost the reader's time: cut words, never content.
+
+  - Concrete over descriptive: a number, a path, a type, a command or an error
+    text - not an adjective, and not a summary of one.
+  - Each fact lives in one artifact - why in the proposal, what in the spec,
+    how in the design, steps and results in the tasks - and the others point
+    to it.
+  - A decision is one bullet: the choice, the alternative it beat, and the
+    reason in one sentence.
+  - A table replaces paragraphs whenever the items share fields.
+  - No throat-clearing ("worth noting", "importantly", "in order to"), and no
+    narration of what was done - the diff shows that.
+  - Budgets, in words, for a change's artifacts: proposal 600, design 800,
+    each spec document 500, tasks 600 as planned, and three lines of notes
+    under each task once it is done. `wc -w` checks them before the plan is
+    committed; up to a tenth over passes, beyond that words are cut.
+
+  ## Platform
+
+  The deterministic core imports no UI framework and is tested on the host;
+  platform-specific code carries only what genuinely cannot be shared, and
+  each such entry is a decision worth naming in the design.
+
+  The toolchain is pinned in `mise.toml` with every version in full, and
+  `mise.lock` is written only by mise - never deleted, never recreated by
+  hand.
+
+  ## Engineering
+
+  Canonical TDD, and it binds the business logic: write the failing test,
+  watch it fail for the right reason, write the minimum code that passes,
+  then refactor with the suite green. A task is never marked complete while
+  a test is failing or skipped; report the failure instead.
+
+  A type does one job, stated in one sentence with no "and"; outgrowing a
+  screen is a signal to look for the seam, never a license to split by moving
+  code to a second file. Identifiers are spelled in full - types, properties,
+  parameters, locals and JSON keys alike. A short form survives only where it
+  is the domain's own name (`id`, `url`), and a name is never shortened to
+  fit a line. A place counted from zero, as a list counts, is a `position`;
+  one counted from one, as the reader counts, is a `number`. Every import
+  names what it brings in: no wildcard, not even where an IDE's defaults or a
+  generator write one, so the reader sees where each name comes from.
+
+  English is American English, its spelling and its words, in everything
+  the project names or writes: identifiers, packages, files and folders,
+  resource and JSON keys, URL paths, table and column names, the keys of
+  stored data, metric and trace names, branch, change and capability ids,
+  specs, docs, comments, commit messages and every English text a user
+  reads - `color`, `behavior`, `catalog`, `dialog`, `favorite`, `license`,
+  `center`, `gray`, `canceled`, `labeled`, `initialize`, `analyze`, and
+  `check` rather than `tick`. A name the project does not own keeps its
+  owner's spelling: a library's or a platform's API (Kotlin's
+  `isCancelled`), another party's wire format, a proper name, a quotation,
+  a legal text. A name the public has already received - on the wire, in
+  stored data, in a released build - moves only by a change of its own,
+  which keeps the old name working beside the new one while an older
+  reader remains, and migrates what is stored rather than dropping it.
+
+  A type is named for its subject, then its role. A role a pattern or a
+  framework names keeps that word - `Repository`, `UseCase`, `Controller` -
+  and the word wins over any other. A type that does a job is named for it:
+  the agent noun of its verb as English spells it, `-er` or `-or`, with that
+  verb for its method - `ReportPrinter.print`, `ProofChecker.check` - and a
+  parameter or a local holding it takes that name (`proofChecker`). A type
+  that does no job keeps its noun (`AccessKey`, `InvoiceTotal`). An
+  implementation puts what it rests on before its interface's name
+  (`S3LinkSigner`, `PostgresOrderRepository`), `Default` when it rests on
+  nothing of its own; a test's double puts `Fake`, `InMemory` or what it
+  does instead (`FailingReportPrinter`). A role the project holds exactly
+  once by design is `App` and the role's word (`AppDatabase`). A package is
+  named for its subject (`billing/`, `subscription/`).
+
+  A type and a value of it are named in the singular, for what one of them
+  is: a holder of sizes is a `Size`, and its variant reads `Size.large`,
+  never `Sizes.large`. Where a name means many, it is the singular and then
+  `List`, in the language's own case - `itemList`, `personList`, never
+  `items` or `people` - whatever the language calls the collection, and
+  alike for a type, a property, a parameter, a local and a key. A plural
+  stays only where English has no singular (`news`). A text the reader sees
+  in several places, alike in every language, is one resource key, named for
+  what it says rather than where it shows.
+
+  A lambda names its parameter, a one-liner too - `{ name -> name.trim() }`,
+  never Kotlin's implicit `it` or Swift's `$0`; a function reference needs
+  none (`::parse`). A constructor of the project's own type takes every
+  argument by name (`Invoice(number = 7, total = sum)`); a call into a
+  library names an argument whose meaning the call does not show, such as a
+  literal (`take(n = 8)`, `joinToString(separator = "\n")`), and leaves a
+  self-evident argument positional (`listOf(first, second)`).
+
+  The design follows SOLID, and two of its letters do the daily work. A type
+  does one job, as above. A dependency points at an abstraction rather than at
+  whatever fulfills it: the core names what it needs, and the UI or
+  platform-specific code supplies it, never the reverse. An interface is
+  written for one consumer - a second consumer that needs half of it is asking
+  for a second interface. A repository is the exception: each kind of data
+  has one, and every consumer of that data takes it whole.
+
+  Code is read one screen at a time. A function that does not fit on one, or a
+  type that needs more than two, has a seam waiting to be found. In numbers:
+  a function runs to at most 40 lines and a type to 120; a file or a type
+  holds at most 8 functions; a function takes at most 4 parameters, a
+  constructor 5; blocks nest at most 3 deep; cognitive complexity stays
+  within 10 and cyclomatic within 8. The stack's linter gates whichever of
+  these it can count, and the rest is on the author.
+
+  A comment is written only where it is needed, and it says what the code
+  cannot: why it is written this way - the constraint it obeys, the trap it
+  avoids, the source it follows. Clear code carries none, and a comment that
+  restates what the code does is deleted, doc comments and docstrings
+  included. Code that cannot be read without one is renamed or split at its
+  seam first, and commented only if it still cannot. A directive to a
+  tool - a shebang, a linter's suppression - is code, not a comment, and
+  stays.
+
+  ## Housekeeping
+
+  A housekeeping change reads `README.md` against the tree as a task of its
+  own: a statement there outlives the change that made it true, and the next
+  reader, often an agent, acts on it. It does not read every comment again:
+  the comment rule under Engineering holds each one to its why whenever the
+  code under it changes. A call changes form - a lambda's parameter, a named
+  argument - only when its code changes for another reason, never in a pass
+  of its own, whose diff costs more than the form gives.
+
+  A housekeeping pass opens with an audit split by dimension - names, the
+  statements comments and the README make, structure and build, the look's
+  elements, components and data, tests - in which each auditor only reads,
+  citing every finding by file and line with its count and the rule it
+  breaks. The reports stay beside the repository, outside version control,
+  for every plan after them to draw on.
+
+  Every finding the audit leaves open is planned as a change of its own, and
+  none is dropped at planning: one the rules above weigh as poor payback is
+  planned all the same, saying so in its Why for the owner to strike. The
+  plans are proposed ahead, one commit each, and apply in this order: first
+  what ships or misleads - the release build's content, a test that passes
+  without proving anything, a statement that is false - then names, then
+  structure and build, then reuse, then the coverage still missing, and
+  last whatever moves a pixel. Each plan's first task recounts its tables
+  on the tree its predecessors leave.
+
+  A rename is proved to be one: every suite's count and the test total
+  stand as before, version control shows each moved file as a rename, and a
+  search for every old name finds only what the plan keeps. A member renamed
+  to a name its type already holds, such as a constructor's property,
+  captures each call to that name written without a receiver; such calls
+  are read before the build, and the suites run under a time limit, since a
+  call that captures itself can wait forever.
+
+# Per-artifact rules, additive to the schema's own guidance.
+rules:
+  proposal:
+    - "Use a kebab-case change id that is also a valid git branch name; it becomes `feature/<id>`."
+    - "Name every unmade decision the change rests on and propose it in Why; a proposal that quietly assumes one is not ready."
+    - "If the Capabilities section cannot be delivered inside the spec budget, propose several changes instead of one and say in Why which one comes first."
+    - "Why opens with one paragraph: the problem, its evidence in numbers or names, and why now. Decisions follow as bullets."
+    - "A dependency's audit is a table - version, license, source, known vulnerabilities, transitive artifacts - with prose only for a finding."
+  specs:
+    - "A spec whose requirements will not fit the budget is split along capability boundaries - the overflow becomes its own spec, or its own change when it carries tasks of its own."
+    - "Every requirement must be verifiable as written; if the check cannot be named, the requirement is not specific enough yet."
+    - "State the behavior, not the API that renders it: a requirement naming a UI framework type or a platform SDK belongs in design instead."
+  design:
+    - "Say which layer the behavior lands in - the core, the UI above it, or platform-specific code."
+    - "Anything placed in platform-specific code carries the reason it cannot be shared; being easier to write there is not one."
+    - "Keep the rules out of the UI: a behavior that can only be described by pointing at a UI component belongs in the core instead."
+    - "A screen is assembled from UI components that each do one thing and are named for it; a screen written as a single component keeps its seams inside it."
+    - "State how each component is tested and name the seam that makes it possible; a design with no test seam is not done."
+    - "Name each type's one job in a sentence with no \"and\"; needing one means the design holds two types."
+    - "Record a decision only where there was a real alternative; a design with none says so in one line instead of filling its sections."
+    - "A risk is one line: the risk, an arrow, the mitigation."
+  tasks:
+    - "Order tasks test-first: a task that changes business logic opens with the failing test that pins it."
+    - "Keep each task independently verifiable - it ends with a green suite, not with work left dangling for the next task."
+    - "Name how each task is checked - the command to run or the observation that proves it done; a task with no check is not a task."
+    - "A task is a step and its check in at most 60 words; its reason lives in the design, and the task points there."
+
+# Per-operation advisory guidance. Only `apply` and `archive` are supported.
+operations:
+  apply:
+    guidance:
+      - "Implement on the change's git-flow branch; if it does not exist yet, run `git flow feature start <change-id>` before the first task."
+      - "Run red-green-refactor per task: write the test, run it and see it fail for the right reason, then write the code that makes it pass."
+      - "Red-green-refactor is the rule for the business logic; a UI component that only renders the state it is handed is not held to it, and a UI component that needs a test of its own is one holding logic that belongs in the core."
+      - "Tests for the core run on the host; needing a simulator or a device to check core behavior is a signal the logic sits in the wrong layer."
+      - "Never mark a task complete while a test is failing or skipped; report the failure instead."
+      - "If implementation reveals the change is wider than its specs described, stop and split it rather than growing the specs to match."
+      - "If implementation forces a decision the proposal did not make, stop and raise it; do not settle it silently in code."
+      - "Under a finished task, write only what the diff cannot show: numbers measured, deviations from the plan, decisions surfaced and who made them."
+  archive:
+    guidance:
+      - "Run `/opsx:sync` before archiving so `openspec/specs/` does not go stale."
+      - "After archiving, close the branch with `git flow feature finish <change-id>`."
+      - "Say what the change left undecided - decisions surfaced while implementing and deliberately deferred - one line each, so the next proposal can pick them up."
