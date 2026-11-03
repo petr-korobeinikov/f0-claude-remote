@@ -1,0 +1,3 @@
+#!/bin/sh
+#MISE description="Build the app"
+exec ufbt

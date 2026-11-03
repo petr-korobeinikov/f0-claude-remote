@@ -1,11 +1,11 @@
-# Spec Delta
+# ide-run-configurations Specification
 
 ## Purpose
 
 Gives a fresh clone CLion's build, launch and debug commands,
 with the only manual step being one profile selection.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Run configurations ship with the repository
 The repository SHALL carry the `Build`, `Launch` and `Debug` configurations,
@@ -38,11 +38,3 @@ and SHALL keep the selection once the user makes it.
 #### Scenario: Selecting the profile
 - **WHEN** the user selects `Flipper` and CLion restarts on the same clone
 - **THEN** `Flipper` is still selected
-
-### Requirement: A start from Toolbox does not break debugging
-`Debug` SHALL work whichever way CLion started,
-needing nothing from the mise environment.
-
-#### Scenario: Started from Toolbox
-- **WHEN** CLion starts from Toolbox and `Debug` runs
-- **THEN** it connects to the device

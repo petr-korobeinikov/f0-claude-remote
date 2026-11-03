@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug" type="CLion_Remote" version="1" remoteCommand="black-magic-probe" symbolFile="$PROJECT_DIR$/.ufbt/current/firmware.elf" sysroot="">
+    <method v="2" />
+  </configuration>
+</component>

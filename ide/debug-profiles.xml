@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Debug Profiles">
+    <debug-profiles>
+      <debug-profile>
+        <option name="id" value="flipper" />
+        <option name="type" value="gdb" />
+        <option name="name" value="Flipper" />
+        <settings>
+          <option name="arguments" value="-nx -x debug/black_magic.gdb" />
+          <option name="env">
+            <map>
+              <entry key="HOME" value="$PROJECT_DIR$/.ufbt" />
+              <entry key="PYTHONNOUSERSITE" value="1" />
+              <entry key="PYTHONPYCACHEPREFIX" value="$PROJECT_DIR$/.ufbt/pycache" />
+            </map>
+          </option>
+          <option name="executable" value="$PROJECT_DIR$/.ufbt/toolchain/arm64-darwin/bin/arm-none-eabi-gdb-py3" />
+          <option name="passSystemEnv" value="false" />
+          <option name="workingDir" value="$PROJECT_DIR$" />
+        </settings>
+      </debug-profile>
+    </debug-profiles>
+  </component>
+</project>

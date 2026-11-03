@@ -1,5 +1,6 @@
 #!/bin/sh
 #MISE description="Deploy the pinned Flipper SDK under a write-deny sandbox"
+#MISE depends=["setup-ide"]
 set -eu
 
 if [ "$(uname -s)" != Darwin ]; then

@@ -119,4 +119,4 @@ each path with its `INDEPENDENT_…` option true, `EXECUTE_IN_TERMINAL` and `EXE
 - The script reaches into `flipperapps.py`'s `helper` → an SDK bump reruns the session checks.
 - macOS's Local Network permission blocks CLion's GDB over Wi-Fi → untested in CLion; task 4.6 records it.
 - A hot-plugged board, or a powered board on a switched-off device, left the device not starting once → `README.md` gives the order; a 30-second Back press recovered it.
-- `Build` and `Launch` need `mise` on `PATH` under a Toolbox start → the console start is the case designed for; task 4.5 records it.
+- `Build` and `Launch` need `mise` on `PATH` under a Toolbox start → the console start is the case designed for; the owner chose not to check Toolbox.

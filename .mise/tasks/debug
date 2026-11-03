@@ -1,0 +1,4 @@
+#!/bin/sh
+#MISE description="Debug on the device through the Black Magic probe, in this terminal"
+#MISE raw=true
+exec ufbt blackmagic

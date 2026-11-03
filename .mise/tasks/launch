@@ -1,0 +1,3 @@
+#!/bin/sh
+#MISE description="Upload the app to the device and start it"
+exec ufbt launch
