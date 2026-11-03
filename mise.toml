@@ -2,11 +2,26 @@
 disable_backends = ["ubi", "asdf"]
 lockfile = true
 
+[tool_config]
+locked = true
+
 [tools]
+act = "0.2.95"
+actionlint = "1.7.12"
 node = "26.13.0"
+uv = "0.13.7"
 "aqua:gittower/git-flow-next" = "2.0.0"
 "aqua:j178/prek" = "0.5.4"
 "npm:@fission-ai/openspec" = "1.14.0"
+"pypi:ufbt" = { version = "0.2.6", python = "3.14.10" }
 
 [env]
 OPENSPEC_TELEMETRY = "0"
+PYTHONPATH = false
+PYTHONHOME = false
+PIP_REQUIRE_VIRTUALENV = "true"
+UV_PYTHON_DOWNLOADS = "never"
+UFBT_HOME = "{{config_root}}/.ufbt"
+PYTHONPYCACHEPREFIX = "{{config_root}}/.ufbt/pycache"
+CCACHE_DISABLE = "1"
+FLIPPER_SDK_VERSION = "1.5.1"

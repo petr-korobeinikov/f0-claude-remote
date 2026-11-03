@@ -48,6 +48,50 @@ Re-run to update them or install them in a fresh clone:
 mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent claude-code -y
 ```
 
+## Toolchain
+
+A fresh clone needs mise and nothing else:
+
+```shell
+mise trust
+mise install
+mise run setup
+clion .
+```
+
+SDK, toolchain and build output stay in `.ufbt/` and `dist/`.
+Run ufbt through mise, from the repository root:
+
+```shell
+mise exec -- ufbt        # build
+mise exec -- ufbt lint   # check the sources against Flipper's format
+```
+
+Never run `ufbt vscode_dist`:
+it overwrites `.editorconfig` and `.gitignore`.
+
+Project tasks are files in `.mise/tasks/`:
+
+- `setup` deploys the pinned SDK and builds once,
+  under a sandbox that denies writes outside the project and temp.
+  It runs on macOS only.
+- `check-workflow` runs `.github/workflows/build.yml` through `act`,
+  contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
+
+To bump the SDK,
+edit `FLIPPER_SDK_VERSION` in `mise.toml` and run `mise run setup`.
+
+To bump a tool,
+remove `[tool_config]` from `mise.toml`,
+since `locked = true` refuses a graph that does not exist yet.
+Change the pin, then restore the section once the new graph is locked:
+
+```shell
+mise install uv python@<version>
+mise lock
+mise install
+```
+
 ## Hooks
 
 [prek](https://prek.j178.dev/) holds the gate before a commit is allowed.

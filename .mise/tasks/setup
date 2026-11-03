@@ -1,0 +1,51 @@
+#!/bin/sh
+#MISE description="Deploy the pinned Flipper SDK under a write-deny sandbox"
+set -eu
+
+if [ "$(uname -s)" != Darwin ]; then
+    echo "setup: sandbox-exec exists on Darwin only" >&2
+    exit 1
+fi
+
+root=$(pwd -P)
+profile='(version 1)(allow default)(deny file-write*)
+(allow file-write* (subpath (param "root")) (subpath "/private/tmp")
+  (subpath "/private/var/folders") (subpath "/dev"))'
+
+contained() {
+    sandbox-exec -D root="$root" -p "$profile" "$@"
+}
+
+# A sandbox that stopped denying would let every check below pass.
+probe="$HOME/.f0_claude_remote_setup_probe"
+if contained /usr/bin/touch "$probe" 2>/dev/null; then
+    rm -f "$probe"
+    echo "setup: sandbox-exec no longer denies writes" >&2
+    exit 1
+fi
+
+# macOS 27 logs no denials, so a swallowed one shows only as a write to this HOME.
+home=$(mktemp -d)
+trap 'rm -rf "$home"' EXIT
+
+HOME="$home" contained ufbt update --branch "$FLIPPER_SDK_VERSION"
+
+# The SDK ships this file with a trailing blank line, and `ufbt lint` copies it over the
+# tracked one: only the source can keep the repository's single final newline.
+format="$UFBT_HOME/current/scripts/ufbt/project_template/.clang-format"
+contents=$(cat "$format")
+printf '%s\n' "$contents" > "$format"
+
+HOME="$home" contained ufbt
+version=$(HOME="$home" contained ufbt status version)
+
+if [ -n "$(ls -A "$home")" ]; then
+    echo "setup: wrote to HOME:" >&2
+    ls -A "$home" >&2
+    exit 1
+fi
+
+if [ "$version" != "$FLIPPER_SDK_VERSION" ]; then
+    echo "setup: SDK $version deployed, $FLIPPER_SDK_VERSION pinned" >&2
+    exit 1
+fi
