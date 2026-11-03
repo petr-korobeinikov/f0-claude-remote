@@ -79,9 +79,12 @@ context: |
 
   ## Platform
 
-  The deterministic core imports no UI framework and is tested on the host;
-  platform-specific code carries only what genuinely cannot be shared, and
-  each such entry is a decision worth naming in the design.
+  The deterministic core - `keymap` and `actions` - includes no Flipper SDK
+  header and is tested on the host against a fake `transport`; `view` above it
+  only renders the state it is handed. Platform-specific code - `transport`,
+  `app` - carries only what genuinely cannot be shared, and each such entry is
+  a decision worth naming in the design. The host compiler and the test
+  framework are undecided: the first change with logic decides them.
 
   The toolchain is pinned in `mise.toml` with every version in full, and
   `mise.lock` is written only by mise - never deleted, never recreated by
@@ -94,78 +97,40 @@ context: |
   then refactor with the suite green. A task is never marked complete while
   a test is failing or skipped; report the failure instead.
 
-  A type does one job, stated in one sentence with no "and"; outgrowing a
-  screen is a signal to look for the seam, never a license to split by moving
-  code to a second file. Identifiers are spelled in full - types, properties,
-  parameters, locals and JSON keys alike. A short form survives only where it
-  is the domain's own name (`id`, `url`), and a name is never shortened to
-  fit a line. A place counted from zero, as a list counts, is a `position`;
-  one counted from one, as the reader counts, is a `number`. Every import
-  names what it brings in: no wildcard, not even where an IDE's defaults or a
-  generator write one, so the reader sees where each name comes from.
+  The code is idiomatic C at the level of nginx as Igor Sysoev wrote it:
+  strict, tidy and uniform, read left to right and top to bottom. The style
+  rules are Flipper's: `CODING_STYLE.md` for names, its `.clang-format` for
+  the look, and `.editorconfig` holds what an editor can enforce.
+
+  One file, one screen of code, one task, stated in one sentence with no
+  "and". Outgrowing a screen is a signal to look for the seam, never a license
+  to split by moving code to a second file. Linters and numeric limits are
+  chosen as the project grows.
+
+  A header is the interface: a `.h` holds only the public contract, and
+  everything internal stays in the `.c`, raw data behind functions. A
+  dependency points at a header rather than at whatever fulfills it: the core
+  names what it needs, and platform-specific code supplies it, never the
+  reverse. A header is written for one consumer - a second consumer that needs
+  half of it is asking for a second header.
+
+  Types are `PascalCase` and in the singular, functions and variables
+  `snake_case`. A file's name prefixes its content: `keymap.h` holds `Keymap`
+  and `keymap_*`, and `alloc` and `free` open and close an instance's life. An
+  implementation puts what it rests on after its header's name
+  (`transport_bluetooth.c`), a test's double `fake` (`transport_fake.c`).
+  Identifiers are spelled in full. A short form survives only where it is the
+  domain's own name (`id`, `url`, `hid`) or C's own idiom (`i` for a loop
+  counter), and a name is never shortened to fit a line.
 
   English is American English, its spelling and its words, in everything
-  the project names or writes: identifiers, packages, files and folders,
-  resource and JSON keys, URL paths, table and column names, the keys of
-  stored data, metric and trace names, branch, change and capability ids,
-  specs, docs, comments, commit messages and every English text a user
-  reads - `color`, `behavior`, `catalog`, `dialog`, `favorite`, `license`,
+  the project names or writes: identifiers, files and folders, branch, change
+  and capability ids, specs, docs, comments, commit messages and every English
+  text a user reads - `color`, `behavior`, `dialog`, `favorite`, `license`,
   `center`, `gray`, `canceled`, `labeled`, `initialize`, `analyze`, and
   `check` rather than `tick`. A name the project does not own keeps its
-  owner's spelling: a library's or a platform's API (Kotlin's
-  `isCancelled`), another party's wire format, a proper name, a quotation,
-  a legal text. A name the public has already received - on the wire, in
-  stored data, in a released build - moves only by a change of its own,
-  which keeps the old name working beside the new one while an older
-  reader remains, and migrates what is stored rather than dropping it.
-
-  A type is named for its subject, then its role. A role a pattern or a
-  framework names keeps that word - `Repository`, `UseCase`, `Controller` -
-  and the word wins over any other. A type that does a job is named for it:
-  the agent noun of its verb as English spells it, `-er` or `-or`, with that
-  verb for its method - `ReportPrinter.print`, `ProofChecker.check` - and a
-  parameter or a local holding it takes that name (`proofChecker`). A type
-  that does no job keeps its noun (`AccessKey`, `InvoiceTotal`). An
-  implementation puts what it rests on before its interface's name
-  (`S3LinkSigner`, `PostgresOrderRepository`), `Default` when it rests on
-  nothing of its own; a test's double puts `Fake`, `InMemory` or what it
-  does instead (`FailingReportPrinter`). A role the project holds exactly
-  once by design is `App` and the role's word (`AppDatabase`). A package is
-  named for its subject (`billing/`, `subscription/`).
-
-  A type and a value of it are named in the singular, for what one of them
-  is: a holder of sizes is a `Size`, and its variant reads `Size.large`,
-  never `Sizes.large`. Where a name means many, it is the singular and then
-  `List`, in the language's own case - `itemList`, `personList`, never
-  `items` or `people` - whatever the language calls the collection, and
-  alike for a type, a property, a parameter, a local and a key. A plural
-  stays only where English has no singular (`news`). A text the reader sees
-  in several places, alike in every language, is one resource key, named for
-  what it says rather than where it shows.
-
-  A lambda names its parameter, a one-liner too - `{ name -> name.trim() }`,
-  never Kotlin's implicit `it` or Swift's `$0`; a function reference needs
-  none (`::parse`). A constructor of the project's own type takes every
-  argument by name (`Invoice(number = 7, total = sum)`); a call into a
-  library names an argument whose meaning the call does not show, such as a
-  literal (`take(n = 8)`, `joinToString(separator = "\n")`), and leaves a
-  self-evident argument positional (`listOf(first, second)`).
-
-  The design follows SOLID, and two of its letters do the daily work. A type
-  does one job, as above. A dependency points at an abstraction rather than at
-  whatever fulfills it: the core names what it needs, and the UI or
-  platform-specific code supplies it, never the reverse. An interface is
-  written for one consumer - a second consumer that needs half of it is asking
-  for a second interface. A repository is the exception: each kind of data
-  has one, and every consumer of that data takes it whole.
-
-  Code is read one screen at a time. A function that does not fit on one, or a
-  type that needs more than two, has a seam waiting to be found. In numbers:
-  a function runs to at most 40 lines and a type to 120; a file or a type
-  holds at most 8 functions; a function takes at most 4 parameters, a
-  constructor 5; blocks nest at most 3 deep; cognitive complexity stays
-  within 10 and cyclomatic within 8. The stack's linter gates whichever of
-  these it can count, and the rest is on the author.
+  owner's spelling: a library's or a platform's API, a proper name, a
+  quotation, a legal text.
 
   A comment is written only where it is needed, and it says what the code
   cannot: why it is written this way - the constraint it obeys, the trap it
@@ -182,13 +147,11 @@ context: |
   own: a statement there outlives the change that made it true, and the next
   reader, often an agent, acts on it. It does not read every comment again:
   the comment rule under Engineering holds each one to its why whenever the
-  code under it changes. A call changes form - a lambda's parameter, a named
-  argument - only when its code changes for another reason, never in a pass
-  of its own, whose diff costs more than the form gives.
+  code under it changes.
 
   A housekeeping pass opens with an audit split by dimension - names, the
-  statements comments and the README make, structure and build, the look's
-  elements, components and data, tests - in which each auditor only reads,
+  statements comments and the README make, structure and build, the screen,
+  tests - in which each auditor only reads,
   citing every finding by file and line with its count and the rule it
   breaks. The reports stay beside the repository, outside version control,
   for every plan after them to draw on.
@@ -205,11 +168,7 @@ context: |
 
   A rename is proved to be one: every suite's count and the test total
   stand as before, version control shows each moved file as a rename, and a
-  search for every old name finds only what the plan keeps. A member renamed
-  to a name its type already holds, such as a constructor's property,
-  captures each call to that name written without a receiver; such calls
-  are read before the build, and the suites run under a time limit, since a
-  call that captures itself can wait forever.
+  search for every old name finds only what the plan keeps.
 
 # Per-artifact rules, additive to the schema's own guidance.
 rules:
@@ -229,7 +188,7 @@ rules:
     - "Keep the rules out of the UI: a behavior that can only be described by pointing at a UI component belongs in the core instead."
     - "A screen is assembled from UI components that each do one thing and are named for it; a screen written as a single component keeps its seams inside it."
     - "State how each component is tested and name the seam that makes it possible; a design with no test seam is not done."
-    - "Name each type's one job in a sentence with no \"and\"; needing one means the design holds two types."
+    - "Name each file's one task in a sentence with no \"and\"; needing one means the design holds two files."
     - "Record a decision only where there was a real alternative; a design with none says so in one line instead of filling its sections."
     - "A risk is one line: the risk, an arrow, the mitigation."
   tasks:
