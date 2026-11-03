@@ -8,6 +8,11 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[*.{c,h}]
+tab_width = 4
+# Flipper's .clang-format: ColumnLimit 99.
+max_line_length = 99
+
 [*.{yml,yaml,json,toml}]
 indent_size = 2
 
