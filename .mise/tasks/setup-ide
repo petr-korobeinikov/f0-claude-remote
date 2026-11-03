@@ -1,9 +1,0 @@
-#!/bin/sh
-#MISE description="Copy the IDE files CLion needs before its first open"
-set -eu
-
-# An `.idea/` without the database link keeps CLion from importing it, so the two go together.
-mkdir -p .idea
-for file in misc.xml debug-profiles.xml; do
-    [ -e ".idea/$file" ] || cp "ide/$file" ".idea/$file"
-done

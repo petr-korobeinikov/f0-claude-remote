@@ -2,4 +2,6 @@
 dist/
 .vscode/
 .act/
-.idea/
+.idea/*
+!.idea/misc.xml
+!.idea/debug-profiles.xml

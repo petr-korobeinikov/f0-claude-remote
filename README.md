@@ -59,6 +59,10 @@ mise run setup
 clion .
 ```
 
+Only `.idea/misc.xml` and `.idea/debug-profiles.xml` are tracked,
+so a first `clion .` finds the compilation database and the debug profile,
+and the rest of `.idea/` stays ignored.
+
 SDK, toolchain and build output stay in `.ufbt/` and `dist/`.
 Run ufbt through mise, from the repository root:
 
@@ -75,8 +79,6 @@ Project tasks are files in `.mise/tasks/`:
 - `setup` deploys the pinned SDK and builds once,
   under a sandbox that denies writes outside the project and temp.
   It runs on macOS only.
-- `setup-ide` runs before `setup` and copies what `.idea/` lacks from `ide/`,
-  so a first `clion .` finds the compilation database and the debug profile.
 - `build` builds the app.
 - `launch` builds it, uploads it to the device and starts it.
   `ufbt flash` is not the same thing: it rewrites the device's firmware.
