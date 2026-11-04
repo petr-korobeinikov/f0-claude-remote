@@ -15,11 +15,11 @@ static void view_draw_voice(Canvas* canvas) {
     canvas_draw_box(canvas, 0, 0, 128, 64);
     canvas_set_color(canvas, ColorWhite);
     view_draw_status_row(canvas);
-    canvas_draw_icon(canvas, 22, 27, &I_microphone_large);
+    canvas_draw_icon(canvas, 13, 27, &I_microphone_large);
     canvas_set_font(canvas, FontPrimary);
-    canvas_draw_str(canvas, 48, 37, "Listening");
+    canvas_draw_str(canvas, 39, 37, "Listening");
     canvas_set_font(canvas, FontSecondary);
-    canvas_draw_str(canvas, 48, 48, "Release OK to stop");
+    canvas_draw_str(canvas, 39, 48, "Release OK to stop");
     canvas_set_color(canvas, ColorBlack);
 }
 
