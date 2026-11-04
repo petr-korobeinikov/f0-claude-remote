@@ -1,3 +1,5 @@
+#include "app.h"
+
 #include <furi.h>
 #include <notification/notification_messages.h>
 
@@ -5,13 +7,13 @@
 #include "keymap_input.h"
 #include "screen.h"
 
-typedef struct {
+struct App {
     FuriEventLoop* event_loop;
     FuriMessageQueue* input_queue;
     NotificationApp* notification;
     Keymap* keymap;
     Screen* screen;
-} App;
+};
 
 static void app_perform(App* app, Action action) {
     if(feedback_vibrates(action)) {
@@ -37,7 +39,7 @@ static void app_queue_callback(FuriEventLoopObject* object, void* context) {
     }
 }
 
-static App* app_alloc(void) {
+App* app_alloc(void) {
     App* app = malloc(sizeof(App));
     app->event_loop = furi_event_loop_alloc();
     app->input_queue = furi_message_queue_alloc(8, sizeof(InputEvent));
@@ -49,7 +51,7 @@ static App* app_alloc(void) {
     return app;
 }
 
-static void app_free(App* app) {
+void app_free(App* app) {
     screen_free(app->screen);
     keymap_free(app->keymap);
     furi_record_close(RECORD_NOTIFICATION);
@@ -59,12 +61,6 @@ static void app_free(App* app) {
     free(app);
 }
 
-int32_t app_main(void* argument) {
-    UNUSED(argument);
-
-    App* app = app_alloc();
+void app_run(App* app) {
     furi_event_loop_run(app->event_loop);
-    app_free(app);
-
-    return 0;
 }

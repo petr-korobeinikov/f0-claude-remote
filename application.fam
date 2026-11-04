@@ -4,7 +4,7 @@ App(
     appid="f0_claude_remote",  # Must be unique
     name="Claude Remote",  # Displayed in menus
     apptype=FlipperAppType.EXTERNAL,
-    entry_point="app_main",
+    entry_point="main_entry",
     stack_size=2 * 1024,
     fap_category="Examples",
     # Optional values
