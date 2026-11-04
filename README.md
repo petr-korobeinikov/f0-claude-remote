@@ -122,29 +122,57 @@ From then on the Mac connects by itself, within a second of a drop.
 To pair again, forget the device on the Mac first.
 While the app is open it holds the radio, and on leaving it hands the radio back.
 
-## Effort
+## Keys on the Mac
 
-Holding Up sets effort to `high`, holding Down to `max`,
-in the Claude Code session focused on the Mac.
-That takes one block in `keybindings.json`,
+The device is a Bluetooth keyboard,
+so a press acts on whatever the Mac has focused,
+meant to be a Claude Code session:
+
+| Button | Sends | In Claude Code |
+|---|---|---|
+| OK, tap | Enter | Sends the prompt, or picks a menu's option |
+| OK, hold | Ctrl+Q, held until the release | Dictates into the prompt, sending nothing |
+| Up, tap | Up arrow | Recalls the previous message, or moves up a menu |
+| Down, tap | Down arrow | Recalls the next message, or moves down a menu |
+| Right, press | Esc | Stops the turn |
+| Up, hold | Ctrl+X, Ctrl+F | Sets effort to `high` |
+| Down, hold | Ctrl+X, Ctrl+X | Sets effort to `max` |
+| Left, hold | Ctrl+X, Ctrl+L | Runs `/clear` |
+| Back, hold | Nothing | Leaves the app on the device |
+
+Dictation, effort and `/clear` take one block in `keybindings.json`,
 in Claude Code's config directory: `~/.claude`, or what `CLAUDE_CONFIG_DIR` names.
-It goes into the file's `bindings` array, or its two lines into a `Chat` block already there,
+It goes into the file's `bindings` array, or its lines into a `Chat` block already there,
 and the file reloads by itself:
 
 ```json
 {
   "context": "Chat",
   "bindings": {
+    "ctrl+q": "voice:pushToTalk",
     "ctrl+x ctrl+f": "command:effort high",
-    "ctrl+x ctrl+q": "command:effort max"
+    "ctrl+x ctrl+l": "command:clear",
+    "ctrl+x ctrl+x": "command:effort max"
   }
 }
 ```
 
 Tried on Claude Code 2.1.311.
 Its schema has no space in a command's name,
-so an editor validating against `$schema` marks the two lines;
+so an editor validating against `$schema` marks the two effort lines;
 they run all the same.
+
+Ctrl+Q dictates from the Mac's own keyboard too,
+since `voice:pushToTalk` takes one key.
+Dictation also needs `/voice hold`, once,
+and key repeat on, as macOS has it by default:
+Claude Code tells a held key by its repeats,
+and without them a recording ends about 2.2 s into the hold.
+After the release, wait out `Voice: processing…` before tapping OK:
+a tap during it sends the interim text and drops the rest.
+
+A stray `/clear` costs one `/resume`,
+which lists the previous conversation.
 
 ## Debugging
 

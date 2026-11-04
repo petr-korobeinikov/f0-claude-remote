@@ -1,9 +1,14 @@
 #pragma once
 
 typedef enum {
+    TransportKeyArrowDown,
+    TransportKeyArrowUp,
     TransportKeyControlF,
+    TransportKeyControlL,
     TransportKeyControlQ,
     TransportKeyControlX,
+    TransportKeyEnter,
+    TransportKeyEsc,
     TransportKeyMAX,
 } TransportKey;
 

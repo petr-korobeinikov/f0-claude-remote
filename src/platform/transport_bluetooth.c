@@ -15,9 +15,14 @@ struct Transport {
 };
 
 static const uint16_t transport_bluetooth_keys[TransportKeyMAX] = {
+    [TransportKeyArrowDown] = HID_KEYBOARD_DOWN_ARROW,
+    [TransportKeyArrowUp] = HID_KEYBOARD_UP_ARROW,
     [TransportKeyControlF] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_F,
+    [TransportKeyControlL] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_L,
     [TransportKeyControlQ] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_Q,
     [TransportKeyControlX] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_X,
+    [TransportKeyEnter] = HID_KEYBOARD_RETURN,
+    [TransportKeyEsc] = HID_KEYBOARD_ESCAPE,
 };
 
 /* Neither 0, the stock Remote's address, nor 0x0002, BadUSB's. */
