@@ -36,8 +36,20 @@ static void view_idle_draw_legend(Canvas* canvas) {
     canvas_draw_str(canvas, 106, 9, "TAP");
 }
 
-static void view_idle_draw_ring(Canvas* canvas) {
+/* One outline from two shapes: each erases the other's line inside it. */
+static void view_idle_draw_recess(Canvas* canvas) {
+    canvas_draw_rframe(canvas, 89, 48, 38, 15, 4);
+    canvas_set_color(canvas, ColorWhite);
+    canvas_draw_disc(canvas, 73, 38, 23);
+    canvas_set_color(canvas, ColorBlack);
     canvas_draw_circle(canvas, 73, 38, 23);
+    canvas_set_color(canvas, ColorWhite);
+    canvas_draw_rbox(canvas, 90, 49, 36, 13, 3);
+    canvas_set_color(canvas, ColorBlack);
+}
+
+static void view_idle_draw_ring(Canvas* canvas) {
+    view_idle_draw_recess(canvas);
     view_idle_draw_split(canvas, 15, 14, 65, 68);
     view_idle_draw_white_icon(canvas, 18, 15, &I_slash);
     view_idle_draw_white_str(canvas, 22, 22, "effort high");
@@ -66,9 +78,9 @@ static void view_idle_draw_side_actions(Canvas* canvas) {
     view_idle_draw_outline(canvas, 92, 33, 28);
     canvas_draw_icon(canvas, 95, 35, &I_right);
     canvas_draw_str(canvas, 102, 42, "Esc");
-    canvas_draw_rbox(canvas, 94, 52, 33, 11, 2);
-    view_idle_draw_white_icon(canvas, 97, 54, &I_back);
-    view_idle_draw_white_str(canvas, 108, 61, "exit");
+    canvas_draw_rbox(canvas, 92, 50, 33, 11, 2);
+    view_idle_draw_white_icon(canvas, 95, 52, &I_back);
+    view_idle_draw_white_str(canvas, 106, 59, "exit");
 }
 
 static void view_idle_draw_flash(Canvas* canvas, Action flash) {
