@@ -2,6 +2,6 @@
 
 #include <gui/canvas.h>
 
-#include "action.h"
+#include "../core/action.h"
 
 void view_draw(Canvas* canvas, bool voice_on, Action flash);

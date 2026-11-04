@@ -2,7 +2,7 @@
 
 #include <gui/gui.h>
 
-#include "view.h"
+#include "../ui/view.h"
 
 struct Screen {
     Gui* gui;

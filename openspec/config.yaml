@@ -108,7 +108,10 @@ context: |
   to split by moving code to a second file. Linters and numeric limits are
   chosen as the project grows.
 
-  Sources live in `src/`, tests in `test/`.
+  Sources live in `src/`, one folder per layer - `src/core/`, `src/ui/` and
+  `src/platform/` - and tests in `test/`. There is no `include/`: a header
+  sits in its layer's folder. An include crosses a layer downward only and
+  relative to its file, as `"../core/action.h"`.
 
   A header is the interface: a `.h` holds only the public contract, and
   everything internal stays in the `.c`, raw data behind functions. A

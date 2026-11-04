@@ -2,7 +2,7 @@
 
 #include <furi.h>
 
-#include "action.h"
+#include "../core/action.h"
 
 typedef struct Screen Screen;
 

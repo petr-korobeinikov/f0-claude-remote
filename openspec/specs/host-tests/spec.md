@@ -22,10 +22,10 @@ and run it. It is the one task that needs a compiler from outside the project.
   and the `ok` lines before it are all there
 
 ### Requirement: The logic needs no SDK
-The sources under test SHALL include no Flipper header.
+The sources under test, all of `src/core/`, SHALL include no Flipper header.
 
 #### Scenario: Includes
-- **WHEN** `git grep -E '#include <(furi|gui|input|notification)' -- src/action.h src/keymap.h src/keymap.c src/feedback.h src/feedback.c` runs
+- **WHEN** `git grep -E '#include <(furi|gui|input|notification)' -- src/core` runs
 - **THEN** it prints nothing
 
 ### Requirement: Tests stay out of the package

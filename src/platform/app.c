@@ -3,7 +3,7 @@
 #include <furi.h>
 #include <notification/notification_messages.h>
 
-#include "feedback.h"
+#include "../core/feedback.h"
 #include "keymap_input.h"
 #include "screen.h"
 
