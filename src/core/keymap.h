@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "action.h"
+#include "mode.h"
 
 typedef enum {
     KeymapKeyUp,
@@ -31,4 +32,6 @@ void keymap_free(Keymap* keymap);
 
 Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event);
 
-bool keymap_is_voice_on(const Keymap* keymap);
+void keymap_set_connected(Keymap* keymap, bool connected);
+
+Mode keymap_mode(const Keymap* keymap);

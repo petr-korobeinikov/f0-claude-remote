@@ -1,0 +1,72 @@
+# Spec Delta
+
+## MODIFIED Requirements
+
+### Requirement: Each button takes its actions
+With the link up, a tap, released before the device's long press fires, and a hold, kept until it fires,
+SHALL take the actions in the scenarios below, once each, and nothing else SHALL act.
+
+#### Scenario: Tap
+- **WHEN** Up, Down or OK is tapped
+- **THEN** the up arrow, the down arrow or Enter acts, on the release
+
+#### Scenario: Hold
+- **WHEN** Up, Down, Left or Back is held
+- **THEN** effort high, effort max, clear or exit acts when the long press fires
+
+#### Scenario: A hold does not repeat
+- **WHEN** Up stays down for 2 seconds after its long press fired
+- **THEN** effort high has acted once
+
+#### Scenario: Esc acts on the press
+- **WHEN** Right goes down
+- **THEN** Esc acts at once, and neither keeping Right down nor releasing it acts again
+
+#### Scenario: A tap with no action
+- **WHEN** Left or Back is tapped
+- **THEN** nothing acts
+
+### Requirement: A press acts with the backlight off
+A button SHALL act the same whether or not the backlight is on.
+
+#### Scenario: Backlight off
+- **WHEN** the link is up, the backlight has timed out and Up is tapped
+- **THEN** the device vibrates once
+
+## ADDED Requirements
+
+### Requirement: With no link only holding Back acts
+With no link, holding Back SHALL exit, and no other press SHALL act, vibrate or flash,
+so a press with no buzz was not sent.
+
+#### Scenario: Every other press
+- **WHEN** there is no link, every other button is tapped and held, and Back is tapped
+- **THEN** nothing acts, the device does not vibrate and the screen does not change
+
+#### Scenario: Exit
+- **WHEN** there is no link and Back is held until the long press fires
+- **THEN** the application ends
+
+#### Scenario: The link returns
+- **WHEN** the link returns and Up is tapped
+- **THEN** the up arrow acts
+
+### Requirement: A lost link stops voice
+A link lost during voice SHALL stop voice at once, with no buzz,
+and voice SHALL stay off until OK is released and held again with the link up.
+
+#### Scenario: Released after the drop
+- **WHEN** the link drops during voice and OK is released
+- **THEN** nothing acts, Enter included
+
+#### Scenario: The link returns with OK still down
+- **WHEN** the link drops during voice and returns with OK still down, and OK is released
+- **THEN** voice stays off and nothing acts
+
+#### Scenario: Held again
+- **WHEN** OK was released after the drop and is held again with the link up
+- **THEN** voice starts
+
+#### Scenario: Exit with OK still down
+- **WHEN** the link dropped during voice, OK stays down and Back is held until the long press fires
+- **THEN** the application ends

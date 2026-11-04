@@ -22,7 +22,7 @@ with no menu first and no system status bar.
 - **THEN** the device shows the screen, with no status bar above it
 
 ### Requirement: The screen shows the status and every button's action
-The idle screen, with voice off and no flash running, SHALL show a status row above a ring of the device's buttons,
+The idle screen, with the link up, voice off and no flash running, SHALL show a status row above a ring of the device's buttons,
 with a thin frame on every action taken by a press,
 a black plate on every held one,
 and a legend saying so.
@@ -49,19 +49,12 @@ and a legend saying so.
   and `TAP`, the up, down and right arrows, the Enter arrow and `Esc` stand black in a thin frame
 
 #### Scenario: The board
-- **WHEN** the application opens
+- **WHEN** the link comes up with voice off and no flash running
 - **THEN** a frame read off the device equals board `D_Main`
 
 #### Scenario: Nothing clipped
 - **WHEN** the application is open, in any state
 - **THEN** every label is whole and stands clear of its neighbors
-
-### Requirement: The status is static
-The status SHALL read `Connected` whatever the device's Bluetooth state.
-
-#### Scenario: Bluetooth off
-- **WHEN** Bluetooth is off in the device's settings and the application opens
-- **THEN** the status reads `Connected`
 
 ### Requirement: Holding Back leaves the application
 Holding Back for the device's long press SHALL end the application,
@@ -127,3 +120,36 @@ with the element's frame unchanged.
 #### Scenario: Voice takes over
 - **WHEN** voice starts while a flash runs and stays on past its end
 - **THEN** the voice screen shows throughout
+
+### Requirement: The status follows the link
+The screen SHALL read `Connected` only while the Mac holds a paired link.
+With no link it SHALL show `No link` and `Reconnecting...` with no ring or legend,
+and `Keys are not sent` unless a voice was cut.
+
+#### Scenario: Opened with no link
+- **WHEN** the application opens with no Mac connected
+- **THEN** a frame read off the device equals board `D_disconnected`
+
+#### Scenario: The link drops
+- **WHEN** the link drops on the idle screen
+- **THEN** a frame equals `D_disconnected`, with no press
+
+#### Scenario: The link drops during a flash
+- **WHEN** the link drops while a flash runs
+- **THEN** a frame equals `D_disconnected`, and stays equal past the flash's end
+
+### Requirement: A voice cut by the link has a screen of its own
+While OK stays down after a link lost during voice,
+the screen SHALL show `No link`, `Reconnecting...` and `Voice stopped: release OK`.
+
+#### Scenario: The link drops during voice
+- **WHEN** the link drops during voice
+- **THEN** a frame equals `D_disc_voice`
+
+#### Scenario: OK released
+- **WHEN** OK is released on that screen
+- **THEN** a frame equals `D_disconnected`
+
+#### Scenario: The link returns with OK still down
+- **WHEN** the link returns on that screen
+- **THEN** a frame equals `D_Main`

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 struct Keymap {
-    bool voice_on;
+    Mode mode;
 };
 
 /* Esc acts on press: past the long press a slow one would otherwise do nothing. */
@@ -16,9 +16,23 @@ static const Action keymap_actions[KeymapKeyMAX][KeymapEventMAX] = {
     [KeymapKeyBack] = {[KeymapEventLong] = ActionExit},
 };
 
+static const Mode keymap_link_up_modes[] = {
+    [ModeIdle] = ModeIdle,
+    [ModeVoice] = ModeVoice,
+    [ModeNoLink] = ModeIdle,
+    [ModeVoiceCut] = ModeIdle,
+};
+
+static const Mode keymap_link_down_modes[] = {
+    [ModeIdle] = ModeNoLink,
+    [ModeVoice] = ModeVoiceCut,
+    [ModeNoLink] = ModeNoLink,
+    [ModeVoiceCut] = ModeVoiceCut,
+};
+
 Keymap* keymap_alloc(void) {
     Keymap* keymap = malloc(sizeof(Keymap));
-    keymap->voice_on = false;
+    keymap->mode = ModeNoLink;
     return keymap;
 }
 
@@ -27,19 +41,38 @@ void keymap_free(Keymap* keymap) {
 }
 
 Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
-    if(keymap->voice_on) {
-        if(key != KeymapKeyOk || event != KeymapEventRelease) {
+    bool ok_released = key == KeymapKeyOk && event == KeymapEventRelease;
+    Action action = keymap_actions[key][event];
+
+    switch(keymap->mode) {
+    case ModeIdle:
+        if(action == ActionVoiceStart) {
+            keymap->mode = ModeVoice;
+        }
+        return action;
+    case ModeVoice:
+        if(!ok_released) {
             return ActionNone;
         }
-        keymap->voice_on = false;
+        keymap->mode = ModeIdle;
         return ActionVoiceStop;
+    case ModeVoiceCut:
+        if(ok_released) {
+            keymap->mode = ModeNoLink;
+        }
+        break;
+    case ModeNoLink:
+        break;
     }
 
-    Action action = keymap_actions[key][event];
-    keymap->voice_on = action == ActionVoiceStart;
-    return action;
+    return action == ActionExit ? ActionExit : ActionNone;
 }
 
-bool keymap_is_voice_on(const Keymap* keymap) {
-    return keymap->voice_on;
+void keymap_set_connected(Keymap* keymap, bool connected) {
+    keymap->mode = connected ? keymap_link_up_modes[keymap->mode] :
+                               keymap_link_down_modes[keymap->mode];
+}
+
+Mode keymap_mode(const Keymap* keymap) {
+    return keymap->mode;
 }

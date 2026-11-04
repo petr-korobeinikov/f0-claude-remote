@@ -14,5 +14,6 @@ App(
     # fap_author="J. Doe",
     # fap_weburl="https://github.com/user/f0_claude_remote",
     fap_icon_assets="images",  # Image assets to compile for this application
+    fap_libs=["ble_profile"],  # ble_profile_hid is not among the firmware's exports
     sources=["*.c*", "!test"],
 )

@@ -8,7 +8,7 @@ which confirms itself on the device and does not reach the Mac yet.
 ## Requirements
 
 ### Requirement: Each button takes its actions
-A tap, released before the device's long press fires, and a hold, kept until it fires,
+With the link up, a tap, released before the device's long press fires, and a hold, kept until it fires,
 SHALL take the actions in the scenarios below, once each, and nothing else SHALL act.
 
 #### Scenario: Tap
@@ -63,7 +63,7 @@ SHALL each vibrate the device once, for 100 ms.
 A button SHALL act the same whether or not the backlight is on.
 
 #### Scenario: Backlight off
-- **WHEN** the backlight has timed out and Up is tapped
+- **WHEN** the link is up, the backlight has timed out and Up is tapped
 - **THEN** the device vibrates once
 
 ### Requirement: No action reaches the Mac
@@ -72,3 +72,39 @@ No button SHALL send a keystroke.
 #### Scenario: Text field on the Mac
 - **WHEN** a text field is focused on the Mac and every button is tapped and held
 - **THEN** nothing is typed in the field
+
+### Requirement: With no link only holding Back acts
+With no link, holding Back SHALL exit, and no other press SHALL act, vibrate or flash,
+so a press with no buzz was not sent.
+
+#### Scenario: Every other press
+- **WHEN** there is no link, every other button is tapped and held, and Back is tapped
+- **THEN** nothing acts, the device does not vibrate and the screen does not change
+
+#### Scenario: Exit
+- **WHEN** there is no link and Back is held until the long press fires
+- **THEN** the application ends
+
+#### Scenario: The link returns
+- **WHEN** the link returns and Up is tapped
+- **THEN** the up arrow acts
+
+### Requirement: A lost link stops voice
+A link lost during voice SHALL stop voice at once, with no buzz,
+and voice SHALL stay off until OK is released and held again with the link up.
+
+#### Scenario: Released after the drop
+- **WHEN** the link drops during voice and OK is released
+- **THEN** nothing acts, Enter included
+
+#### Scenario: The link returns with OK still down
+- **WHEN** the link drops during voice and returns with OK still down, and OK is released
+- **THEN** voice stays off and nothing acts
+
+#### Scenario: Held again
+- **WHEN** OK was released after the drop and is held again with the link up
+- **THEN** voice starts
+
+#### Scenario: Exit with OK still down
+- **WHEN** the link dropped during voice, OK stays down and Back is held until the long press fires
+- **THEN** the application ends
