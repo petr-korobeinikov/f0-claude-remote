@@ -27,11 +27,14 @@ static void view_draw_status_row(Canvas* canvas) {
     canvas_draw_icon(canvas, 2, 1, &I_bluetooth);
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str(canvas, 12, 9, "Connected");
+    canvas_draw_line(canvas, 0, 12, 127, 12);
+}
+
+static void view_draw_legend(Canvas* canvas) {
     canvas_set_font(canvas, FontSecondary);
     view_draw_split(canvas, 74, 0, 53, 97);
     canvas_draw_str(canvas, 77, 9, "TAP");
     view_draw_white_str(canvas, 100, 9, "HOLD");
-    canvas_draw_line(canvas, 0, 12, 127, 12);
 }
 
 static void view_draw_ring(Canvas* canvas) {
@@ -64,9 +67,49 @@ static void view_draw_side_actions(Canvas* canvas) {
     view_draw_white_str(canvas, 17, 61, "exit");
 }
 
-void view_draw(Canvas* canvas) {
+static void view_draw_flash(Canvas* canvas, Action flash) {
+    canvas_set_color(canvas, ColorXOR);
+    switch(flash) {
+    case ActionEffortHigh:
+        canvas_draw_box(canvas, 67, 15, 21, 9);
+        break;
+    case ActionEffortMax:
+        canvas_draw_box(canvas, 67, 53, 22, 9);
+        break;
+    case ActionClear:
+        canvas_draw_box(canvas, 4, 34, 32, 9);
+        break;
+    case ActionEsc:
+        canvas_draw_box(canvas, 85, 34, 26, 9);
+        break;
+    default:
+        break;
+    }
+    canvas_set_color(canvas, ColorBlack);
+}
+
+static void view_draw_voice(Canvas* canvas) {
+    canvas_draw_box(canvas, 0, 0, 128, 64);
+    canvas_set_color(canvas, ColorWhite);
     view_draw_status_row(canvas);
+    canvas_draw_icon(canvas, 22, 27, &I_microphone_large);
+    canvas_set_font(canvas, FontPrimary);
+    canvas_draw_str(canvas, 48, 37, "Listening");
+    canvas_set_font(canvas, FontSecondary);
+    canvas_draw_str(canvas, 48, 48, "Release OK to stop");
+    canvas_set_color(canvas, ColorBlack);
+}
+
+void view_draw(Canvas* canvas, bool voice_on, Action flash) {
+    if(voice_on) {
+        view_draw_voice(canvas);
+        return;
+    }
+
+    view_draw_status_row(canvas);
+    view_draw_legend(canvas);
     view_draw_ring(canvas);
     view_draw_ok_button(canvas);
     view_draw_side_actions(canvas);
+    view_draw_flash(canvas, flash);
 }

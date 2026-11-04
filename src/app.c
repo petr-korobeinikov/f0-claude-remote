@@ -5,7 +5,7 @@
 
 static void app_draw_callback(Canvas* canvas, void* context) {
     UNUSED(context);
-    view_draw(canvas);
+    view_draw(canvas, false, ActionNone);
 }
 
 /* Runs on the GUI thread, and event_loop.h binds its functions to the loop's own thread. */
