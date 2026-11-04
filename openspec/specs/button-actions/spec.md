@@ -101,3 +101,14 @@ and voice SHALL stay off until OK is released and held again with the link up.
 #### Scenario: Exit with OK still down
 - **WHEN** the link dropped during voice, OK stays down and Back is held until the long press fires
 - **THEN** the application ends
+
+### Requirement: Exit sends no key
+Exit, and a press with no action, SHALL send no key.
+
+#### Scenario: Exit
+- **WHEN** exit acts
+- **THEN** no key is sent
+
+#### Scenario: A press with no action
+- **WHEN** Left or Back is tapped
+- **THEN** no key is sent

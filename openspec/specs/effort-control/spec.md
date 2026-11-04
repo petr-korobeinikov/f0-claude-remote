@@ -42,7 +42,7 @@ and SHALL not interrupt Claude's turn.
 
 ### Requirement: Each level is two chords and nothing more
 Effort high SHALL send Ctrl+X then Ctrl+F,
-and effort max Ctrl+X then Ctrl+Q,
+and effort max Ctrl+X twice,
 each released before the next is pressed,
 with no Enter and no other key.
 
@@ -52,14 +52,7 @@ with no Enter and no other key.
 
 #### Scenario: Effort max's keys
 - **WHEN** effort max acts
-- **THEN** the keys are, in order, Ctrl+X down and up, Ctrl+Q down and up
-
-### Requirement: Nothing else reaches the Mac
-Every other action SHALL send no key.
-
-#### Scenario: Every other action
-- **WHEN** Enter, an arrow, Esc, clear, the start or stop of voice, or exit acts
-- **THEN** no key is sent
+- **THEN** the keys are, in order, Ctrl+X down and up, Ctrl+X down and up
 
 ### Requirement: Unbound keys do no harm
 Without the binding, holding Up or Down SHALL leave the prompt's text in place and send nothing.
