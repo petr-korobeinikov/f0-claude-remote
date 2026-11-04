@@ -50,7 +50,10 @@ static void app_link_callback(FuriEventLoopObject* object, void* context) {
     bool connected;
     furi_check(furi_message_queue_get(object, &connected, 0) == FuriStatusOk);
 
-    keymap_set_connected(app->keymap, connected);
+    Action action = keymap_set_connected(app->keymap, connected);
+    if(action != ActionNone) {
+        app_perform(app, action);
+    }
     screen_set_mode(app->screen, keymap_mode(app->keymap));
 }
 

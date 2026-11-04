@@ -68,9 +68,10 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
     return action == ActionExit ? ActionExit : ActionNone;
 }
 
-void keymap_set_connected(Keymap* keymap, bool connected) {
-    keymap->mode = connected ? keymap_link_up_modes[keymap->mode] :
-                               keymap_link_down_modes[keymap->mode];
+Action keymap_set_connected(Keymap* keymap, bool connected) {
+    Mode previous = keymap->mode;
+    keymap->mode = connected ? keymap_link_up_modes[previous] : keymap_link_down_modes[previous];
+    return previous == ModeVoice && keymap->mode == ModeVoiceCut ? ActionVoiceStop : ActionNone;
 }
 
 Mode keymap_mode(const Keymap* keymap) {

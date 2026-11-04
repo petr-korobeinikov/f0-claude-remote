@@ -32,6 +32,6 @@ void keymap_free(Keymap* keymap);
 
 Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event);
 
-void keymap_set_connected(Keymap* keymap, bool connected);
+Action keymap_set_connected(Keymap* keymap, bool connected);
 
 Mode keymap_mode(const Keymap* keymap);

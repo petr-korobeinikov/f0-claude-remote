@@ -234,6 +234,34 @@ static void test_buttons_act_after_link_returns(void) {
     keymap_free(keymap);
 }
 
+static void test_cut_answers_voice_stop_once(void) {
+    Keymap* keymap = keymap_test_alloc_voice();
+    assert(keymap_set_connected(keymap, false) == ActionVoiceStop);
+    assert(keymap_set_connected(keymap, false) == ActionNone);
+    keymap_free(keymap);
+}
+
+static void test_link_changes_without_voice_answer_none(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_set_connected(keymap, false) == ActionNone);
+    assert(keymap_set_connected(keymap, true) == ActionNone);
+    assert(keymap_set_connected(keymap, true) == ActionNone);
+    assert(keymap_set_connected(keymap, false) == ActionNone);
+    keymap_free(keymap);
+}
+
+static void test_link_up_during_voice_answers_none(void) {
+    Keymap* keymap = keymap_test_alloc_voice();
+    assert(keymap_set_connected(keymap, true) == ActionNone);
+    keymap_free(keymap);
+}
+
+static void test_link_up_after_cut_answers_none(void) {
+    Keymap* keymap = keymap_test_alloc_voice_cut();
+    assert(keymap_set_connected(keymap, true) == ActionNone);
+    keymap_free(keymap);
+}
+
 int main(void) {
     test_run(test_tap_acts);
     test_run(test_tap_on_left_or_back_does_nothing);
@@ -260,5 +288,9 @@ int main(void) {
     test_run(test_release_ok_after_link_returned_stops_nothing);
     test_run(test_hold_ok_after_cut_starts_voice_again);
     test_run(test_buttons_act_after_link_returns);
+    test_run(test_cut_answers_voice_stop_once);
+    test_run(test_link_changes_without_voice_answer_none);
+    test_run(test_link_up_during_voice_answers_none);
+    test_run(test_link_up_after_cut_answers_none);
     return 0;
 }
