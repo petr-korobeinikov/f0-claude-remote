@@ -8,24 +8,29 @@ and the device lists it as `App f0_claude_remote`.
 This is the first of four small app changes,
 `app-screen`, `app-keymap`, `ble-transport` and `remote-actions`,
 which start from the interface so every step shows a real result on the Flipper.
-A dry run in a scratch clone built and linted these sources against SDK 1.5.1,
-API 88.2, into a 5.0 KB FAP;
-no device was attached, so nothing here has run on hardware yet.
+A first version drew variant A on the device,
+where a black plate meant hold only by an agreement nobody else knows,
+and the held Back that exits was not obvious.
 
 Decisions, settled with the owner on 2026-11-03:
 
-- **Screen variant A, board `Main`,**
-  not the list or the large status:
-  each label stands where its button is.
+- **Screen variant D, board `D_Main`,**
+  not A's plates, the list or the large status:
+  a thin frame means press, a fill means hold,
+  and a `TAP | HOLD` legend says so on the screen.
 - **Mechanics first, no lock,**
   not the wireframe's locked boards:
   whether a lock exists at all stays open, at the bottom of the backlog.
 - **A static `Connected`,**
   not a real status:
   Bluetooth arrives with `ble-transport`.
-- **Layout checked by eye on the device,**
+- **Layout checked against the board's pixels, on a frame read off the device,**
   not by a test:
   `view` only renders, and TDD starts with `keymap`.
+- **Sources in `src/`, tests in `test/`,**
+  not flat at the root:
+  the root holds the manifest and the tooling.
+  `test/` arrives with `app-keymap`: git keeps no empty folder.
 
 Decisions proposed here, for the owner to strike:
 
@@ -38,10 +43,7 @@ Decisions proposed here, for the owner to strike:
   at the cost of two spec deltas that name the old file.
 - **No `app.h`,**
   not the brief's header for every module:
-  the loader finds the entry point by name, so the header has no consumer.
-- **Sources stay flat at the root,**
-  not under `src/`:
-  `ide-navigation` already speaks of a `.c` file added at the root.
+  the linker takes the entry point by name from the manifest, so the header has no consumer.
 - **`fap_category` stays `Examples`,**
   not `Bluetooth`:
   the app has no Bluetooth yet, and moving it rewrites a scenario of `app-build`,
@@ -56,7 +58,7 @@ Decisions proposed here, for the owner to strike:
 ## What Changes
 
 - `application.fam` gets its `name` and `entry_point`.
-- New `app.c`, `view.c`, `view.h` and six icons in `images/`.
+- New `src/app.c`, `src/view.c`, `src/view.h` and six icons in `images/`.
 - `f0_claude_remote.c` and `images/.gitkeep` are removed.
 
 ## Capabilities
@@ -68,7 +70,7 @@ Decisions proposed here, for the owner to strike:
 ### Modified Capabilities
 
 - `device-debug`: its breakpoint scenarios name `app.c`.
-- `ide-navigation`: its database and navigation scenarios name `app.c`.
+- `ide-navigation`: its scenarios name `src/app.c`, and a new source file lands in `src/`.
 
 ## Impact
 

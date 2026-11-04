@@ -2,8 +2,7 @@
 
 ## Purpose
 
-Shows the remote's one screen on the Flipper,
-with what each button stands for and how to leave.
+Shows the remote's one screen.
 
 ## ADDED Requirements
 
@@ -23,36 +22,37 @@ with no menu first and no system status bar.
 - **THEN** the device shows the screen, with no status bar above it
 
 ### Requirement: The screen shows the status and every button's action
-The screen SHALL show a status row above a legend
-that places each action where its button sits,
-with a black plate on every action taken by holding the button.
+The screen SHALL show a status row above a ring of the device's buttons,
+with a thin frame on every action taken by a press,
+a black plate on every held one,
+and a legend saying so.
 
 #### Scenario: Status row
 - **WHEN** the application is open
 - **THEN** the top row reads, left to right,
-  a Bluetooth mark, `Connected`, a Back mark and `EXIT`,
+  a Bluetooth mark, `Connected`, and a legend of `TAP` joined to `HOLD`,
   above a line across the display
 
 #### Scenario: Legend
 - **WHEN** the application is open
-- **THEN** the legend shows an up arrow and `high` at the top,
-  `clear` on the left,
-  a frame around a microphone and an Enter mark in the center,
-  `Esc` on the right,
-  and a down arrow and `max` at the bottom
+- **THEN** a ring holds `Enter` over `voice`,
+  with an up arrow and `high` at its top,
+  `clear` and a left arrow on its left,
+  a right arrow and `Esc` on its right,
+  a down arrow and `max` at its bottom,
+  and a Back mark and `exit` at the lower left
 
 #### Scenario: Hold and press read apart
 - **WHEN** the application is open
-- **THEN** `EXIT`, `high`, `clear`, `max` and the microphone stand white on a black plate,
-  and the arrows, the Enter mark and `Esc` stand black on white
+- **THEN** `HOLD`, `high`, `max`, `voice`, `clear`, `exit`, the left arrow and the Back mark stand white on a black plate,
+  and `TAP`, the up, down and right arrows, `Enter` and `Esc` stand black in a thin frame
 
 #### Scenario: Nothing clipped
 - **WHEN** the application is open
 - **THEN** every label is whole and stands clear of its neighbors
 
 ### Requirement: The status is static
-The status SHALL read `Connected` whatever the device's Bluetooth state,
-because nothing here uses Bluetooth.
+The status SHALL read `Connected` whatever the device's Bluetooth state.
 
 #### Scenario: Bluetooth off
 - **WHEN** Bluetooth is off in the device's settings and the application opens

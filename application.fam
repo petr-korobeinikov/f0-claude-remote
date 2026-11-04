@@ -2,9 +2,9 @@
 
 App(
     appid="f0_claude_remote",  # Must be unique
-    name="App f0_claude_remote",  # Displayed in menus
+    name="Claude Remote",  # Displayed in menus
     apptype=FlipperAppType.EXTERNAL,
-    entry_point="f0_claude_remote_app",
+    entry_point="app_main",
     stack_size=2 * 1024,
     fap_category="Examples",
     # Optional values

@@ -12,7 +12,7 @@ CLion SHALL connect to the running device through the probe,
 stop when an application loads, then honor breakpoints set in our sources.
 
 #### Scenario: Breakpoint before the application starts
-- **WHEN** `Debug` connects, a breakpoint sits in `f0_claude_remote.c`, `Launch` runs and the load stop is resumed
+- **WHEN** `Debug` connects, a breakpoint sits in `app.c`, `Launch` runs and the load stop is resumed
 - **THEN** CLion stops on that line and shows its local variables
 
 #### Scenario: Stepping over a firmware call
@@ -76,4 +76,4 @@ as commands and menu paths that work as written.
 
 #### Scenario: Following the README
 - **WHEN** a reader starts from a powered-off device and follows the section in order
-- **THEN** CLion stops on a breakpoint in `f0_claude_remote.c`
+- **THEN** CLion stops on a breakpoint in `app.c`
