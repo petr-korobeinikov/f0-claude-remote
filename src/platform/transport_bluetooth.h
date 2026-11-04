@@ -2,8 +2,8 @@
 
 #include <furi.h>
 
-typedef struct TransportBluetooth TransportBluetooth;
+#include "../core/transport.h"
 
-TransportBluetooth* transport_bluetooth_alloc(FuriMessageQueue* link_queue);
+Transport* transport_bluetooth_alloc(FuriMessageQueue* link_queue);
 
-void transport_bluetooth_free(TransportBluetooth* transport);
+void transport_bluetooth_free(Transport* transport);

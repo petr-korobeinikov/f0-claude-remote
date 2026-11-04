@@ -122,6 +122,30 @@ From then on the Mac connects by itself, within a second of a drop.
 To pair again, forget the device on the Mac first.
 While the app is open it holds the radio, and on leaving it hands the radio back.
 
+## Effort
+
+Holding Up sets effort to `high`, holding Down to `max`,
+in the Claude Code session focused on the Mac.
+That takes one block in `keybindings.json`,
+in Claude Code's config directory: `~/.claude`, or what `CLAUDE_CONFIG_DIR` names.
+It goes into the file's `bindings` array, or its two lines into a `Chat` block already there,
+and the file reloads by itself:
+
+```json
+{
+  "context": "Chat",
+  "bindings": {
+    "ctrl+x ctrl+f": "command:effort high",
+    "ctrl+x ctrl+q": "command:effort max"
+  }
+}
+```
+
+Tried on Claude Code 2.1.311.
+Its schema has no space in a command's name,
+so an editor validating against `$schema` marks the two lines;
+they run all the same.
+
 ## Debugging
 
 The app runs on the device, and GDB reaches it through the Black Magic probe on the WiFi Devboard.

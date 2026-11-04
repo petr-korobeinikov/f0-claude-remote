@@ -3,6 +3,7 @@
 #include <furi.h>
 #include <notification/notification_messages.h>
 
+#include "../core/actions.h"
 #include "../core/feedback.h"
 #include "keymap_input.h"
 #include "screen.h"
@@ -15,10 +16,11 @@ struct App {
     NotificationApp* notification;
     Keymap* keymap;
     Screen* screen;
-    TransportBluetooth* transport;
+    Transport* transport;
 };
 
 static void app_perform(App* app, Action action) {
+    actions_perform(app->transport, action);
     if(feedback_vibrates(action)) {
         notification_message(app->notification, &sequence_single_vibro);
     }

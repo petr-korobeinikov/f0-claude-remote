@@ -10,6 +10,6 @@ for test in test/*_test.c; do
     name=$(basename "$test" _test.c)
     cc -Wall -Wextra -Werror -Wredundant-decls -Wdouble-promotion -Wundef \
         -fsanitize=address,undefined -fno-sanitize-recover=all -g \
-        -Isrc/core -Itest -o "$dir/$name" "src/core/$name.c" "$test"
+        -Isrc/core -Itest -o "$dir/$name" "src/core/$name.c" "$test" test/*_fake.c
     "$dir/$name"
 done

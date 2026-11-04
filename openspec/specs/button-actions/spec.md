@@ -3,7 +3,7 @@
 ## Purpose
 
 Turns each tap and hold of the device's buttons into one of the remote's actions,
-which confirms itself on the device and does not reach the Mac yet.
+which confirms itself on the device.
 
 ## Requirements
 
@@ -65,13 +65,6 @@ A button SHALL act the same whether or not the backlight is on.
 #### Scenario: Backlight off
 - **WHEN** the link is up, the backlight has timed out and Up is tapped
 - **THEN** the device vibrates once
-
-### Requirement: No action reaches the Mac
-No button SHALL send a keystroke.
-
-#### Scenario: Text field on the Mac
-- **WHEN** a text field is focused on the Mac and every button is tapped and held
-- **THEN** nothing is typed in the field
 
 ### Requirement: With no link only holding Back acts
 With no link, holding Back SHALL exit, and no other press SHALL act, vibrate or flash,
