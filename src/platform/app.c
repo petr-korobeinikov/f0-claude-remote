@@ -75,6 +75,7 @@ App* app_alloc(void) {
     furi_event_loop_subscribe_message_queue(
         app->event_loop, app->link_queue, FuriEventLoopEventIn, app_link_callback, app);
     app->notification = furi_record_open(RECORD_NOTIFICATION);
+    notification_message(app->notification, &sequence_display_backlight_enforce_on);
     app->keymap = keymap_alloc();
     app->screen = screen_alloc(app->event_loop, app->input_queue, keymap_mode(app->keymap));
     app->transport = transport_bluetooth_alloc(app->link_queue);
@@ -85,6 +86,7 @@ void app_free(App* app) {
     screen_free(app->screen);
     transport_bluetooth_free(app->transport);
     keymap_free(app->keymap);
+    notification_message(app->notification, &sequence_display_backlight_enforce_auto);
     furi_record_close(RECORD_NOTIFICATION);
     furi_event_loop_unsubscribe(app->event_loop, app->link_queue);
     furi_message_queue_free(app->link_queue);
