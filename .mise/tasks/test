@@ -1,0 +1,15 @@
+#!/bin/sh
+#MISE description="Build and run the host tests"
+set -eu
+
+dir=$(mktemp -d)
+trap 'rm -rf "$dir"' EXIT
+
+# The SDK's warning flags, plus the sanitizers the device cannot run.
+for test in test/*_test.c; do
+    name=$(basename "$test" _test.c)
+    cc -Wall -Wextra -Werror -Wredundant-decls -Wdouble-promotion -Wundef \
+        -fsanitize=address,undefined -fno-sanitize-recover=all -g \
+        -Isrc -Itest -o "$dir/$name" "src/$name.c" "$test"
+    "$dir/$name"
+done
