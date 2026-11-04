@@ -18,27 +18,31 @@ static void test_the_rest_stay_silent(void) {
     assert(!feedback_vibrates(ActionExit));
 }
 
-static void test_commands_flash(void) {
-    assert(feedback_flashes(ActionEffortHigh));
-    assert(feedback_flashes(ActionEffortMax));
-    assert(feedback_flashes(ActionClear));
-    assert(feedback_flashes(ActionEsc));
+static void test_arrows_flash_for_100_ms(void) {
+    assert(feedback_flash_ms(ActionArrowUp) == 100);
+    assert(feedback_flash_ms(ActionArrowDown) == 100);
+}
+
+static void test_enter_and_commands_flash_for_400_ms(void) {
+    assert(feedback_flash_ms(ActionEnter) == 400);
+    assert(feedback_flash_ms(ActionEsc) == 400);
+    assert(feedback_flash_ms(ActionEffortHigh) == 400);
+    assert(feedback_flash_ms(ActionEffortMax) == 400);
+    assert(feedback_flash_ms(ActionClear) == 400);
 }
 
 static void test_the_rest_do_not_flash(void) {
-    assert(!feedback_flashes(ActionNone));
-    assert(!feedback_flashes(ActionEnter));
-    assert(!feedback_flashes(ActionArrowUp));
-    assert(!feedback_flashes(ActionArrowDown));
-    assert(!feedback_flashes(ActionVoiceStart));
-    assert(!feedback_flashes(ActionVoiceStop));
-    assert(!feedback_flashes(ActionExit));
+    assert(feedback_flash_ms(ActionNone) == 0);
+    assert(feedback_flash_ms(ActionVoiceStart) == 0);
+    assert(feedback_flash_ms(ActionVoiceStop) == 0);
+    assert(feedback_flash_ms(ActionExit) == 0);
 }
 
 int main(void) {
     test_run(test_sent_actions_vibrate);
     test_run(test_the_rest_stay_silent);
-    test_run(test_commands_flash);
+    test_run(test_arrows_flash_for_100_ms);
+    test_run(test_enter_and_commands_flash_for_400_ms);
     test_run(test_the_rest_do_not_flash);
     return 0;
 }

@@ -19,8 +19,9 @@ static void app_perform(App* app, Action action) {
     if(feedback_vibrates(action)) {
         notification_message(app->notification, &sequence_single_vibro);
     }
-    if(feedback_flashes(action)) {
-        screen_flash(app->screen, action);
+    uint32_t flash_ms = feedback_flash_ms(action);
+    if(flash_ms > 0) {
+        screen_flash(app->screen, action, flash_ms);
     }
     screen_set_voice(app->screen, keymap_is_voice_on(app->keymap));
     if(action == ActionExit) {

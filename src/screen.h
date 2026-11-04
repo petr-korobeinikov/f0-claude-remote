@@ -12,4 +12,4 @@ void screen_free(Screen* screen);
 
 void screen_set_voice(Screen* screen, bool voice_on);
 
-void screen_flash(Screen* screen, Action action);
+void screen_flash(Screen* screen, Action action, uint32_t duration_ms);

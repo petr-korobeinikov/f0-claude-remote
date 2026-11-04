@@ -4,8 +4,6 @@
 
 #include "view.h"
 
-#define SCREEN_FLASH_MS 400
-
 struct Screen {
     Gui* gui;
     ViewPort* view_port;
@@ -61,8 +59,8 @@ void screen_set_voice(Screen* screen, bool voice_on) {
     view_port_update(screen->view_port);
 }
 
-void screen_flash(Screen* screen, Action action) {
+void screen_flash(Screen* screen, Action action, uint32_t duration_ms) {
     screen->flash = action;
-    furi_event_loop_timer_start(screen->flash_timer, furi_ms_to_ticks(SCREEN_FLASH_MS));
+    furi_event_loop_timer_start(screen->flash_timer, furi_ms_to_ticks(duration_ms));
     view_port_update(screen->view_port);
 }
