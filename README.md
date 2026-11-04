@@ -59,6 +59,8 @@ mise run setup
 clion .
 ```
 
+`mise run test` alone also needs the system `cc`, unpinned.
+
 Only `.idea/misc.xml` and `.idea/debug-profiles.xml` are tracked,
 so a first `clion .` finds the compilation database and the debug profile,
 and the rest of `.idea/` stays ignored.
@@ -80,6 +82,8 @@ Project tasks are files in `.mise/tasks/`:
   under a sandbox that denies writes outside the project and temp.
   It runs on macOS only.
 - `build` builds the app.
+- `test` builds the suites under `test/` with the system `cc` and runs them on the Mac,
+  one `ok` line per test.
 - `launch` builds it, uploads it to the device and starts it.
   `ufbt flash` is not the same thing: it rewrites the device's firmware.
 - `debug` opens GDB on the device in the terminal.

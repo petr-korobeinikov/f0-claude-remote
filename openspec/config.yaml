@@ -79,12 +79,13 @@ context: |
 
   ## Platform
 
-  The deterministic core - `keymap` and `actions` - includes no Flipper SDK
-  header and is tested on the host against a fake `transport`; `view` above it
-  only renders the state it is handed. Platform-specific code - `transport`,
-  `app` - carries only what genuinely cannot be shared, and each such entry is
-  a decision worth naming in the design. The host compiler and the test
-  framework are undecided: the first change with logic decides them.
+  The deterministic core - `keymap`, `feedback` and `actions` - includes no
+  Flipper SDK header and is tested on the host against a fake `transport`;
+  `view` above it only renders the state it is handed. Platform-specific code
+  - `transport`, `keymap_input`, `screen`, `app`, `main` - carries only what
+  genuinely cannot be shared, and each such entry is a decision worth naming
+  in the design. The host tests compile with the system `cc`, unpinned, and
+  run on `assert` and `test/test.h`, with no framework.
 
   The toolchain is pinned in `mise.toml` with every version in full, and
   `mise.lock` is written only by mise - never deleted, never recreated by
