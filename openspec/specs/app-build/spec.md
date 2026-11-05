@@ -96,7 +96,7 @@ and `mise run launch` SHALL build it, upload it to the device and start it.
 
 #### Scenario: Launch
 - **WHEN** `mise run launch` runs with the device unlocked on USB
-- **THEN** it exits 0 and its log reads `Launching app: /ext/apps/Examples/f0_claude_remote.fap`
+- **THEN** it exits 0 and its log reads `Launching app: /ext/apps/Bluetooth/f0_claude_remote.fap`
 
 #### Scenario: Device locked by PIN
 - **WHEN** `mise run launch` runs while a PIN locks the device, which drops its USB console

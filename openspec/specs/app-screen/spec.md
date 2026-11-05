@@ -10,7 +10,7 @@ Shows the remote's one screen.
 The device SHALL list the application as `Claude Remote`.
 
 #### Scenario: Apps menu
-- **WHEN** Apps → Examples opens on the device after `mise run launch`
+- **WHEN** Apps → Bluetooth opens on the device after `mise run launch`
 - **THEN** it lists `Claude Remote`
 
 ### Requirement: The application opens on its one screen
