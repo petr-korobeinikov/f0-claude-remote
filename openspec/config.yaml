@@ -18,7 +18,7 @@ context: |
   `type(scope): description`. The scope names the area of code or the
   tracker's task id - `feat(catalog): …`, `fix(PROJ-32): …` - and is left
   out only where nothing narrower than the whole project fits, as in
-  `chore: release 2026.10.0`. The subject is in the imperative mood,
+  `chore: release 0.1`. The subject is in the imperative mood,
   lowercase after the prefix, without a closing period, 72 characters at
   most and 50 where it can be.
 
@@ -27,12 +27,13 @@ context: |
   agent or model in any form - no `Co-Authored-By:` trailer for a machine address, no "Generated
   with" line; every other trailer is allowed.
 
-  A release is named `YYYY.M.MICRO`: the year, the month without a leading
-  zero, and the count of releases cut earlier that month, from 0. Without
-  the leading zero the name is valid SemVer, and a later release sorts above
-  an earlier one. Its tag is `v` followed by the name - `v2026.10.0`, put by
-  `git flow release finish 2026.10.0`, whose `tagPrefix` is `v` in
-  `.gitflow`. The sources carry the name, never the `v`.
+  A release is named by a counter, `MAJOR.MINOR`: the first is `0.1`, and
+  each one after it raises `MINOR` by one. A `.fap` stores only these two
+  numbers, and the Apps Catalog takes an update only under a higher version,
+  so a third part would go unseen. Its tag is `v` followed by the name -
+  `v0.1`, put by `git flow release finish 0.1`, whose `tagPrefix` is `v` in
+  `.gitflow`. `fap_version` in `application.fam` carries the name, never the
+  `v`.
 
   Generated, never hand-edited: `openspec/` apart from this file, and the
   `opsx` / `openspec-*` glue under `.claude/`; regenerate them with
