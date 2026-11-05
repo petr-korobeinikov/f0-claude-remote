@@ -1,24 +1,51 @@
-# F0 Claude Remote
-
-> Your voice runs Claude Code. Your Flipper Zero runs the shortcuts.
-
-A Flipper Zero app that acts as a Bluetooth remote for Claude Code on a Mac:
-hold OK to dictate, tap it to send,
-and use the other buttons for menus, Esc, `/clear` and the effort level.
-Each action confirms itself with a buzz,
-so the screen needs no watching.
-To the Mac it is a Bluetooth keyboard:
-one block of key bindings, and nothing to install.
+<div align="center">
 
 <p align="center">
   <img src="screenshots/main.png" alt="The app's main screen on the device">
 </p>
 
-The app is debugged on the device from CLion,
-with breakpoints in our sources and no Flipper plugin:
-see [Debugging](#debugging).
+# F0 Claude Remote
 
-## Getting started
+*Your voice runs Claude Code. Your Flipper Zero runs the shortcuts.*
+
+**F0 Claude Remote** is a Flipper Zero app
+that acts as a Bluetooth remote for Claude Code.
+
+[Installation](#installation) ·
+[Usage](#usage) ·
+[Debugging](#debugging)
+
+</div>
+
+## Why
+
+Claude Code takes dictation,
+but a session still asks for the keyboard:
+to send the prompt, stop a turn, pick from a menu,
+clear the conversation or change the effort.
+This app puts all of that on the Flipper's buttons,
+so voice and one hand run the whole session, by feel.
+
+## Features
+
+- **Dictation** —
+  hold OK and speak into the prompt;
+  nothing is sent until you tap OK.
+- **The prompt** —
+  Enter, the arrows for history and menus, Esc to stop a turn.
+- **Commands** —
+  hold a button for `/clear` or the effort level,
+  whatever the Mac's keyboard layout, and the draft stays.
+- **Feedback** —
+  each action confirms itself with a buzz,
+  so no buzz means nothing was sent.
+- **Bluetooth** —
+  to the computer it is a keyboard, paired once,
+  that reconnects by itself within a second of a drop.
+- **Debugging from CLion** —
+  breakpoints in the app's sources on the device, with no Flipper plugin.
+
+## Installation
 
 You need a Flipper Zero on firmware 1.5.1,
 and an Apple Silicon Mac with [mise](https://mise.jdx.dev) to build on.
@@ -32,9 +59,17 @@ mise run launch
 ```
 
 The app then lives under Apps → Bluetooth on the device.
-Pair it once, and bind the keys.
 
-## Pairing
+Tried only on a Mac.
+Nothing in the app itself is specific to macOS,
+so other systems should work as long as they accept a Bluetooth keyboard,
+but `mise run setup` and the CLion debug profile are macOS-only.
+
+## Usage
+
+Pair the device once, and bind the keys.
+
+### Pairing
 
 Once per Mac, with the device on its desktop:
 
@@ -52,7 +87,7 @@ From then on the Mac connects by itself, within a second of a drop.
 To pair again, forget the device on the Mac first.
 While the app is open it holds the radio, and on leaving it hands the radio back.
 
-## Keys on the Mac
+### Keys on the Mac
 
 The device is a Bluetooth keyboard,
 so a press acts on whatever the Mac has focused,
@@ -191,115 +226,10 @@ tar -xzf "$dir/fw.tgz" -C "$dir" ./bootloader.bin ./blackmagic.bin ./partition-t
 
 Press RESET when it finishes.
 
-## Toolchain
+## Contributing
 
-A fresh clone needs mise and nothing else;
-after `mise run setup`, `clion .` opens the project.
-`mise run test` alone also needs the system `cc`, unpinned.
+The toolchain, the workflow and the hooks are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Only `.idea/misc.xml` and `.idea/debug-profiles.xml` are tracked,
-so a first `clion .` finds the compilation database and the debug profile,
-and the rest of `.idea/` stays ignored.
+## License
 
-SDK, toolchain and build output stay in `.ufbt/` and `dist/`.
-Run ufbt through mise, from the repository root:
-
-```shell
-mise exec -- ufbt        # build
-mise exec -- ufbt lint   # check the sources against Flipper's format
-```
-
-Never run `ufbt vscode_dist`:
-it overwrites `.editorconfig` and `.gitignore`.
-
-Project tasks are files in `.mise/tasks/`:
-
-- `setup` deploys the pinned SDK and builds once,
-  under a sandbox that denies writes outside the project and temp.
-  It runs on macOS only.
-- `build` builds the app.
-- `test` builds the suites under `test/` with the system `cc` and runs them on the Mac,
-  one `ok` line per test.
-- `launch` builds it, uploads it to the device and starts it.
-  `ufbt flash` is not the same thing: it rewrites the device's firmware.
-- `debug` opens GDB on the device in the terminal.
-- `check-workflow` runs `.github/workflows/build.yml` through `act`,
-  contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
-
-To bump the SDK,
-edit `FLIPPER_SDK_VERSION` in `mise.toml` and run `mise run setup`.
-
-To bump a tool,
-remove `[tool_config]` from `mise.toml`,
-since `locked = true` refuses a graph that does not exist yet.
-Change the pin, then restore the section once the new graph is locked:
-
-```shell
-mise install uv python@<version>
-mise lock
-mise install
-```
-
-## Workflow
-
-Development is spec-driven, on [OpenSpec](https://github.com/Fission-AI/OpenSpec),
-through Claude Code's `/opsx:*` commands.
-Each change is one OpenSpec change,
-and every plan is one commit.
-It is planned one of two ways,
-and `/opsx:sync` runs before `/opsx:archive` either way.
-
-**Ahead.**
-Each plan is proposed on `develop` and committed alone,
-and may wait there, unimplemented, until its turn.
-Its implementation is one commit on its own branch:
-
-```shell
-git flow feature start <id>    # right before /opsx:apply
-git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
-```
-
-**Just in time.**
-The branch comes first,
-and the plan, the code and the archive go in as one commit:
-
-```shell
-git flow feature start <id>    # then /opsx:propose "<id>" and /opsx:apply on it
-git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
-```
-
-Every implementation runs in a clean Claude Code session,
-which is cleared with `/clear` once its branch is finished.
-
-Browse specs and changes with `mise exec -- openspec view`.
-
-To install the agent skills into `.claude/skills/` in a fresh clone,
-or to update them:
-
-```shell
-mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent claude-code -y
-```
-
-## Hooks
-
-[prek](https://prek.j178.dev/) holds the gate before a commit is allowed.
-It is pinned in `mise.toml` and configured in `prek.toml`,
-which gives each rule's reason.
-Every hook is one of prek's own Rust implementations,
-so this repository clones no hook repositories
-and pins no third-party revs.
-
-File-hygiene hooks run at `pre-commit`.
-Three more read the message at `commit-msg`:
-a subject of at most 72 characters,
-in Conventional Commits,
-and no line that credits an AI agent or a model.
-
-```shell
-mise exec -- prek install           # wire both git hooks
-mise exec -- prek run --all-files   # every pre-commit hook over the whole tree
-```
-
-Run `prek install` in a fresh clone and after a prek upgrade:
-the generated hooks pin the path of the prek binary they were installed from,
-and that path carries the version.
+[GPL-3.0](LICENSE). Copyright (C) 2026 Petr Korobeinikov.
