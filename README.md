@@ -2,107 +2,37 @@
 
 > Your voice runs Claude Code. Your Flipper Zero runs the shortcuts.
 
-Spec-driven development on [OpenSpec](https://github.com/Fission-AI/OpenSpec),
-driven from Claude Code via the `/opsx:*` commands — no other AI-tool integration.
-`cookiecutter` wired up the toolchain ([mise](https://mise.jdx.dev)),
-OpenSpec, git-flow-next, and prek on generation.
-The template asked mise for Node's `lts`;
-the post-gen hook pinned the version it resolved to, in full,
-as every other tool in `mise.toml` is pinned.
+A Flipper Zero app that acts as a Bluetooth remote for Claude Code on a Mac:
+hold OK to dictate, tap it to send,
+and use the other buttons for menus, Esc, `/clear` and the effort level.
+Each action confirms itself with a buzz,
+so the screen needs no watching.
+To the Mac it is a Bluetooth keyboard:
+one block of key bindings, and nothing to install.
 
-## Workflow
+<p align="center">
+  <img src="screenshots/main.png" alt="The app's main screen on the device">
+</p>
 
-Each change is one OpenSpec change,
-and every plan is one commit.
-It is planned one of two ways,
-and `/opsx:sync` runs before `/opsx:archive` either way.
+The app is debugged on the device from CLion,
+with breakpoints in our sources and no Flipper plugin:
+see [Debugging](#debugging).
 
-**Ahead.**
-Each plan is proposed on `develop` and committed alone,
-and may wait there, unimplemented, until its turn.
-Its implementation is one commit on its own branch:
+## Getting started
 
-```shell
-git flow feature start <id>    # right before /opsx:apply
-git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
-```
-
-**Just in time.**
-The branch comes first,
-and the plan, the code and the archive go in as one commit:
-
-```shell
-git flow feature start <id>    # then /opsx:propose "<id>" and /opsx:apply on it
-git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
-```
-
-Every implementation runs in a clean Claude Code session,
-which is cleared with `/clear` once its branch is finished.
-
-Browse specs and changes with `mise exec -- openspec view`.
-
-The post-gen hook installs the agent skills into `.claude/skills/`.
-Re-run to update them or install them in a fresh clone:
-
-```shell
-mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent claude-code -y
-```
-
-## Toolchain
-
-A fresh clone needs mise and nothing else:
+You need a Flipper Zero on firmware 1.5.1,
+and an Apple Silicon Mac with [mise](https://mise.jdx.dev) to build on.
+With the device unlocked on USB, on its desktop:
 
 ```shell
 mise trust
 mise install
 mise run setup
-clion .
+mise run launch
 ```
 
-`mise run test` alone also needs the system `cc`, unpinned.
-
-Only `.idea/misc.xml` and `.idea/debug-profiles.xml` are tracked,
-so a first `clion .` finds the compilation database and the debug profile,
-and the rest of `.idea/` stays ignored.
-
-SDK, toolchain and build output stay in `.ufbt/` and `dist/`.
-Run ufbt through mise, from the repository root:
-
-```shell
-mise exec -- ufbt        # build
-mise exec -- ufbt lint   # check the sources against Flipper's format
-```
-
-Never run `ufbt vscode_dist`:
-it overwrites `.editorconfig` and `.gitignore`.
-
-Project tasks are files in `.mise/tasks/`:
-
-- `setup` deploys the pinned SDK and builds once,
-  under a sandbox that denies writes outside the project and temp.
-  It runs on macOS only.
-- `build` builds the app.
-- `test` builds the suites under `test/` with the system `cc` and runs them on the Mac,
-  one `ok` line per test.
-- `launch` builds it, uploads it to the device and starts it.
-  `ufbt flash` is not the same thing: it rewrites the device's firmware.
-- `debug` opens GDB on the device in the terminal.
-- `check-workflow` runs `.github/workflows/build.yml` through `act`,
-  contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
-
-To bump the SDK,
-edit `FLIPPER_SDK_VERSION` in `mise.toml` and run `mise run setup`.
-
-To bump a tool,
-remove `[tool_config]` from `mise.toml`,
-since `locked = true` refuses a graph that does not exist yet.
-Change the pin, then restore the section once the new graph is locked:
-
-```shell
-mise install uv python@<version>
-mise lock
-mise install
-```
+The app then lives under Apps → Bluetooth on the device.
+Pair it once, and bind the keys.
 
 ## Pairing
 
@@ -261,56 +191,115 @@ tar -xzf "$dir/fw.tgz" -C "$dir" ./bootloader.bin ./blackmagic.bin ./partition-t
 
 Press RESET when it finishes.
 
+## Toolchain
+
+A fresh clone needs mise and nothing else;
+after `mise run setup`, `clion .` opens the project.
+`mise run test` alone also needs the system `cc`, unpinned.
+
+Only `.idea/misc.xml` and `.idea/debug-profiles.xml` are tracked,
+so a first `clion .` finds the compilation database and the debug profile,
+and the rest of `.idea/` stays ignored.
+
+SDK, toolchain and build output stay in `.ufbt/` and `dist/`.
+Run ufbt through mise, from the repository root:
+
+```shell
+mise exec -- ufbt        # build
+mise exec -- ufbt lint   # check the sources against Flipper's format
+```
+
+Never run `ufbt vscode_dist`:
+it overwrites `.editorconfig` and `.gitignore`.
+
+Project tasks are files in `.mise/tasks/`:
+
+- `setup` deploys the pinned SDK and builds once,
+  under a sandbox that denies writes outside the project and temp.
+  It runs on macOS only.
+- `build` builds the app.
+- `test` builds the suites under `test/` with the system `cc` and runs them on the Mac,
+  one `ok` line per test.
+- `launch` builds it, uploads it to the device and starts it.
+  `ufbt flash` is not the same thing: it rewrites the device's firmware.
+- `debug` opens GDB on the device in the terminal.
+- `check-workflow` runs `.github/workflows/build.yml` through `act`,
+  contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
+
+To bump the SDK,
+edit `FLIPPER_SDK_VERSION` in `mise.toml` and run `mise run setup`.
+
+To bump a tool,
+remove `[tool_config]` from `mise.toml`,
+since `locked = true` refuses a graph that does not exist yet.
+Change the pin, then restore the section once the new graph is locked:
+
+```shell
+mise install uv python@<version>
+mise lock
+mise install
+```
+
+## Workflow
+
+Development is spec-driven, on [OpenSpec](https://github.com/Fission-AI/OpenSpec),
+through Claude Code's `/opsx:*` commands.
+Each change is one OpenSpec change,
+and every plan is one commit.
+It is planned one of two ways,
+and `/opsx:sync` runs before `/opsx:archive` either way.
+
+**Ahead.**
+Each plan is proposed on `develop` and committed alone,
+and may wait there, unimplemented, until its turn.
+Its implementation is one commit on its own branch:
+
+```shell
+git flow feature start <id>    # right before /opsx:apply
+git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
+```
+
+**Just in time.**
+The branch comes first,
+and the plan, the code and the archive go in as one commit:
+
+```shell
+git flow feature start <id>    # then /opsx:propose "<id>" and /opsx:apply on it
+git flow feature finish <id>   # after /opsx:sync, /opsx:archive and the commit
+```
+
+Every implementation runs in a clean Claude Code session,
+which is cleared with `/clear` once its branch is finished.
+
+Browse specs and changes with `mise exec -- openspec view`.
+
+To install the agent skills into `.claude/skills/` in a fresh clone,
+or to update them:
+
+```shell
+mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent claude-code -y
+```
+
 ## Hooks
 
 [prek](https://prek.j178.dev/) holds the gate before a commit is allowed.
-It is pinned in `mise.toml` and configured in `prek.toml` —
-prek's own TOML format, which takes precedence over a `.pre-commit-config.yaml`.
+It is pinned in `mise.toml` and configured in `prek.toml`,
+which gives each rule's reason.
+Every hook is one of prek's own Rust implementations,
+so this repository clones no hook repositories
+and pins no third-party revs.
 
-Every file-hygiene hook is one of prek's own Rust implementations —
-`repo = "builtin"` — so this repository clones no hook repositories
-and pins no third-party revs:
-there is nothing to `prek update`, and nothing extra to audit.
-
-One more builtin, `deny-pattern`, reads the commit message
-and refuses a subject over 72 characters,
-so that `git log --oneline` gives each commit one line.
-The subject is the first line that is neither blank nor a comment,
-counted in characters rather than bytes,
-without the trailing whitespace git strips;
-the lines after it are not measured,
-though `git log --oneline` joins those before the first blank line to it.
-Two more read the same message:
-one refuses a subject that is not Conventional Commits,
-`type(scope): description`,
-and lets git's own subjects through —
-a merge, which `git flow … finish` makes, a revert, and `fixup!`, `squash!`, `amend!`;
-the other reads every line past the subject that is not a comment
-and refuses one that opens with `Token: ` —
-a trailer such as `Co-Authored-By:`, or any body line written the same way —
-or holds "Generated with" or "Generated by",
-and further on names an AI agent or a model, as a whole word in any case.
-The names are a list in `prek.toml`,
-so a new agent has to be added to it,
-and a name refuses its line whatever it means there:
-`Pagination: the cursor now carries the sort key` fails as well.
-Every other trailer passes,
-and so does a name on a line of neither form.
-These three hooks run at `commit-msg`;
-every other one runs at `pre-commit`.
-`git commit --no-verify` skips them with the rest,
-and git calls no hook for a revert, a cherry-pick or a rebase,
-even where the message is edited, as in a squash:
-only a `reword`, and a cherry-pick or revert finished after a conflict,
-run both hooks.
+File-hygiene hooks run at `pre-commit`.
+Three more read the message at `commit-msg`:
+a subject of at most 72 characters,
+in Conventional Commits,
+and no line that credits an AI agent or a model.
 
 ```shell
 mise exec -- prek install           # wire both git hooks
 mise exec -- prek run --all-files   # every pre-commit hook over the whole tree
 ```
 
-The post-gen hook runs `prek install`.
-Re-run it in a fresh clone and after a prek upgrade:
-the generated `.git/hooks/pre-commit` and `.git/hooks/commit-msg`
-pin the path of the prek binary they were installed from,
+Run `prek install` in a fresh clone and after a prek upgrade:
+the generated hooks pin the path of the prek binary they were installed from,
 and that path carries the version.
