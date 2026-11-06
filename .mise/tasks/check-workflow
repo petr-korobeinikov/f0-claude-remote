@@ -1,5 +1,5 @@
 #!/bin/sh
-#MISE description="Run the workflow's jobs through act, contained"
+#MISE description="Run ci.yml's jobs through act, contained"
 set -eu
 
 export DOCKER_HOST="${DOCKER_HOST:-unix://$HOME/.colima/default/docker.sock}"
@@ -11,8 +11,8 @@ export HOME="$home"
 
 # An empty GITHUB_TOKEN keeps act from calling `gh auth token`; ./.actrc cannot hold the
 # socket and network flags, as cmd/actrc.go refuses both.
-act -W .github/workflows/build.yml --rm \
-    -P ubuntu-latest=catthehacker/ubuntu:act-24.04@sha256:c58e2b364da03b0c804c7d660f2ecbedf2f221a382b9baa0b344b0144780ff43 \
+act -W .github/workflows/ci.yml --rm \
+    -P ubuntu-24.04=catthehacker/ubuntu:act-24.04@sha256:c58e2b364da03b0c804c7d660f2ecbedf2f221a382b9baa0b344b0144780ff43 \
     --container-architecture linux/arm64 --container-daemon-socket - \
     --network bridge --secret GITHUB_TOKEN= \
-    --action-cache-path .act/actions --cache-server-path .act/cache
+    --action-cache-path .act/actions --no-cache-server

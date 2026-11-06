@@ -50,42 +50,6 @@ and the sources SHALL pass the SDK's linter against it.
 - **WHEN** `mise exec -- ufbt lint` runs
 - **THEN** it exits 0
 
-### Requirement: The template's workflow stays pinned
-The repository SHALL keep the app template's workflow,
-with every action pinned to a full commit, a read-only token and the audited ufbt.
-
-#### Scenario: Static check
-- **WHEN** `mise exec -- actionlint .github/workflows/build.yml` runs
-- **THEN** it exits 0
-
-#### Scenario: Pinned references
-- **WHEN** the workflow's `uses:` lines are read
-- **THEN** each names a 40-hex commit
-
-#### Scenario: Read-only token
-- **WHEN** the workflow's `permissions` is read
-- **THEN** it grants `contents: read` alone
-
-#### Scenario: Audited ufbt
-- **WHEN** the build step's inputs are read
-- **THEN** `ufbt-version` is `==0.2.6`
-
-### Requirement: Local workflow runs stay contained
-`mise run check-workflow` SHALL run the workflow's jobs with no Docker socket,
-no host network, no GitHub token and nothing written to the real `HOME`.
-
-#### Scenario: Contained job
-- **WHEN** a job container is inspected during a run
-- **THEN** it mounts no Docker socket and its network is `bridge`
-
-#### Scenario: No credential
-- **WHEN** `.mise/tasks/check-workflow` is read
-- **THEN** it passes an empty `GITHUB_TOKEN` secret, so `act` does not call `gh auth token`
-
-#### Scenario: Local outcome
-- **WHEN** it runs with a Docker daemon up
-- **THEN** both jobs end `Job succeeded`, with the upload step skipped
-
 ### Requirement: Tasks build the application and start it on the device
 `mise run build` SHALL build the application,
 and `mise run launch` SHALL build it, upload it to the device and start it.

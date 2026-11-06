@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # mise exec and mise run would install every tool a job leaves out, without the token.
+  MISE_AUTO_INSTALL: "false"
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
+        with:
+          version: 2026.11.2
+          # mise does not check a restored tool cache against mise.lock.
+          cache: false
+          # The suites need only the runner's cc.
+          install: false
+      - run: mise run test
+
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
+        with:
+          version: 2026.11.2
+          cache: false
+          install_args: uv pypi:ufbt
+      # setup's deploy without its macOS-only sandbox, the pin read inside mise: an empty --branch
+      # deploys the release channel.
+      - run: mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'
+      - run: mise run build
+      - run: mise exec -- ufbt lint
+
+  hygiene:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
+        with:
+          version: 2026.11.2
+          cache: false
+          install_args: actionlint aqua:j178/prek
+      - run: mise exec -- prek run --all-files
+      # The runner's shellcheck is unpinned, and act's image has none.
+      - run: mise exec -- actionlint -shellcheck= -pyflakes=

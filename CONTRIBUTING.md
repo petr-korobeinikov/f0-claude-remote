@@ -35,7 +35,7 @@ Project tasks are files in `.mise/tasks/`:
 - `launch` builds it, uploads it to the device and starts it.
   `ufbt flash` is not the same thing: it rewrites the device's firmware.
 - `debug` opens GDB on the device in the terminal.
-- `check-workflow` runs `.github/workflows/build.yml` through `act`,
+- `check-workflow` runs the jobs of `.github/workflows/ci.yml` through `act`,
   contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
 
 To bump the SDK,
@@ -137,3 +137,21 @@ mise exec -- prek run --all-files   # every pre-commit hook over the whole tree
 Run `prek install` in a fresh clone and after a prek upgrade:
 the generated hooks pin the path of the prek binary they were installed from,
 and that path carries the version.
+
+## CI
+
+`.github/workflows/ci.yml` runs on every push to `develop` and `main`
+and on every pull request,
+in three parallel jobs on `ubuntu-24.04`.
+Each step is a command to run before pushing:
+
+| Job | Steps |
+|---|---|
+| `test` | `mise run test` |
+| `build` | `mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'`, `mise run build`, `mise exec -- ufbt lint` |
+| `hygiene` | `mise exec -- prek run --all-files`, `mise exec -- actionlint -shellcheck= -pyflakes=` |
+
+On the Mac, `mise run setup` stands in for `build`'s first step.
+Actions are pinned by commit, mise by version and the tools by `mise.lock`,
+and no cache is restored;
+the runner image, with its `cc`, stays unpinned.
