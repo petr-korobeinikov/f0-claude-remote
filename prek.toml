@@ -24,7 +24,10 @@ hooks = [
   { id = "check-added-large-files" },
   { id = "check-case-conflict" },
   { id = "detect-private-key" },
-  { id = "check-symlinks" },
+  # compile_commands.json points at the build's output in .vscode/, so it dangles in every
+  # unbuilt checkout, CI's and a fresh clone's included. No source can fix that, and every
+  # other link stays checked.
+  { id = "check-symlinks", exclude = '^compile_commands\.json$' },
   { id = "destroyed-symlinks" },
   # Syntax gates; each runs only on files of its own format.
   { id = "check-toml" },
