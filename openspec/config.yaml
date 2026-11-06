@@ -33,7 +33,9 @@ context: |
   so a third part would go unseen. Its tag is `v` followed by the name -
   `v0.1`, put by `git flow release finish 0.1`, whose `tagPrefix` is `v` in
   `.gitflow`. `fap_version` in `application.fam` carries the name, never the
-  `v`, and is set on the `release/` branch, before its finish.
+  `v`, and is set on the `release/` branch, before its finish, by the commit
+  `chore: release 0.1`, the branch's last. That commit also regenerates
+  `CHANGELOG.md` with git-cliff, and nothing else writes that file.
 
   Generated, never hand-edited: `openspec/` apart from this file, and the
   `opsx` / `openspec-*` glue under `.claude/`; regenerate them with

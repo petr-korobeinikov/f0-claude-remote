@@ -92,6 +92,28 @@ or to update them:
 mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent claude-code -y
 ```
 
+## Release
+
+A release's own commit, the last on its `release/` branch,
+sets `fap_version` in `application.fam` and regenerates `CHANGELOG.md`.
+git-cliff runs from the repository root: below it, it keeps only that folder's commits.
+
+```shell
+git flow release start 0.2
+# fap_version="0.2" in application.fam
+mise exec -- git-cliff --tag v0.2 --output CHANGELOG.md
+git add application.fam CHANGELOG.md
+git commit -m "chore: release 0.2"
+git flow release finish 0.2
+```
+
+A GitHub Release's notes are its own section alone:
+
+```shell
+git checkout v0.2
+mise exec -- git-cliff --current --strip all
+```
+
 ## Hooks
 
 [prek](https://prek.j178.dev/) holds the gate before a commit is allowed.

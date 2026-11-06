@@ -8,6 +8,7 @@ locked = true
 [tools]
 act = "0.2.95"
 actionlint = "1.7.12"
+git-cliff = "2.14.2"
 node = "26.13.0"
 uv = "0.13.7"
 "aqua:gittower/git-flow-next" = "2.0.0"
@@ -17,6 +18,8 @@ uv = "0.13.7"
 
 [env]
 OPENSPEC_TELEMETRY = "0"
+# Also skips git-cliff's update check on crates.io, which its docs leave out.
+GIT_CLIFF_OFFLINE = "true"
 PYTHONPATH = false
 PYTHONHOME = false
 PIP_REQUIRE_VIRTUALENV = "true"
