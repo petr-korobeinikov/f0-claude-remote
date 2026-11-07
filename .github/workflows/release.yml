@@ -51,3 +51,56 @@ jobs:
           --notes-file notes.md dist/f0_claude_remote.fap
         env:
           GH_TOKEN: ${{ github.token }}
+
+  flipper-apps-catalog:
+    needs: release
+    runs-on: ubuntu-24.04
+    environment: flipper-apps-catalog
+    steps:
+      - run: |
+          set -eu
+          fork=$GITHUB_REPOSITORY_OWNER/flipper-application-catalog
+          prefix=$GITHUB_REPOSITORY_OWNER/f0_claude_remote_
+          name=${GITHUB_REF_NAME#v}
+          manifest=applications/Bluetooth/f0_claude_remote/manifest.yml
+
+          gh repo sync "$fork" --branch main
+          main=$(gh api "repos/$fork/commits/heads/main" --jq .sha)
+
+          # set -e ignores a failed substitution in a for list, which would then walk the error body.
+          refs=$(gh api "repos/$fork/git/matching-refs/heads/$prefix" --jq '.[].ref')
+          for ref in $refs; do
+              gh api --method DELETE "repos/$fork/git/$ref"
+          done
+
+          gh api "repos/$fork/git/refs" --silent -f ref="refs/heads/$prefix$name" -f sha="$main"
+
+          # The fork's token stays with the fork.
+          commit=$(GH_TOKEN=$REPOSITORY_TOKEN gh api "repos/$GITHUB_REPOSITORY/commits/tags/$GITHUB_REF_NAME" --jq .sha)
+
+          cat > manifest.yml <<EOF
+          sourcecode:
+            type: git
+            location:
+              origin: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git
+              commit_sha: $commit
+          description: "@catalog/description.md"
+          changelog: "@catalog/changelog.md"
+          screenshots:
+            - screenshots/main.png
+          EOF
+          content=$(base64 -w 0 manifest.yml)
+
+          # A 404 prints its body as the output, so the exit status alone tells the file is there.
+          if blob=$(gh api "repos/$fork/contents/$manifest?ref=$main" --jq .sha); then
+              gh api --method PUT "repos/$fork/contents/$manifest" --silent \
+                  -f message="Update Claude Remote to $name" -f content="$content" \
+                  -f branch="$prefix$name" -f sha="$blob"
+          else
+              gh api --method PUT "repos/$fork/contents/$manifest" --silent \
+                  -f message="Add Claude Remote $name" -f content="$content" \
+                  -f branch="$prefix$name"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.FLIPPER_APPS_CATALOG_TOKEN }}
+          REPOSITORY_TOKEN: ${{ github.token }}

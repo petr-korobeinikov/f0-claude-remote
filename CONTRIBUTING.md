@@ -140,11 +140,19 @@ git push --atomic origin main develop v0.2
 The tag runs `.github/workflows/release.yml`:
 `ci.yml`'s jobs first,
 then the tag checked against `fap_version`,
-the app built, and the Release published with its notes and `f0_claude_remote.fap`.
+the app built, and the Release published with its notes and `f0_claude_remote.fap`,
+then the `flipper-apps-catalog` job:
+the fork's `main` synced with the Flipper Apps Catalog's,
+the previous version's branch deleted,
+and `<owner>/f0_claude_remote_0.2` cut from `main`
+with `applications/Bluetooth/f0_claude_remote/manifest.yml`,
+its pull request opened by hand.
 
 A published Release is immutable, and its tag name is spent.
 If a run fails before publishing,
 delete the tag, fix the cause, and cut the same name again.
+A failed `flipper-apps-catalog` job is rerun alone,
+and the Release is kept.
 
 A GitHub Release's notes are its own section alone:
 
@@ -152,6 +160,17 @@ A GitHub Release's notes are its own section alone:
 git checkout v0.2
 mise exec -- git-cliff --current --strip all
 ```
+
+The `flipper-apps-catalog` job needs the owner's setup, once:
+
+1. Fork `flipperdevices/flipper-application-catalog` into the owner's account, keeping its name.
+2. Create a fine-grained token with access to the fork alone,
+   Contents and Workflows read and write, and no expiry.
+   A token unused for a year is revoked,
+   and a new one is due before the next release.
+3. In this repository's Settings → Environments, create `flipper-apps-catalog`,
+   limit its deployment branches and tags to one tag rule, `v*`,
+   and give it the secret `FLIPPER_APPS_CATALOG_TOKEN` holding the token.
 
 ## Hooks
 
