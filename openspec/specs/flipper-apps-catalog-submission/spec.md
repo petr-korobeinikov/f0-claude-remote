@@ -8,7 +8,7 @@ a branch in the owner's fork, from which the owner opens the pull request.
 ## Requirements
 
 ### Requirement: A release prepares the Flipper Apps Catalog branch
-Once its Release is published, a release SHALL bring the fork's `main` level with upstream `main`,
+Once its Release is drafted, a release SHALL bring the fork's `main` level with upstream `main`,
 delete every fork branch `<owner>/f0_claude_remote_*`,
 and create `<owner>/f0_claude_remote_<name>` from `main`,
 one commit ahead, adding or updating `applications/Bluetooth/f0_claude_remote/manifest.yml` alone.
