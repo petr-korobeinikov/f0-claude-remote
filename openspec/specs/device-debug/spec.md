@@ -70,10 +70,11 @@ and write nothing outside the project and temp.
 - **WHEN** `ufbt blackmagic` runs with writes denied outside the project and temp, under a throwaway `HOME`
 - **THEN** that `HOME` stays empty
 
-### Requirement: The debugging steps are written down
-`README.md` SHALL state the device's preconditions, the probe's setup and the steps of a session,
+### Requirement: The debugging steps are on the site
+`docs/development/debug-probe.md` and `docs/development/debugging.md` SHALL state the device's preconditions,
+the probe's setup and the steps of a session,
 as commands and menu paths that work as written.
 
-#### Scenario: Following the README
-- **WHEN** a reader starts from a powered-off device and follows the section in order
+#### Scenario: Following the pages
+- **WHEN** a reader starts from a powered-off device and follows `docs/development/debugging.md` in order
 - **THEN** CLion stops on a breakpoint in `app.c`

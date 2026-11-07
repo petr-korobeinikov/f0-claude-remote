@@ -70,9 +70,9 @@ as symptom, cause and fix.
   `mise run launch` failing on a PIN-locked device, and a press with no buzz
 
 ### Requirement: The README leads to the site
-`README.md` SHALL keep every section but Usage, which moves to the Guide,
-and link the site and its Quick start.
+`README.md` SHALL keep every section but Usage and Debugging, which move to the site,
+and link the site, its Quick start, its Debugging and its Contributing.
 
 #### Scenario: README
 - **WHEN** `README.md` is read
-- **THEN** it links the site and its Quick start, and has no `## Usage`
+- **THEN** it links those four pages, and has no `## Usage` or `## Debugging`
