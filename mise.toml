@@ -13,6 +13,7 @@ node = "26.13.0"
 uv = "0.13.7"
 "aqua:gittower/git-flow-next" = "2.0.0"
 "aqua:j178/prek" = "0.5.4"
+"aqua:koalaman/shellcheck" = "0.11.0"
 "npm:@fission-ai/openspec" = "1.14.0"
 "pypi:ufbt" = { version = "0.2.6", python = "3.14.10" }
 
