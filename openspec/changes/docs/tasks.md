@@ -14,15 +14,19 @@ Nothing touches the device.
 
 ## 2. Site
 
-- [ ] 2.1 Write `zensical.toml`, the tasks `docs-build` and `docs-dev`, the screenshot's symlink and Home per `user-guide`,
+- [x] 2.1 Write `zensical.toml`, the tasks `docs-build` and `docs-dev`, the screenshot's symlink and Home per `user-guide`,
   and add both tasks to `CONTRIBUTING.md`'s list.
   Check: `docs-site`'s `Build` holds; a temporary link to `./missing.md` fails as `Dead link` says;
   `Live edit`, `Loopback only` and `No third-party host` hold, with the screenshot on Home.
-- [ ] 2.2 Run `mise run build` and `mise exec -- ufbt lint` after `mise run docs-build`.
+  `repo_url` fetches from `api.github.com`; the owner kept it and widened `No third-party host` inline.
+  Tasks call `zensical` bare, as `build` calls `ufbt`. Rebuild on save and hosts checked by `curl` and the bundle; the browser's view joins 2.3's check.
+- [x] 2.2 Run `mise run build` and `mise exec -- ufbt lint` after `mise run docs-build`.
   Check: `docs-site`'s `Build and lint` and `Worktree` hold; `git status --short --ignored` names only `.site/` and `.cache/` beyond what it named before.
-- [ ] 2.3 Write Quick start and the Guide's five pages per `user-guide`, from the design's sources only.
+  Lint's only warnings name `openspec/` folders, as before this change; `.vscode/compile_commands.json` lists nothing under `docs/`.
+- [x] 2.3 Write Quick start and the Guide's five pages per `user-guide`, from the design's sources only.
   Check: each `user-guide` scenario by reading; `Sidebar` and `Index` on the build;
   in `docs-dev`'s site the owner sees the `modern` theme, the scheme follow the system and the switch, and search offer Pairing.
+  The owner found the site acceptable. `llms.txt` lists the Guide in sidebar order, page by page, not by `guide/*.md`.
 - [ ] 2.4 Move the README's Usage out and link the site per `user-guide`; point `catalog/description.md` at the site per this change's `apps-catalog`.
   Check: `README` and `Content` hold, so do `apps-catalog`'s `No refused construct` and `Hooks pass`;
   `rg -n '#pairing|#keys-on-the-mac'` finds nothing outside `openspec/`.

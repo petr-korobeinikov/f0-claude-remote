@@ -1,0 +1,69 @@
+[project]
+site_name = "F0 Claude Remote"
+site_description = "Your voice runs Claude Code. Your Flipper Zero runs the shortcuts."
+site_url = "https://petr-korobeinikov.github.io/f0-claude-remote/"
+# fbt gathers `*.c*` and `ufbt lint` rejects folders such as `quick-start`; both skip dot-folders.
+site_dir = ".site"
+repo_url = "https://github.com/petr-korobeinikov/f0-claude-remote"
+copyright = """
+<a href="https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/LICENSE">GPL-3.0</a>.
+Copyright (C) 2026 Petr Korobeinikov.
+"""
+
+nav = [
+  { "Home" = "index.md" },
+  { "Quick start" = "quick-start.md" },
+  { "Guide" = [
+    { "Installation" = "guide/installation.md" },
+    { "Pairing" = "guide/pairing.md" },
+    { "Claude Code setup" = "guide/claude-code-setup.md" },
+    { "Using the remote" = "guide/using-the-remote.md" },
+    { "Troubleshooting" = "guide/troubleshooting.md" },
+  ] },
+]
+
+[project.theme]
+variant = "modern"
+language = "en"
+# Off, so a page calls no Google Fonts.
+font = false
+features = [
+  "content.code.copy",
+  "navigation.instant",
+  "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.plugins.llmstxt]
+markdown_description = "Your voice runs Claude Code. Your Flipper Zero runs the shortcuts."
+full_output = "llms-full.txt"
+
+[project.plugins.llmstxt.sections]
+Start = ["index.md", "quick-start.md"]
+Guide = [
+  "guide/installation.md",
+  "guide/pairing.md",
+  "guide/claude-code-setup.md",
+  "guide/using-the-remote.md",
+  "guide/troubleshooting.md",
+]
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+tables = {}
+toc.permalink = true
+pymdownx.highlight = {}
+# Without the Mermaid fence, which the theme renders from a CDN.
+pymdownx.superfences = {}

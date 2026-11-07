@@ -37,6 +37,10 @@ Project tasks are files in `.mise/tasks/`:
 - `debug` opens GDB on the device in the terminal.
 - `check-workflow` runs the jobs of `.github/workflows/ci.yml` through `act`,
   contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
+- `docs-build` builds the site from `docs/` into `.site/`,
+  failing on a link to a missing page.
+- `docs-dev` serves it at `http://127.0.0.1:8000/f0-claude-remote/`,
+  reloading the open page on each saved edit.
 - `release` cuts a release from `develop` and pushes it; see [Release](#release).
 
 To bump the SDK,

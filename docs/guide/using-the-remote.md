@@ -1,0 +1,64 @@
+---
+description: What each button does in Claude Code, how the device confirms it, and each screen.
+---
+
+# Using the remote
+
+## Buttons
+
+The device is a Bluetooth keyboard,
+so a press acts on whatever the Mac has focused,
+meant to be a Claude Code session.
+A tap is released before the device's long press fires, and a hold is kept until it fires:
+
+| Button | Sends | In Claude Code |
+|---|---|---|
+| OK, tap | Enter | Sends the prompt, or picks a menu's option |
+| OK, hold | Ctrl+Q, held until the release | Dictates into the prompt, sending nothing |
+| Up, tap | Up arrow | Recalls the previous message, or moves up a menu |
+| Down, tap | Down arrow | Recalls the next message, or moves down a menu |
+| Right, press | Esc | Stops the turn |
+| Up, hold | Ctrl+X, Ctrl+F | Sets effort to `high` |
+| Down, hold | Ctrl+X, Ctrl+X | Sets effort to `max` |
+| Left, hold | Ctrl+X, Ctrl+L | Runs `/clear` |
+| Back, hold | Nothing | Leaves the app on the device |
+
+A hold acts once, however long the button stays down.
+Esc acts as Right goes down.
+Tapping Left or Back does nothing.
+
+Effort and `/clear` keep the prompt's draft.
+Effort `high` is saved as the default for new sessions, and `max` lasts the session.
+`/clear` during a turn runs when the turn ends.
+A stray `/clear` costs one `/resume`,
+which lists the previous conversation.
+
+## Confirmation
+
+Each action that sends buzzes once,
+and its part of the ring on the screen flashes:
+400 ms, or 100 ms for the arrows.
+Stopping dictation and leaving the app do not buzz.
+The buzz means sent, not applied:
+with another window focused it comes all the same.
+
+## Screens
+
+![The main screen](../assets/main.png)
+
+**The main screen** shows the link above a ring of the buttons.
+An action taken by a press stands in a thin frame,
+and one taken by a hold on a black plate,
+as the legend `HOLD` and `TAP` in the top row says.
+
+**`Listening`**, white on black, shows while OK is held.
+No other button acts then, leaving included.
+
+**`No link`**, with `Reconnecting...` and `Keys are not sent`,
+shows while the Mac holds no link.
+Only holding Back acts:
+every other press does nothing, with no buzz and no flash.
+
+**`Voice stopped: release OK`** shows when the link drops during dictation.
+The recording stops, and the words said before the drop stay in the prompt.
+Dictation starts again only once OK is released and held again with the link up.
