@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: read
 
-  release:
+  draft:
     needs: ci
     runs-on: ubuntu-24.04
     permissions:
@@ -45,15 +45,20 @@ jobs:
           mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'
       - run: mise run build
       - run: mise exec -- git-cliff --current --strip all --output notes.md
-      # Without --verify-tag, gh cuts a missing tag from the default branch.
-      - run: >-
-          gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME"
-          --notes-file notes.md dist/f0_claude_remote.fap
+      - run: |
+          # --draft turns off gh's own refusal of a published Release and its deletion of a draft whose upload failed.
+          if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+              echo "::error::$GITHUB_REF_NAME: a Release exists"
+              exit 1
+          fi
+          # Without --verify-tag, gh cuts a missing tag from the default branch.
+          gh release create "$GITHUB_REF_NAME" --verify-tag --draft --title "$GITHUB_REF_NAME" \
+              --notes-file notes.md dist/f0_claude_remote.fap
         env:
           GH_TOKEN: ${{ github.token }}
 
   flipper-apps-catalog:
-    needs: release
+    needs: draft
     runs-on: ubuntu-24.04
     environment: flipper-apps-catalog
     steps:
@@ -104,3 +109,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.FLIPPER_APPS_CATALOG_TOKEN }}
           REPOSITORY_TOKEN: ${{ github.token }}
+
+  # Last: publishing locks the tag and the assets.
+  publish:
+    needs: flipper-apps-catalog
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
+        env:
+          GH_TOKEN: ${{ github.token }}

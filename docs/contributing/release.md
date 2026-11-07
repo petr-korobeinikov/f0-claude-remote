@@ -36,19 +36,29 @@ git push --atomic origin main develop v0.2
 The tag runs `.github/workflows/release.yml`:
 `ci.yml`'s jobs first,
 then the tag checked against `fap_version`,
-the app built, and the Release published with its notes and `f0_claude_remote.fap`,
+the app built, and the Release drafted with its notes and `f0_claude_remote.fap`,
 then the `flipper-apps-catalog` job:
 the fork's `main` synced with the Flipper Apps Catalog's,
 the previous version's branch deleted,
 and `<owner>/f0_claude_remote_0.2` cut from `main`
 with `applications/Bluetooth/f0_claude_remote/manifest.yml`,
-its pull request opened by hand.
+its pull request opened by hand;
+and last the `publish` job, which publishes the draft.
 
 A published Release is immutable, and its tag name is spent.
-If a run fails before publishing,
-delete the tag, fix the cause, and cut the same name again.
-A failed `flipper-apps-catalog` job is rerun alone,
-and the Release is kept.
+Until `publish`, the Release is a draft and the tag is not locked:
+a failed run is undone, its cause fixed, and the same name cut again.
+The undo is
+
+```shell
+gh release delete v0.2 --yes
+git push --delete origin v0.2
+git tag --delete v0.2
+```
+
+whose first line finds nothing when the run made no draft.
+A job that failed on GitHub's side alone is rerun with those after it,
+a draft left by a failed `draft` deleted first with that first line.
 
 A GitHub Release's notes are its own section alone:
 
