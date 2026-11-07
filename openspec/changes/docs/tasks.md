@@ -5,10 +5,12 @@ Nothing touches the device.
 
 ## 1. Tree
 
-- [ ] 1.1 Add `pypi:zensical` to `mise.toml` per the design, locked as `CONTRIBUTING.md` bumps a tool,
+- [x] 1.1 Add `pypi:zensical` to `mise.toml` per the design, locked as `CONTRIBUTING.md` bumps a tool,
   and add `/.site/` to `.gitignore`.
   Check: the new `uv.lock` lists exactly the proposal's eleven packages at its versions, else stop and audit the difference;
   `mise install --locked` exits 0, `mise exec -- zensical --version` prints `0.1.0`; `mise exec -- prek run --all-files` exits 0.
+  The lock resolved the eleven at the audit's versions.
+  A bare `mise install --locked` fails on the owner's global mise config, unlocked tools; it exits 0 given this project's tools by name.
 
 ## 2. Site
 
