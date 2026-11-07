@@ -81,7 +81,7 @@ jobs:
           gh api "repos/$fork/git/refs" --silent -f ref="refs/heads/$prefix$name" -f sha="$main"
 
           # The fork's token stays with the fork.
-          commit=$(GH_TOKEN=$REPOSITORY_TOKEN gh api "repos/$GITHUB_REPOSITORY/commits/tags/$GITHUB_REF_NAME" --jq .sha)
+          commit=$(GH_TOKEN=$REPOSITORY_TOKEN gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_REF" --jq .sha)
 
           cat > manifest.yml <<EOF
           sourcecode:
