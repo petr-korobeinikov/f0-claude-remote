@@ -27,9 +27,10 @@ Nothing touches the device.
   Check: each `user-guide` scenario by reading; `Sidebar` and `Index` on the build;
   in `docs-dev`'s site the owner sees the `modern` theme, the scheme follow the system and the switch, and search offer Pairing.
   The owner found the site acceptable. `llms.txt` lists the Guide in sidebar order, page by page, not by `guide/*.md`.
-- [ ] 2.4 Move the README's Usage out and link the site per `user-guide`; point `catalog/description.md` at the site per this change's `apps-catalog`.
+- [x] 2.4 Move the README's Usage out and link the site per `user-guide`; point `catalog/description.md` at the site per this change's `apps-catalog`.
   Check: `README` and `Content` hold, so do `apps-catalog`'s `No refused construct` and `Hooks pass`;
   `rg -n '#pairing|#keys-on-the-mac'` finds nothing outside `openspec/`.
+  Beyond the design's files: `src/core/actions.c`'s comment named `README.md` as where the chords are bound; it now names the Guide's page.
 
 ## 3. Workflows
 

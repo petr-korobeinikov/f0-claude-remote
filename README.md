@@ -11,8 +11,8 @@
 **F0 Claude Remote** is a Flipper Zero app
 that acts as a Bluetooth remote for Claude Code.
 
+[Documentation](https://petr-korobeinikov.github.io/f0-claude-remote/) ·
 [Installation](#installation) ·
-[Usage](#usage) ·
 [Debugging](#debugging)
 
 </div>
@@ -59,85 +59,13 @@ mise run launch
 ```
 
 The app then lives under Apps → Bluetooth on the device.
+To pair it and bind the keys, follow the
+[Quick start](https://petr-korobeinikov.github.io/f0-claude-remote/quick-start/).
 
 Tried only on a Mac.
 Nothing in the app itself is specific to macOS,
 so other systems should work as long as they accept a Bluetooth keyboard,
 but `mise run setup` and the CLion debug profile are macOS-only.
-
-## Usage
-
-Pair the device once, and bind the keys.
-
-### Pairing
-
-Once per Mac, with the device on its desktop:
-
-1. Run `mise run launch`.
-   Not over the device's open Apps browser:
-   the pairing dialog waits behind it, and closing the app hangs until the browser ends.
-2. In the Mac's Bluetooth settings, press Connect on `Claude Remote` under Nearby Devices,
-   and accept the request.
-   This takes up to about 30 seconds once the device has advertised for a minute;
-   press it again if it times out.
-3. Press OK in `Verify code` on the device.
-4. Close Keyboard Setup Assistant if it opens: the device has no keys for it.
-
-From then on the Mac connects by itself, within a second of a drop.
-To pair again, forget the device on the Mac first.
-While the app is open it holds the radio, and on leaving it hands the radio back.
-
-### Keys on the Mac
-
-The device is a Bluetooth keyboard,
-so a press acts on whatever the Mac has focused,
-meant to be a Claude Code session:
-
-| Button | Sends | In Claude Code |
-|---|---|---|
-| OK, tap | Enter | Sends the prompt, or picks a menu's option |
-| OK, hold | Ctrl+Q, held until the release | Dictates into the prompt, sending nothing |
-| Up, tap | Up arrow | Recalls the previous message, or moves up a menu |
-| Down, tap | Down arrow | Recalls the next message, or moves down a menu |
-| Right, press | Esc | Stops the turn |
-| Up, hold | Ctrl+X, Ctrl+F | Sets effort to `high` |
-| Down, hold | Ctrl+X, Ctrl+X | Sets effort to `max` |
-| Left, hold | Ctrl+X, Ctrl+L | Runs `/clear` |
-| Back, hold | Nothing | Leaves the app on the device |
-
-Dictation, effort and `/clear` take one block in `keybindings.json`,
-in Claude Code's config directory: `~/.claude`, or what `CLAUDE_CONFIG_DIR` names.
-It goes into the file's `bindings` array, or its lines into a `Chat` block already there,
-and the file reloads by itself:
-
-```json
-{
-  "context": "Chat",
-  "bindings": {
-    "ctrl+q": "voice:pushToTalk",
-    "ctrl+x ctrl+f": "command:effort high",
-    "ctrl+x ctrl+l": "command:clear",
-    "ctrl+x ctrl+x": "command:effort max"
-  }
-}
-```
-
-Tried on Claude Code 2.1.311.
-Its schema has no space in a command's name,
-so an editor validating against `$schema` marks the two effort lines;
-they run all the same.
-
-Ctrl+Q dictates from the Mac's own keyboard too,
-since `voice:pushToTalk` takes one key.
-Dictation also needs `/voice hold`, once,
-and key repeat on, as macOS has it by default:
-Claude Code tells a held key by its repeats,
-and without them a recording ends about 2.2 s into the hold.
-After the release, wait out `Voice: processing…` before tapping OK:
-a tap during it sends the interim text and drops the rest.
-
-A stray `/clear` costs one `/resume`,
-which lists the previous conversation.
 
 ## Debugging
 

@@ -21,6 +21,6 @@ so no buzz means nothing was sent.
 - **Back, hold:** nothing; it leaves the app
 
 Dictation, effort and /clear take one block in Claude Code's keybindings.json.
-The README covers
-[pairing](https://github.com/petr-korobeinikov/f0-claude-remote#pairing)
-and [the keybindings](https://github.com/petr-korobeinikov/f0-claude-remote#keys-on-the-mac).
+The documentation covers
+[pairing](https://petr-korobeinikov.github.io/f0-claude-remote/guide/pairing/)
+and [the keybindings](https://petr-korobeinikov.github.io/f0-claude-remote/guide/claude-code-setup/).

@@ -5,11 +5,11 @@ static void actions_tap(Transport* transport, TransportKey key) {
     transport_release(transport, key);
 }
 
-/* README.md binds the Ctrl+X chords on the Mac to `command:` lines, as typed text would come out
- * garbled under a non-Latin layout, and its Enter would send the draft. It binds Ctrl+Q to
- * `voice:pushToTalk`: a Ctrl letter stays a control code under any layout, where an Option chord
- * arrives as a character no binding matches. Effort max's chord must not end in Ctrl+Q, which
- * starts a recording even as a chord's second key. */
+/* docs/guide/claude-code-setup.md binds the Ctrl+X chords on the Mac to `command:` lines, as typed
+ * text would come out garbled under a non-Latin layout, and its Enter would send the draft. It
+ * binds Ctrl+Q to `voice:pushToTalk`: a Ctrl letter stays a control code under any layout, where
+ * an Option chord arrives as a character no binding matches. Effort max's chord must not end in
+ * Ctrl+Q, which starts a recording even as a chord's second key. */
 void actions_perform(Transport* transport, Action action) {
     switch(action) {
     case ActionEnter:
