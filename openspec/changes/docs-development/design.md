@@ -30,12 +30,12 @@ Where each page's lines come from:
 | File | Its one task |
 |---|---|
 | `docs/development/*.md`, `docs/contributing/*.md` | Each meets its spec's requirement |
-| `docs/.vitepress/config.mts` | Lists the new pages in the sidebar and nav |
+| `zensical.toml` | Lists the new pages in `nav` and in `llmstxt` sections |
 | `CONTRIBUTING.md` | Points at the site |
 | `README.md` | Gives up Debugging |
 | `openspec/config.yaml` | Names `docs/` in Housekeeping |
 
-**Nav:** Quick start, Guide, Development, Contributing.
+**`nav`:** Home, Quick start, Guide, Development, Contributing; `llmstxt` gains sections `Development` and `Contributing`.
 **The README's head:** Documentation, Quick start, Debugging, each a link into the site.
 **`CONTRIBUTING.md`:** one paragraph and a link to Workflow, as `claude-shim`'s;
 GitHub keeps linking the file from issues and pull requests.

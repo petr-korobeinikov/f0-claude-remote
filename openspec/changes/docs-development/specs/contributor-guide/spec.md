@@ -21,4 +21,4 @@ and `docs/contributing/release.md` its `## Release`, as they stand before this c
 
 #### Scenario: Pointer
 - **WHEN** `CONTRIBUTING.md` is read
-- **THEN** it links `https://petr-korobeinikov.github.io/f0-claude-remote/contributing/workflow` and holds no command
+- **THEN** it links `https://petr-korobeinikov.github.io/f0-claude-remote/contributing/workflow/` and holds no command

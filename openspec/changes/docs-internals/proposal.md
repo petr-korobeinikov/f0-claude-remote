@@ -28,7 +28,7 @@ Proposed here, for the owner to strike:
 ## What Changes
 
 - New: `architecture.md`, `bluetooth.md` and `keys-in-claude-code.md` in `docs/internals/`.
-- `config.mts`'s sidebar and nav follow.
+- `zensical.toml`'s `nav` and `llmstxt` sections follow.
 
 ## Capabilities
 

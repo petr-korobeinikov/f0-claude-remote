@@ -2,19 +2,18 @@
 
 ## Purpose
 
-Builds the documentation site from `docs/` with a locked tree,
+Builds the documentation site from `docs/` with Zensical from a locked graph,
 read light or dark and offered to language models as Markdown.
 
 ## ADDED Requirements
 
 ### Requirement: The site builds from the repository
-`mise run docs-build` SHALL install the locked tree without running any package's script,
-build the site from `docs/` into `docs/.vitepress/dist`,
+`mise run docs-build` SHALL build the site from `docs/` into `.site/` with the Zensical `mise.lock` records,
 and fail on a link to a missing page.
 
 #### Scenario: Build
 - **WHEN** `mise run docs-build` runs in a fresh clone
-- **THEN** it exits 0, `docs/.vitepress/dist/index.html` exists, and esbuild's `bin/esbuild` is still its script launcher
+- **THEN** it exits 0, `.site/index.html` exists, and `.site/assets/main.png` is byte for byte `screenshots/main.png`
 
 #### Scenario: Dead link
 - **WHEN** a page links a missing page
@@ -30,7 +29,7 @@ and each page SHALL carry a one-sentence description.
 - **THEN** the sidebar lists those six pages in order, each one existing, and each `description` is one sentence
 
 ### Requirement: The site follows the reader's color scheme
-The site SHALL open light or dark as the reader's system prefers,
+The site SHALL use Zensical's `modern` theme, open light or dark as the reader's system prefers,
 and offer a switch to the other that holds across pages.
 
 #### Scenario: Scheme
@@ -38,13 +37,20 @@ and offer a switch to the other that holds across pages.
 - **THEN** the first renders dark, and the second light
 
 ### Requirement: Language models get the site as Markdown
-The site SHALL serve `llms.txt` at its root, listing every sidebar page by absolute URL with its description,
-`llms-full.txt` with their text, and each page's Markdown at its URL ending `.md`.
+The site SHALL serve `llms.txt` at its root, listing every sidebar page by the absolute URL of its Markdown,
+`llms-full.txt` with their text, and each page's Markdown at its URL followed by `index.md`.
 
 #### Scenario: Index
 - **WHEN** the built `llms.txt` and `llms-full.txt` are read
-- **THEN** the first links each sidebar page as `https://petr-korobeinikov.github.io/f0-claude-remote/<path>.md` before its description,
-  and the second holds each page's text once
+- **THEN** the first links each sidebar page as `https://petr-korobeinikov.github.io/f0-claude-remote/<path>/index.md`,
+  `index.md` as the site's root, and the second holds each page's text once
+
+### Requirement: The site calls no one else
+A built page SHALL load nothing from a host other than its own.
+
+#### Scenario: No third-party host
+- **WHEN** a page of `docs-dev`'s site opens with the browser's network log on
+- **THEN** every request goes to `127.0.0.1:8000`
 
 ### Requirement: The site searches itself
 The site SHALL search its own pages in the browser, with no outside service.
@@ -59,14 +65,14 @@ and show each saved edit without a manual reload.
 
 #### Scenario: Live edit
 - **WHEN** `mise run docs-dev` runs and an open page's file is saved with a change
-- **THEN** the page at `http://127.0.0.1:5173/f0-claude-remote/` shows it without a manual reload
+- **THEN** the page at `http://127.0.0.1:8000/f0-claude-remote/` shows it without a manual reload
 
 #### Scenario: Loopback only
 - **WHEN** `mise run docs-dev` runs
-- **THEN** `lsof -nP -iTCP:5173 -sTCP:LISTEN` lists `127.0.0.1:5173` alone
+- **THEN** `lsof -nP -iTCP:8000 -sTCP:LISTEN` lists `127.0.0.1:8000` alone
 
 ### Requirement: The site stays out of the app
-The site's pages, tree and build SHALL reach neither the app's build nor its lint,
+The site's pages, build and cache SHALL reach neither the app's build nor its lint,
 and the docs tasks SHALL leave the worktree clean.
 
 #### Scenario: Build and lint

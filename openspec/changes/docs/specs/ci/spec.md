@@ -26,7 +26,7 @@ each step a command that runs the same on the Mac.
 
 ### Requirement: A run's inputs are pinned
 A run SHALL fetch actions by full commit, mise at one version,
-tools only as `mise.lock` records them, the site's packages only as `docs/.vitepress/package-lock.json` records them,
+tools only as `mise.lock` records them, the site's Python packages included,
 and the SDK at `FLIPPER_SDK_VERSION`,
 and SHALL restore no cache.
 The runner image, with its `cc`, stays unpinned.
@@ -45,7 +45,7 @@ The runner image, with its `cc`, stays unpinned.
 
 #### Scenario: Locked packages
 - **WHEN** the `docs` job's log is read
-- **THEN** the site's packages install through `npm ci`, which refuses a lock that disagrees with `package.json`
+- **THEN** Zensical installs in its mise setup step through `mise install --locked`, from `.mise/locks/pypi-zensical/`'s `uv.lock`
 
 ### Requirement: Local workflow runs stay contained
 `mise run check-workflow` SHALL run `ci.yml`'s jobs with no Docker socket,

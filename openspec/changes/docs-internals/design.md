@@ -26,7 +26,7 @@ Each page's sources:
 | `docs/internals/architecture.md` | Shows the layers and a press's path |
 | `docs/internals/bluetooth.md` | Explains the app's own profile |
 | `docs/internals/keys-in-claude-code.md` | Explains the chords |
-| `docs/.vitepress/config.mts` | Lists Internals in the sidebar and nav |
+| `zensical.toml` | Lists Internals in `nav` and in a `llmstxt` section |
 
 **A mark** ends the sentence that states a fact: its kind in words, then the link.
 A firmware link pins the tag and the line, as

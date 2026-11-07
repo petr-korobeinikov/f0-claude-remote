@@ -16,17 +16,24 @@ Settled by the owner on 2026-11-06:
 - **Three changes:** `docs` builds the site with Home, Quick start and the Guide;
   `docs-development` moves Debugging and `CONTRIBUTING.md` in; `docs-internals` writes Internals.
 
+Settled by the owner on 2026-11-07:
+
+- **Zensical 0.1.0, theme variant `modern`,** not VitePress as first planned, nor Material for MkDocs:
+  Material is in maintenance until its end of life on 2027-05-05, and Zensical is its successor by the same authors.
+  Installed as `pypi:zensical` on a private Python 3.14.10 from a wheel-only locked graph,
+  as ufbt is here and Zensical is in `staroxi-tales-kmp-app`:
+  no npm tree, no second package manager, nothing in a system Python.
+
 Proposed here, for the owner to strike:
 
-- **VitePress 1.6.4 and `vitepress-plugin-llms` 1.14.0, as in `claude-shim`,**
-  not 2.0.0-alpha.21, an alpha, nor MkDocs, a second Python beside ufbt's:
-  its theme follows the system's scheme with a switch and searches locally.
-- **The npm tree lives in `docs/.vitepress/`:**
-  fbt gathers `*.c*` and `ufbt lint` checks names in every folder but dot-folders,
-  and the tree holds 206 such files and 160 such folders.
-  `application.fam`'s sources drop `docs`, as they drop `test`.
-- **`npm ci` from the audited lock, scripts off:**
-  the tree's only two swap esbuild's launcher for its binary and rebuild fsevents' shipped one with node-gyp.
+- **The site builds into `.site/`,** not Zensical's default `site/`:
+  fbt gathers `*.c*`, which takes the theme's `.css`, and `ufbt lint` rejects folders such as `quick-start`;
+  both skip dot-folders, as they skip the `.cache/` Zensical leaves, which ignores itself.
+  `application.fam`'s sources stay as they are: `docs/` holds no `*.c*` file.
+- **The screenshot reaches the site through a tracked symlink,** `docs/assets/main.png` to `screenshots/main.png`:
+  Zensical copies only what `docs/` holds, and a strict build does not fail an image outside it;
+  `screenshots/main.png` stays where `release`'s catalog manifest names it.
+- **The theme's fonts are off,** so a page calls no Google Fonts; the reader's system fonts serve.
 - **Deploy on push to `develop`,** not on a release as in `claude-shim`:
   a release here costs a catalog pull request, and the site matches the README GitHub shows.
   It may then describe what the latest Release lacks.
@@ -36,29 +43,31 @@ Proposed here, for the owner to strike:
   into `apps/Bluetooth/`, where `mise run launch` puts it.
 - **The README keeps its head, Why, Features, install commands and Debugging;**
   Usage moves to the Guide, and what points at it follows.
-- **After `release`, before `dependabot` and `v0.1`:**
-  the first catalog description links the site, and `dependabot` covers npm.
+- **After `release`, before `v0.1`:** the first catalog description links the site.
 
-Audit of 2026-11-06, Socket dropped by the owner:
+Audit: `staroxi-tales-kmp-app`'s of 2026-11-07, for the same versions on the same Python, Socket dropped as always:
 
-| Package | Version | License | Source | Known vulnerabilities | Transitive |
+| Package | Version | License | Source | Known vulnerabilities | Code at install |
 |---|---|---|---|---|---|
-| `vitepress` | 1.6.4, 2025-08 | MIT | vuejs, 1.97M a week | none | with the plugin, 206 installed, 254 locked; 240 MIT, the rest permissive |
-| `vitepress-plugin-llms` | 1.14.0, 2026-09, SLSA provenance | MIT | one maintainer, 102k a week | none | above |
+| `zensical` | 0.1.0 | MIT | PyPI, `zensical/zensical` | none | none, abi3 wheel |
+| `zensical-ui` | 0.0.41 | MIT | PyPI | none | none, wheel |
+| 9 transitive | | BSD, MIT | PyPI | none | none, wheels |
 | `actions/upload-pages-artifact` | v5.0.0 `fc324d35` | MIT | GitHub | none | `actions/upload-artifact` by commit |
 | `actions/deploy-pages` | v5.0.1 `368f8252` | MIT | GitHub | none | none |
 
-In the tree, OSV and `npm audit` flag vite 5.4.21 eight times,
-each needing its dev server on the network, Windows, WSL or vite behind custom middleware, none of which applies here;
-esbuild 0.21.5 once, on its own server, which vite never starts;
-minimatch 10.2.6 once, for patterns only the plugin and our config supply.
-The build reaches none of them.
+The nine: click 8.5.1, Jinja2 3.1.6, Markdown 3.11.3, MarkupSafe 3.0.4, pathspec 1.1.1, Pygments 2.21.0,
+pymdown-extensions 12.3, PyYAML 6.0.3, tomli 2.5.0.
+Checked there with pip-audit over the full tree, Snyk, and a sandbox with no host mount and the network cut:
+wheels only, and a strict build failed a broken link.
+`llms.txt` comes from Zensical's own `llmstxt` plugin, so it adds no package.
+Task 1.2 checks that this project's lock resolves the same eleven.
 
 ## What Changes
 
-- New: Home, Quick start and five Guide pages under `docs/`, the site's config and npm tree under `docs/.vitepress/`,
+- New: Home, Quick start and five Guide pages under `docs/`, `zensical.toml`,
   tasks `docs-build` and `docs-dev`, `.github/workflows/docs.yml`.
-- `ci.yml`, `application.fam`, `.gitignore`, `README.md`, `catalog/description.md` and `CONTRIBUTING.md` follow.
+- `mise.toml`, `mise.lock` and `.mise/locks/` gain Zensical;
+  `ci.yml`, `.gitignore`, `README.md`, `catalog/description.md` and `CONTRIBUTING.md` follow.
 
 ## Capabilities
 

@@ -21,8 +21,8 @@ Nothing touches the device: the debugging steps move unchanged.
 
 - [ ] 3.1 Write Workflow, Hooks and CI and Release from `CONTRIBUTING.md`, then reduce it to the pointer.
   Check: `contributor-guide`'s `Moved` and `Pointer` hold; `mise run docs-build` exits 0.
-- [ ] 3.2 Add the pages to the sidebar and nav per `docs-site`, and `docs/` to the config's Housekeeping.
-  Check: `Sidebar` holds on the build; `rg -n 'CONTRIBUTING\.md#|#debugging\)'` finds nothing outside `openspec/`.
+- [ ] 3.2 Add the pages to `zensical.toml`'s `nav` and `llmstxt` sections per `docs-site`, and `docs/` to the config's Housekeeping.
+  Check: `Sidebar` and `Index` hold on the build; `rg -n 'CONTRIBUTING\.md#|#debugging\)'` finds nothing outside `openspec/`.
 
 ## 4. Close
 

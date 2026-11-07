@@ -18,8 +18,8 @@ Nothing touches the device.
   Check: `Marks` holds by reading; each firmware link pins `1.5.1` and answers 200 to `curl -fsSI`.
 - [ ] 2.3 Write Keys in Claude Code from the three control specs and the archived `effort-actions` and `remote-actions`.
   Check: `Marks` holds by reading; each documentation link answers 200 to `curl -fsSI`.
-- [ ] 2.4 Add Internals to the sidebar and nav per `docs-site`.
-  Check: `Sidebar` holds on the build.
+- [ ] 2.4 Add Internals to `zensical.toml`'s `nav`, between Development and Contributing, and as a `llmstxt` section, per `docs-site`.
+  Check: `Sidebar` and `Index` hold on the build.
 
 ## 3. Close
 

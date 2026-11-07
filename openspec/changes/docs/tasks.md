@@ -8,21 +8,22 @@ Nothing touches the device.
 - [ ] 1.1 Check that `openspec/specs/apps-catalog/spec.md` exists, as `release`'s archive leaves it,
   and that its `The description says what the app is` differs from this change's delta only in the links;
   else stop and raise it. Check: `diff` of the two requirement blocks shows only those lines.
-- [ ] 1.2 Copy `package.json` and `package-lock.json` from `f0-claude-remote-working-files/docs-audit/` into `docs/.vitepress/`,
-  write `.npmrc`, add `"!docs"` to `application.fam`'s sources and the ignores to `.gitignore`, per the design.
-  Check: the lock's `shasum -a 256` starts `cfda831f9b36`; `mise exec -- prek run --all-files` exits 0.
+- [ ] 1.2 Add `pypi:zensical` to `mise.toml` per the design, run `mise lock` and `mise install --locked`,
+  and add `/.site/` to `.gitignore`.
+  Check: the new `uv.lock` lists exactly the proposal's eleven packages at its versions, else stop and audit the difference;
+  `mise exec -- zensical --version` prints `0.1.0`; `mise exec -- prek run --all-files` exits 0.
 
 ## 2. Site
 
-- [ ] 2.1 Write `config.mts`, the tasks `docs-build` and `docs-dev`, and Home per `user-guide`,
+- [ ] 2.1 Write `zensical.toml`, the tasks `docs-build` and `docs-dev`, the screenshot's symlink and Home per `user-guide`,
   and add both tasks to `CONTRIBUTING.md`'s list.
   Check: `docs-site`'s `Build` holds; a temporary link to `./missing.md` fails as `Dead link` says;
-  `Live edit` and `Loopback only` hold, with the screenshot on Home.
+  `Live edit`, `Loopback only` and `No third-party host` hold, with the screenshot on Home.
 - [ ] 2.2 Run `mise run build` and `mise exec -- ufbt lint` after `mise run docs-build`.
-  Check: `docs-site`'s `Build and lint` holds; `git status --short --untracked-files=all docs/.vitepress` lists only this change's four files.
+  Check: `docs-site`'s `Build and lint` and `Worktree` hold; `git status --short --ignored` names only `.site/` and `.cache/` beyond what it named before.
 - [ ] 2.3 Write Quick start and the Guide's five pages per `user-guide`, from the design's sources only.
   Check: each `user-guide` scenario by reading; `Sidebar` and `Index` on the build;
-  in `docs-dev`'s site the owner sees the scheme follow the system and the switch, and search offer Pairing.
+  in `docs-dev`'s site the owner sees the `modern` theme, the scheme follow the system and the switch, and search offer Pairing.
 - [ ] 2.4 Move the README's Usage out and link the site per `user-guide`; point `catalog/description.md` at the site per this change's `apps-catalog`.
   Check: `README` and `Content` hold, so do `apps-catalog`'s `No refused construct` and `Hooks pass`;
   `rg -n '#pairing|#keys-on-the-mac'` finds nothing outside `openspec/`.

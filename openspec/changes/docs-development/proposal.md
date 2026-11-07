@@ -34,7 +34,7 @@ Proposed here, for the owner to strike:
 - New: `toolchain.md`, `build-and-run.md`, `host-tests.md`, `clion.md`, `debug-probe.md` and `debugging.md` in `docs/development/`;
   `workflow.md`, `hooks-and-ci.md` and `release.md` in `docs/contributing/`.
 - `CONTRIBUTING.md` becomes a pointer, the README loses Debugging,
-  and `config.mts` and `openspec/config.yaml` follow.
+  and `zensical.toml` and `openspec/config.yaml` follow.
 
 ## Capabilities
 

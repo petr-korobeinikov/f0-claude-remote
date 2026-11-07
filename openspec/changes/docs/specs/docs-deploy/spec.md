@@ -19,4 +19,4 @@ and only the publishing job SHALL hold Pages' permissions.
 
 #### Scenario: Published
 - **WHEN** a push to `develop` has run `docs.yml`
-- **THEN** the site, its `llms.txt` and `guide/pairing.md` answer 200 with that commit's text
+- **THEN** the site, its `llms.txt` and `guide/pairing/index.md` answer 200 with that commit's text
