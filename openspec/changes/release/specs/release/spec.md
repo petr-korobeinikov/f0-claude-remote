@@ -2,38 +2,42 @@
 
 ## Purpose
 
-Cuts a release: the commit that names its version and regenerates its changelogs,
-and the GitHub Release its tag publishes.
+Cuts a release and publishes its GitHub Release.
 
 ## ADDED Requirements
 
-### Requirement: The task makes the release commit
-`mise run release <name>` on `release/<name>` SHALL write `fap_version="<name>"` into `application.fam`,
-regenerate `CHANGELOG.md` and `catalog/changelog.md`, build the app,
-and commit those three files alone as `chore: release <name>`.
+### Requirement: The task cuts the release
+`mise run release <name>` on `develop` SHALL start `release/<name>`,
+write `fap_version="<name>"` into `application.fam`, regenerate `CHANGELOG.md` and `catalog/changelog.md`, build the app,
+commit those three files alone as `chore: release <name>`,
+finish the branch, which tags `v<name>`, return to `develop`,
+and push `main`, `develop` and the tag to `origin` atomically.
 
 #### Scenario: First release
-- **WHEN** `mise run release 0.1` runs on `release/0.1`, no tag existing
-- **THEN** HEAD's subject is `chore: release 0.1`, `git show --name-only HEAD` lists those three files,
-  and `application.fam` holds one `fap_version="0.1",` line, right after `fap_category`
+- **WHEN** `mise run release 0.1` runs on `develop`, no tag existing
+- **THEN** its output reads `Target: 7, API: 88.2` before the commit's hook lines, ending on `develop`;
+  `release/0.1` is gone; `main` and `develop` hold one `chore: release 0.1` commit, changing those three files alone;
+  `application.fam` holds one `fap_version="0.1",` line, right after `fap_category`;
+  and `git ls-remote origin` shows `main`, `develop` and `v0.1` where `git rev-parse` does
 
 #### Scenario: Next release
-- **WHEN** `mise run release 0.2` runs on `release/0.2`, after `v0.1`
+- **WHEN** `mise run release 0.2` runs after `v0.1`
 - **THEN** `application.fam` holds one `fap_version` line, reading `0.2`
 
-#### Scenario: Built first
-- **WHEN** the task's output is read
-- **THEN** `Target: 7, API: 88.2` precedes the commit's hook lines
+### Requirement: A wrong or failed release changes nothing
+The task SHALL exit non-zero, branches, tags and worktree untouched,
+on a name not `MAJOR.MINOR` or not the latest tag's `MINOR` plus one (`0.1` with no tag),
+a branch not `develop` or an unclean worktree, each refused in a `release:` line,
+and when a step before the release commit fails.
+After that commit it SHALL undo nothing: git-flow-next resumes the finish, and the push is rerun.
 
-### Requirement: The task refuses a wrong release
-The task SHALL exit non-zero, with a `release:` line naming the cause and no file or commit changed,
-when the name is not `MAJOR.MINOR`, is not the latest tag's `MINOR` plus one (`0.1` with no tag),
-is not the branch's `release/<name>`, or the worktree is not clean.
+#### Scenario: Nothing changed
+- **WHEN** it runs as `0.1.1`, as `0.3` after `v0.1`, on `main`, with a file edited, or over a commit that breaks the build
+- **THEN** each run exits non-zero, and HEAD, `git show-ref --heads --tags` and `git status --short` print as before
 
-#### Scenario: Refusals
-- **WHEN** it runs as `mise run release 0.1.1`, as `mise run release 0.3` after `v0.1`,
-  on `develop`, or with a file edited
-- **THEN** each run exits non-zero, and HEAD and `git status --short` stay as they were
+#### Scenario: Push fails
+- **WHEN** the push of `mise run release 0.2` fails
+- **THEN** the run exits non-zero on `develop`, `v0.2` kept, and the push rerun by hand lands all three refs
 
 ### Requirement: A version tag publishes a Release
 A pushed tag `v<name>` SHALL run `ci.yml`'s jobs and, once they pass and the tag's commit holds `fap_version="<name>"`,
@@ -49,7 +53,7 @@ with the notes `git-cliff --current --strip all` prints there and `f0_claude_rem
 - **THEN** it exits non-zero, naming the tag, before anything is built
 
 #### Scenario: On GitHub
-- **WHEN** `v0.1` is pushed after `0.1`'s finish
+- **WHEN** `mise run release 0.1` pushes `v0.1`
 - **THEN** every job of its `release` run succeeds,
   and `gh release view v0.1` shows a published, immutable Release with those notes and one asset, `f0_claude_remote.fap`
 

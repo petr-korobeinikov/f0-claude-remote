@@ -2,8 +2,7 @@
 
 ## Purpose
 
-Gives the Flipper Apps Catalog its text from this repository,
-and prepares each release's submission branch in the owner's fork.
+Gives the Flipper Apps Catalog its text from this repository.
 
 ## ADDED Requirements
 
@@ -47,33 +46,3 @@ or `- Internal changes only` when it has none.
 #### Scenario: Rerun on a release commit
 - **WHEN** `mise exec -- git-cliff --config catalog/cliff.toml --tag v<name> --output catalog/changelog.md` reruns on a release commit
 - **THEN** `git diff --exit-code catalog/changelog.md` exits 0
-
-### Requirement: A release prepares the catalog branch
-Once its Release is published, a release SHALL bring the fork's `main` level with upstream `main`,
-delete every fork branch `<owner>/f0_claude_remote_*`,
-and create `<owner>/f0_claude_remote_<name>` from `main`,
-one commit ahead, adding or updating `applications/Bluetooth/f0_claude_remote/manifest.yml` alone.
-
-#### Scenario: First submission
-- **WHEN** `v0.1`'s run ends
-- **THEN** the fork's `main` equals upstream's, its one `f0_claude_remote_` branch is `_0.1`,
-  and that branch's commit reads `Add Claude Remote 0.1`
-
-#### Scenario: Manifest
-- **WHEN** that manifest is read
-- **THEN** it holds `sourcecode` with `type: git`, `origin` `https://github.com/petr-korobeinikov/f0-claude-remote.git`
-  and `commit_sha` equal to `git rev-parse v0.1^{commit}`,
-  `description: "@catalog/description.md"`, `changelog: "@catalog/changelog.md"`,
-  the screenshot `screenshots/main.png`, and no field `application.fam` supplies
-
-#### Scenario: Next submission
-- **WHEN** `v0.2`'s run ends, `0.1` merged upstream
-- **THEN** `_0.1` is gone, and `_0.2`'s commit reads `Update Claude Remote to 0.2`
-
-### Requirement: The fork's token stays with the catalog job
-The fork's token SHALL be a secret of an environment `catalog` that only `v*` tags may deploy to,
-and no other job SHALL reference either.
-
-#### Scenario: Environment
-- **WHEN** `release.yml` and the environment's deployment policies are read
-- **THEN** one job names `environment: catalog` and `CATALOG_TOKEN`, and the one policy is the tag pattern `v*`
