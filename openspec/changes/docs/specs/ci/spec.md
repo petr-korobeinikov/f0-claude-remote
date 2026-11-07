@@ -2,19 +2,35 @@
 
 ## MODIFIED Requirements
 
+### Requirement: Pushes and pull requests are checked
+`ci.yml` SHALL run on each push to `develop` or `main`, on each pull request
+and when `release.yml` calls it, and on nothing else.
+
+#### Scenario: Triggers
+- **WHEN** the workflow's `on` is read
+- **THEN** it holds `push`, limited to `develop` and `main`, `pull_request` and `workflow_call`
+
+#### Scenario: On GitHub
+- **WHEN** a commit whose jobs pass under `check-workflow` is pushed to `develop`
+- **THEN** its `ci` run ends with `test`, `build`, `hygiene` and `docs` succeeded
+
 ### Requirement: The jobs run the local checks
 Four parallel jobs on Linux SHALL run the host tests;
 the SDK's deploy, the build and lint;
-the hooks and the workflow linter over the whole tree;
+the hooks and the workflow linter over the whole tree, both running shellcheck;
 and the site's build,
 each step a command that runs the same on the Mac.
 
 #### Scenario: Commands
-- **WHEN** the jobs' `run` steps are read
+- **WHEN** the jobs' steps are read
 - **THEN** `test` runs `mise run test`;
   `build` deploys the SDK at `FLIPPER_SDK_VERSION` with `ufbt update --branch`, then runs `mise run build` and `mise exec -- ufbt lint`;
-  `hygiene` runs `mise exec -- prek run --all-files` and `mise exec -- actionlint -shellcheck= -pyflakes=`;
+  `hygiene` installs `aqua:koalaman/shellcheck`, then runs `mise exec -- prek run --all-files` and `mise exec -- actionlint -pyflakes=`;
   `docs` runs `mise run docs-build`
+
+#### Scenario: Shell checked
+- **WHEN** a `.sh` file, an executable task under `.mise/tasks/` or a workflow's `run` step holds `echo $1`
+- **THEN** the `shellcheck` hook fails on either file, and actionlint on the step, each naming SC2086
 
 #### Scenario: Pinned SDK
 - **WHEN** the `build` job's log is read

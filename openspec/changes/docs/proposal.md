@@ -4,10 +4,10 @@
 
 The docs are two files read on GitHub:
 `README.md`, 235 lines of install, pairing, keys and debugging,
-and `CONTRIBUTING.md`, 157 lines for contributors.
+and `CONTRIBUTING.md`, 220 lines for contributors.
 No page can be searched or fetched by a language model,
-and what twelve archived changes learned sits where no user looks.
-`release` links the README's `#pairing` and `#keys-on-the-mac` from the Apps Catalog,
+and what fifteen archived changes learned sits where no user looks.
+`catalog/description.md` links the README's `#pairing` and `#keys-on-the-mac` for the Flipper Apps Catalog,
 so their new pages must exist before `v0.1` is submitted.
 
 Settled by the owner on 2026-11-06:
@@ -32,18 +32,18 @@ Proposed here, for the owner to strike:
   `application.fam`'s sources stay as they are: `docs/` holds no `*.c*` file.
 - **The screenshot reaches the site through a tracked symlink,** `docs/assets/main.png` to `screenshots/main.png`:
   Zensical copies only what `docs/` holds, and a strict build does not fail an image outside it;
-  `screenshots/main.png` stays where `release`'s catalog manifest names it.
+  `screenshots/main.png` stays where `flipper-apps-catalog-submission`'s manifest names it.
 - **The theme's fonts are off,** so a page calls no Google Fonts; the reader's system fonts serve.
 - **Deploy on push to `develop`,** not on a release as in `claude-shim`:
-  a release here costs a catalog pull request, and the site matches the README GitHub shows.
+  a release here costs a Flipper Apps Catalog pull request, and the site matches the README GitHub shows.
   It may then describe what the latest Release lacks.
 - **A `docs` job in `ci.yml`,** so a dead link or a bump fails its own push; like the others, with no prek hook.
-- **Installation offers the Release's `.fap` and the source;** the catalog route waits for the listing.
+- **Installation offers the Release's `.fap` and the source;** the Flipper Apps Catalog route waits for the listing.
   The `.fap` goes through qFlipper's File manager, the one upload Flipper documents,
   into `apps/Bluetooth/`, where `mise run launch` puts it.
 - **The README keeps its head, Why, Features, install commands and Debugging;**
   Usage moves to the Guide, and what points at it follows.
-- **After `release`, before `v0.1`:** the first catalog description links the site.
+- **Before `v0.1`:** the first Flipper Apps Catalog description links the site.
 
 Audit: `staroxi-tales-kmp-app`'s of 2026-11-07, for the same versions on the same Python, Socket dropped as always:
 
@@ -60,7 +60,7 @@ pymdown-extensions 12.3, PyYAML 6.0.3, tomli 2.5.0.
 Checked there with pip-audit over the full tree, Snyk, and a sandbox with no host mount and the network cut:
 wheels only, and a strict build failed a broken link.
 `llms.txt` comes from Zensical's own `llmstxt` plugin, so it adds no package.
-Task 1.2 checks that this project's lock resolves the same eleven.
+Task 1.1 checks that this project's lock resolves the same eleven.
 
 ## What Changes
 

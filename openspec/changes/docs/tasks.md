@@ -5,13 +5,10 @@ Nothing touches the device.
 
 ## 1. Tree
 
-- [ ] 1.1 Check that `openspec/specs/apps-catalog/spec.md` exists, as `release`'s archive leaves it,
-  and that its `The description says what the app is` differs from this change's delta only in the links;
-  else stop and raise it. Check: `diff` of the two requirement blocks shows only those lines.
-- [ ] 1.2 Add `pypi:zensical` to `mise.toml` per the design, run `mise lock` and `mise install --locked`,
+- [ ] 1.1 Add `pypi:zensical` to `mise.toml` per the design, locked as `CONTRIBUTING.md` bumps a tool,
   and add `/.site/` to `.gitignore`.
   Check: the new `uv.lock` lists exactly the proposal's eleven packages at its versions, else stop and audit the difference;
-  `mise exec -- zensical --version` prints `0.1.0`; `mise exec -- prek run --all-files` exits 0.
+  `mise install --locked` exits 0, `mise exec -- zensical --version` prints `0.1.0`; `mise exec -- prek run --all-files` exits 0.
 
 ## 2. Site
 
@@ -31,7 +28,7 @@ Nothing touches the device.
 ## 3. Workflows
 
 - [ ] 3.1 Add the `docs` job to `ci.yml` and write `docs.yml` per the design; add the job to `CONTRIBUTING.md`'s `## CI`.
-  Check: `mise exec -- actionlint -shellcheck= -pyflakes=` exits 0; `Workflow`, `Commands` and `Pinned references` hold by reading;
+  Check: `mise exec -- actionlint -pyflakes=` exits 0; `Workflow`, `Commands` and `Pinned references` hold by reading;
   `mise run check-workflow` meets `Local outcome`.
 
 ## 4. The owner's setup
@@ -42,7 +39,7 @@ Nothing touches the device.
 
 ## 5. Close
 
-- [ ] 5.1 Check: `mise exec -- prek run --all-files`, `mise exec -- actionlint -shellcheck= -pyflakes=`, `mise run test`
+- [ ] 5.1 Check: `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=`, `mise run test`
   and `mise exec -- openspec validate docs --strict` exit 0; `git status --short` lists only the design's files and this change;
-  `wc -w` holds the budgets. `Published` awaits the owner's push of `develop`,
-  after which the `github-pages` environment's branch policies must list `develop`.
+  `wc -w` holds the budgets, three overruns accepted on 2026-11-07.
+  `Published` and `On GitHub` await the push of `develop`, which `github-pages` must admit.

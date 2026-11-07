@@ -10,11 +10,11 @@ The plan rests on:
 | Fact | Where |
 |---|---|
 | `variant` defaults to `modern`; `font = false` drops Google Fonts; the palette's `media` follows the system, and the switch is kept in `localStorage` | Zensical 0.1.0's `config.py`, its built pages |
-| `build --strict` exits 1 on a link to a missing page, naming file, line and column; a missing image passes | a build in this session |
-| `llmstxt` needs `site_url`, writes `llms.txt` from `sections` and `full_output`, and a `<path>/index.md` per listed page, absolute under `site_url` | `config.py`; a build in this session |
-| `serve -a 127.0.0.1:<port>` listens there alone, serves under `site_url`'s path and reloads over a WebSocket | a run in this session |
-| A build leaves `.cache/`, which holds its own `.gitignore` | a build in this session; `staroxi-tales-kmp-app` |
-| A symlink under `docs/` is copied as the file it points to | a build in this session |
+| `build --strict` exits 1 on a link to a missing page, naming file, line and column; a missing image passes | a build on 2026-11-07 |
+| `llmstxt` needs `site_url`, writes `llms.txt` from `sections` and `full_output`, and a `<path>/index.md` per listed page, absolute under `site_url` | `config.py`; a build on 2026-11-07 |
+| `serve -a 127.0.0.1:<port>` listens there alone, serves under `site_url`'s path and reloads over a WebSocket | a run on 2026-11-07 |
+| A build leaves `.cache/`, which holds its own `.gitignore` | a build on 2026-11-07; `staroxi-tales-kmp-app` |
+| A symlink under `docs/` is copied as the file it points to | a build on 2026-11-07 |
 | A deploy needs `pages: write`, `id-token: write` and GitHub Actions as Pages' source | GitHub docs |
 | `upload-pages-artifact` v5.0.0 pins `upload-artifact` by commit and drops dot-files inside its path | its `action.yml` |
 | The `github-pages` environment admits the default branch | `claude-shim`'s lists `develop` |
@@ -28,7 +28,7 @@ Rows 1, 3, 4, 5, 6 and 9 come from sources or a run: a bump can break them.
 
 **Goals:** the specs'.
 
-**Non-Goals:** Development, Contributing and Internals; the catalog route; screenshots beyond `main.png`;
+**Non-Goals:** Development, Contributing and Internals; the Flipper Apps Catalog route; screenshots beyond `main.png`;
 a custom theme or colors; math, Mermaid and anything else the theme fetches from a CDN.
 
 ## Decisions
@@ -92,7 +92,7 @@ job `deploy` takes `environment: github-pages` and runs `deploy-pages@368f825286
 - **An explicit `nav`:** without it the folder's names order the pages, not simple to deep.
 - **`docs.yml` builds for itself,** not from `ci.yml`, which uploads nothing; a push builds twice.
 - **No `configure-pages`:** `site_url` is fixed, and Zensical is not among the generators it configures.
-- **The screenshot by symlink,** not a copy: one file serves the README, the catalog and the site.
+- **The screenshot by symlink,** not a copy: one file serves the README, the Flipper Apps Catalog and the site.
 - **Default theme colors,** not Flipper's `#ff8200`: on white it reads 2.5:1, under WCAG AA's 4.5:1 for links.
 - **Port 8000,** Zensical's default, bound to 127.0.0.1 by hand: the default `localhost` may also take `::1`.
 
@@ -101,8 +101,7 @@ Content is read against `user-guide`, the rest checked in a browser, the deploy 
 
 ## Risks / Trade-offs
 
-- `apps-catalog` is not in `openspec/specs/` when this applies → the first task checks it, else stops: `release` comes first.
-- The lock resolves other versions than the audit's → task 1.2 stops, and the difference is audited before going on.
+- The lock resolves other versions than the audit's → task 1.1 stops, and the difference is audited before going on.
 - Zensical 0.x changes its configuration between minors → pinned in full; a bump is its own change, rebuilt strictly.
 - The strict build passes a missing image → `docs-site`'s `Build` compares the built screenshot with its source.
 - A checkout without symlinks, as Git for Windows by default → out of scope: the toolchain is the Mac's and Linux's.
