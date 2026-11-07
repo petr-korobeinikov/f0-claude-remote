@@ -23,6 +23,7 @@
 ### 🐛 Bug Fixes
 
 - *(view)* Center the voice screen (`1e72ec2`)
+- *(release)* Look up the tag's commit by its full ref (`76ab21a`)
 
 ### 🚜 Refactor
 

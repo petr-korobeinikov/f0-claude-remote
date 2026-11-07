@@ -16,3 +16,4 @@ v0.1:
 - Keep the backlight on
 - Center the voice screen
 - Draw the recess around the buttons
+- Look up the tag's commit by its full ref
