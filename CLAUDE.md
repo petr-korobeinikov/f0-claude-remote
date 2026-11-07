@@ -13,14 +13,18 @@ Repo-specific conventions
   Before `/clear`, everything the session wrote is committed:
   no session hands uncommitted work to the next.
 - **A plan is a commit of its own, and so is a replan:**
-  on `develop` while the plan waits, on `feature/<id>` once its implementation has started.
+  on `develop` until the change has its branch, on `feature/<id>` from then on.
   A change is planned one of two ways:
-  - **Ahead:** `/opsx:propose "<id>"` on `develop`,
+  - **Ahead,** when it is planned now and implemented later:
+    `/opsx:propose "<id>"` on `develop`, one commit per plan,
     only for a change that depends on nothing still unlanded;
     it may wait there, unimplemented, until its turn.
-  - **Just in time:** `git flow feature start <id>` first,
+  - **Just in time,** when it is implemented right after it is planned,
+    and always for a change that builds on one still in flight,
+    once that one has landed on `develop`:
+    `git flow feature start <id>` first,
     then `/opsx:propose "<id>"` on that branch,
-    for a change that builds on one still in flight.
+    and `/clear` before the implementation.
 - **A planning session writes the plan alone,**
   no code, not even in a scratch clone.
   A fact it cannot settle from the docs or the code is probed only with the owner's yes,
@@ -31,11 +35,14 @@ Repo-specific conventions
   `/opsx:sync` runs before `/opsx:archive`,
   so `openspec/specs/` doesn't go stale,
   and `/opsx:archive` ↔ `git flow feature finish <id>`.
-- **A decision the plan did not make stops the implementation:**
+- **A decision the plan did not make stops the implementation, and so does a change wider than its specs:**
   its code is committed on `feature/<id>` as `wip(<id>): …`,
-  the decision is replanned in a fresh session,
+  a fresh session replans it —
+  the decision made, or the change narrowed and the rest made a change of its own,
+  planned by the rules above —
   and another fresh session resumes the implementation.
-  Before the finish, `wip` commits are split again by meaning.
+  Before the finish, `wip` commits are split again by meaning,
+  and code the narrowed change no longer covers leaves the branch.
 - **Every commit but a `wip` one waits for the owner's review of its diff in CLion;**
   a passing hook or a request to finish does not replace it.
 - **Memory keeps decisions and preferences, never the state of work:**

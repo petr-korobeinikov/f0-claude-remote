@@ -18,9 +18,10 @@ context: |
   `type(scope): description`. The scope names the area of code or the
   tracker's task id - `feat(catalog): …`, `fix(PROJ-32): …` - and is left
   out only where nothing narrower than the whole project fits, as in
-  `chore: release 0.1`. The subject is in the imperative mood,
-  lowercase after the prefix, without a closing period, 72 characters at
-  most and 50 where it can be.
+  `chore: release 0.1`. A `wip` commit, which parks a stopped
+  implementation, takes the change id as its scope: `wip(<change-id>): …`.
+  The subject is in the imperative mood, lowercase after the prefix,
+  without a closing period, 72 characters at most and 50 where it can be.
 
   A commit carries no body: the message is the subject line alone, and
   trailers, if any, follow it after a blank line. No line credits an AI
@@ -170,12 +171,12 @@ context: |
   Every finding the audit leaves open is planned as a change of its own, and
   none is dropped at planning: one the rules above weigh as poor payback is
   planned all the same, saying so in its Why for the owner to strike. The
-  plans are proposed ahead, one commit each, and apply in this order: first
-  what ships or misleads - the release build's content, a test that passes
-  without proving anything, a statement that is false - then names, then
-  structure and build, then reuse, then the coverage still missing, and
-  last whatever moves a pixel. Each plan's first task recounts its tables
-  on the tree its predecessors leave.
+  changes land in this order: first what ships or misleads - the release
+  build's content, a test that passes without proving anything, a statement
+  that is false - then names, then structure and build, then reuse, then the
+  coverage still missing, and last whatever moves a pixel. Each builds on
+  the tree its predecessors leave, so each is planned just in time, once the
+  one before it has landed, and counts its tables on that tree.
 
   A rename is proved to be one: every suite's count and the test total
   stand as before, version control shows each moved file as a rename, and a
@@ -217,11 +218,11 @@ operations:
       - "Red-green-refactor is the rule for the business logic; a UI component that only renders the state it is handed is not held to it, and a UI component that needs a test of its own is one holding logic that belongs in the core."
       - "Tests for the core run on the host; needing a simulator or a device to check core behavior is a signal the logic sits in the wrong layer."
       - "Never mark a task complete while a test is failing or skipped; report the failure instead."
-      - "If implementation reveals the change is wider than its specs described, stop and split it rather than growing the specs to match."
+      - "If implementation reveals the change is wider than its specs described, stop and raise it for a split rather than growing the specs to match."
       - "If implementation forces a decision the proposal did not make, stop and raise it; do not settle it silently in code."
       - "Under a finished task, write only what the diff cannot show: numbers measured, deviations from the plan, decisions surfaced and who made them."
   archive:
     guidance:
       - "Run `/opsx:sync` before archiving so `openspec/specs/` does not go stale."
-      - "After archiving, close the branch with `git flow feature finish <change-id>`."
+      - "After archiving, commit what is left, split any `wip` commits again by meaning, and close the branch with `git flow feature finish <change-id>` only once the owner has reviewed every commit."
       - "Say what the change left undecided - decisions surfaced while implementing and deliberately deferred - one line each, so the next proposal can pick them up."
