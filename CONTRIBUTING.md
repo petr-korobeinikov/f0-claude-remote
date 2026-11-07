@@ -37,6 +37,7 @@ Project tasks are files in `.mise/tasks/`:
 - `debug` opens GDB on the device in the terminal.
 - `check-workflow` runs the jobs of `.github/workflows/ci.yml` through `act`,
   contained, against colima's Docker socket unless `DOCKER_HOST` says otherwise.
+- `release` cuts a release from `develop` and pushes it; see [Release](#release).
 
 To bump the SDK,
 edit `FLIPPER_SDK_VERSION` in `mise.toml` and run `mise run setup`.
@@ -94,18 +95,43 @@ mise exec -- npx skills add petr-korobeinikov/skills --skill '*' --copy --agent 
 
 ## Release
 
-A release's own commit, the last on its `release/` branch,
-sets `fap_version` in `application.fam` and regenerates `CHANGELOG.md`.
-git-cliff runs from the repository root: below it, it keeps only that folder's commits.
+One command on a clean `develop` cuts a release and pushes it:
 
 ```shell
-git flow release start 0.2
-# fap_version="0.2" in application.fam
-mise exec -- git-cliff --tag v0.2 --output CHANGELOG.md
-git add application.fam CHANGELOG.md
-git commit -m "chore: release 0.2"
-git flow release finish 0.2
+mise run release 0.2
 ```
+
+It starts `release/0.2`,
+sets `fap_version` in `application.fam`,
+regenerates `CHANGELOG.md` and `catalog/changelog.md` with git-cliff,
+builds the app, and commits the three files as `chore: release 0.2`.
+Then it finishes the branch, which tags `v0.2`,
+returns to `develop`,
+and pushes `main`, `develop` and `v0.2` to `origin` in one atomic push.
+
+It refuses a name other than the latest tag's `MINOR` plus one,
+a branch other than `develop`, and a worktree that is not clean.
+A failure before the release commit undoes the run:
+the files restored, `develop` checked out, `release/0.2` deleted,
+so the fixed run is the same command.
+After the commit nothing is undone.
+A finish stopped on a conflict resumes once it is resolved,
+and a failed push is rerun as is:
+
+```shell
+mise exec -- git flow finish --continue
+git checkout develop
+git push --atomic origin main develop v0.2
+```
+
+The tag runs `.github/workflows/release.yml`:
+`ci.yml`'s jobs first,
+then the tag checked against `fap_version`,
+the app built, and the Release published with its notes and `f0_claude_remote.fap`.
+
+A published Release is immutable, and its tag name is spent.
+If a run fails before publishing,
+delete the tag, fix the cause, and cut the same name again.
 
 A GitHub Release's notes are its own section alone:
 
@@ -146,6 +172,7 @@ and that path carries the version.
 
 `.github/workflows/ci.yml` runs on every push to `develop` and `main`
 and on every pull request,
+and `release.yml` calls it before it publishes,
 in three parallel jobs on `ubuntu-24.04`.
 Each step is a command to run before pushing:
 
@@ -158,4 +185,4 @@ Each step is a command to run before pushing:
 On the Mac, `mise run setup` stands in for `build`'s first step.
 Actions are pinned by commit, mise by version and the tools by `mise.lock`,
 and no cache is restored;
-the runner image, with its `cc`, stays unpinned.
+the runner image, with its `cc` and `gh`, stays unpinned.

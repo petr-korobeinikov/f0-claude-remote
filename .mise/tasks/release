@@ -1,0 +1,78 @@
+#!/bin/sh
+#MISE description="Cut a release from develop and push it to origin"
+set -eu
+
+refuse() {
+    echo "release: $1" >&2
+    exit 1
+}
+
+[ $# -eq 1 ] || refuse "usage: mise run release <MAJOR.MINOR>"
+name=$1
+
+# A published tag is final, so every check runs before a branch or a file is touched.
+echo "$name" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || refuse "$name is not MAJOR.MINOR"
+
+latest=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n 1)
+if [ -z "$latest" ]; then
+    next=0.1
+else
+    latest=${latest#v}
+    next="${latest%%.*}.$((${latest#*.} + 1))"
+fi
+[ "$name" = "$next" ] || refuse "the next release is $next, not $name"
+
+branch=$(git symbolic-ref --short -q HEAD || true)
+[ "$branch" = develop ] || refuse "run it on develop, not ${branch:-a detached HEAD}"
+
+# An untracked source would be built into the release, since application.fam globs *.c*.
+[ -z "$(git status --porcelain)" ] || refuse "the worktree is not clean"
+
+dir=$(mktemp -d)
+trap 'rm -rf "$dir"' EXIT
+# Without these, an interrupted run would skip the EXIT trap and leave release/<name> behind.
+trap 'exit 1' HUP INT TERM
+
+# The tree was clean, so the hard reset drops only this run's writes.
+undo() {
+    status=$?
+    rm -rf "$dir"
+    git reset -q --hard
+    git clean -fq -- CHANGELOG.md catalog/changelog.md
+    git checkout -q develop
+    git branch -q -D "release/$name"
+    exit "$status"
+}
+
+git flow release start "$name"
+trap undo EXIT
+
+# Below fap_category, where ufbt's template keeps it.
+awk -v line="    fap_version=\"$name\"," '
+    /^[ \t]*fap_version=/ { next }
+    { print }
+    /^[ \t]*fap_category=/ { print line }
+' application.fam > "$dir/application.fam"
+[ "$(grep -c '^    fap_version=' "$dir/application.fam")" -eq 1 ] \
+    || refuse "application.fam has no single fap_category line to put fap_version under"
+# cat keeps the file's mode, which mv would take from the temporary file.
+cat "$dir/application.fam" > application.fam
+
+git-cliff --tag "v$name" --output CHANGELOG.md
+git-cliff --config catalog/cliff.toml --tag "v$name" --output catalog/changelog.md
+
+# The build is the one check the release commit can break.
+ufbt
+
+git add application.fam CHANGELOG.md catalog/changelog.md
+git commit -m "chore: release $name"
+
+# From here on nothing is undone: `git flow finish --continue` resumes the finish, and the
+# push below is rerun by hand.
+trap 'rm -rf "$dir"' EXIT
+
+git flow finish -m "$name"
+# git-flow-next 2.0.0 ends the finish on main.
+git checkout -q develop
+
+git push --atomic origin main develop "v$name"

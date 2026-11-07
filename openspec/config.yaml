@@ -30,12 +30,14 @@ context: |
   A release is named by a counter, `MAJOR.MINOR`: the first is `0.1`, and
   each one after it raises `MINOR` by one. A `.fap` stores only these two
   numbers, and the Apps Catalog takes an update only under a higher version,
-  so a third part would go unseen. Its tag is `v` followed by the name -
-  `v0.1`, put by `git flow release finish 0.1`, whose `tagPrefix` is `v` in
-  `.gitflow`. `fap_version` in `application.fam` carries the name, never the
-  `v`, and is set on the `release/` branch, before its finish, by the commit
-  `chore: release 0.1`, the branch's last. That commit also regenerates
-  `CHANGELOG.md` with git-cliff, and nothing else writes that file.
+  so a third part would go unseen. `mise run release 0.1`, run on a clean
+  `develop`, cuts the release whole: it starts `release/0.1`, makes the
+  commit `chore: release 0.1`, the branch's last, finishes the branch and
+  pushes `main`, `develop` and the tag atomically. The tag is `v` followed by
+  the name - `v0.1`, put by the finish, as `tagPrefix` is `v` in `.gitflow`.
+  `fap_version` in `application.fam` carries the name, never the `v`, and is
+  set by that commit, which also regenerates `CHANGELOG.md` and
+  `catalog/changelog.md` with git-cliff; nothing else writes either file.
 
   Generated, never hand-edited: `openspec/` apart from this file, and the
   `opsx` / `openspec-*` glue under `.claude/`; regenerate them with
