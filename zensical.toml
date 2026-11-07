@@ -43,6 +43,7 @@ nav = [
 [project.theme]
 variant = "modern"
 language = "en"
+logo = "assets/logo.svg"
 # Off, so a page calls no Google Fonts.
 font = false
 features = [
