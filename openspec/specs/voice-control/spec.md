@@ -8,7 +8,7 @@ whatever the Mac's keyboard layout, and leaves the sending to Enter.
 ## Requirements
 
 ### Requirement: Holding OK dictates
-With the link up and the key bound as `README.md` says,
+With the link up and the key bound as `docs/guide/claude-code-setup.md` says,
 holding OK SHALL record in the Claude Code session focused on the Mac
 until OK is released,
 and SHALL send no message.
@@ -64,10 +64,10 @@ holding OK SHALL leave the prompt's text in place and start no recording.
 - **THEN** the prompt holds the same text, and no message is sent
 
 ### Requirement: Voice needs one line of configuration
-`README.md`'s block for `keybindings.json` SHALL hold the line for voice,
-and `README.md` SHALL name what else dictation needs on the Mac:
+The block for `keybindings.json` in `docs/guide/claude-code-setup.md` SHALL hold the line for voice,
+and that page SHALL name what else dictation needs on the Mac:
 dictation on in hold mode, and key repeat on.
 
 #### Scenario: The block
-- **WHEN** the block from `README.md` is the only addition to `keybindings.json`
+- **WHEN** the block from `docs/guide/claude-code-setup.md` is the only addition to `keybindings.json`
 - **THEN** `Held` holds

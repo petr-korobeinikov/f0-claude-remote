@@ -8,7 +8,7 @@ whatever the Mac's keyboard layout and whatever the prompt holds.
 ## Requirements
 
 ### Requirement: Holding Up or Down sets the level
-With the link up and the keys bound as `README.md` says,
+With the link up and the keys bound as `docs/guide/claude-code-setup.md` says,
 holding Up SHALL set effort high and holding Down effort max
 in the Claude Code session focused on the Mac.
 
@@ -62,9 +62,9 @@ Without the binding, holding Up or Down SHALL leave the prompt's text in place a
 - **THEN** the prompt holds the same text, no message is sent and the level does not change
 
 ### Requirement: The Mac needs one block of configuration
-`README.md` SHALL give the block for `keybindings.json`,
+`docs/guide/claude-code-setup.md` SHALL give the block for `keybindings.json`,
 and the Mac SHALL need nothing else installed or configured for effort.
 
 #### Scenario: The block
-- **WHEN** the block from `README.md` is the only addition to `keybindings.json`
+- **WHEN** the block from `docs/guide/claude-code-setup.md` is the only addition to `keybindings.json`
 - **THEN** `Effort high` and `Effort max` hold

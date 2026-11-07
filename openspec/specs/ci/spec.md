@@ -18,19 +18,21 @@ and when `release.yml` calls it, and on nothing else.
 
 #### Scenario: On GitHub
 - **WHEN** a commit whose jobs pass under `check-workflow` is pushed to `develop`
-- **THEN** its `ci` run ends with `test`, `build` and `hygiene` succeeded
+- **THEN** its `ci` run ends with `test`, `build`, `hygiene` and `docs` succeeded
 
 ### Requirement: The jobs run the local checks
-Three parallel jobs on Linux SHALL run the host tests;
+Four parallel jobs on Linux SHALL run the host tests;
 the SDK's deploy, the build and lint;
-and the hooks and the workflow linter over the whole tree, both running shellcheck,
+the hooks and the workflow linter over the whole tree, both running shellcheck;
+and the site's build,
 each step a command that runs the same on the Mac.
 
 #### Scenario: Commands
 - **WHEN** the jobs' steps are read
 - **THEN** `test` runs `mise run test`;
   `build` deploys the SDK at `FLIPPER_SDK_VERSION` with `ufbt update --branch`, then runs `mise run build` and `mise exec -- ufbt lint`;
-  `hygiene` installs `aqua:koalaman/shellcheck`, then runs `mise exec -- prek run --all-files` and `mise exec -- actionlint -pyflakes=`
+  `hygiene` installs `aqua:koalaman/shellcheck`, then runs `mise exec -- prek run --all-files` and `mise exec -- actionlint -pyflakes=`;
+  `docs` runs `mise run docs-build`
 
 #### Scenario: Shell checked
 - **WHEN** a `.sh` file, an executable task under `.mise/tasks/` or a workflow's `run` step holds `echo $1`
@@ -46,7 +48,8 @@ each step a command that runs the same on the Mac.
 
 ### Requirement: A run's inputs are pinned
 A run SHALL fetch actions by full commit, mise at one version,
-tools only as `mise.lock` records them and the SDK at `FLIPPER_SDK_VERSION`,
+tools only as `mise.lock` records them, the site's Python packages included,
+and the SDK at `FLIPPER_SDK_VERSION`,
 and SHALL restore no cache.
 The runner image, with its `cc`, stays unpinned.
 
@@ -61,6 +64,10 @@ The runner image, with its `cc`, stays unpinned.
 #### Scenario: Locked tools
 - **WHEN** a job's log is read
 - **THEN** tools install in its mise setup step alone, through `mise install --locked`
+
+#### Scenario: Locked packages
+- **WHEN** the `docs` job's log is read
+- **THEN** Zensical installs in its mise setup step through `mise install --locked`, from `.mise/locks/pypi-zensical/`'s `uv.lock`
 
 ### Requirement: The token is read-only
 A run SHALL hold no write permission and leave no credential in its checkout.
@@ -83,4 +90,4 @@ no host network, no GitHub token and nothing written to the real `HOME`.
 
 #### Scenario: Local outcome
 - **WHEN** it runs with a Docker daemon up
-- **THEN** `test`, `build` and `hygiene` each end `Job succeeded`
+- **THEN** `test`, `build`, `hygiene` and `docs` each end `Job succeeded`

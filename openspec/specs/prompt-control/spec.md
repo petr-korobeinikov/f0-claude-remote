@@ -41,7 +41,7 @@ with no modifier.
 - **THEN** the keys are, in order, that key down and up, and nothing else
 
 ### Requirement: Holding Left runs /clear
-With the link up and the keys bound as `README.md` says,
+With the link up and the keys bound as `docs/guide/claude-code-setup.md` says,
 holding Left SHALL run `/clear` in the Claude Code session focused on the Mac.
 
 #### Scenario: Clear
@@ -78,8 +78,8 @@ holding Left SHALL leave the prompt's text and the conversation in place.
 - **THEN** the prompt holds the same text, no message is sent and the conversation stays
 
 ### Requirement: Clear needs one line of configuration
-`README.md`'s block for `keybindings.json` SHALL hold the line for `/clear`.
+The block for `keybindings.json` in `docs/guide/claude-code-setup.md` SHALL hold the line for `/clear`.
 
 #### Scenario: The block
-- **WHEN** the block from `README.md` is the only addition to `keybindings.json`
+- **WHEN** the block from `docs/guide/claude-code-setup.md` is the only addition to `keybindings.json`
 - **THEN** `Clear` holds

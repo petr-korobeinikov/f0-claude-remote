@@ -21,12 +21,12 @@ paragraphs, `#` and `##` headers, bold, italic, `- ` lists and inline links.
 
 ### Requirement: The description says what the app is
 `catalog/description.md` SHALL say what the app does and what each button sends,
-and link the README for pairing and keybindings.
+and link the site for pairing and keybindings.
 
 #### Scenario: Content
 - **WHEN** the file is read
 - **THEN** it names OK, Up, Down, Left, Right and Back,
-  and links the README's `#pairing` and `#keys-on-the-mac` on GitHub
+  and links the site's `guide/pairing` and `guide/claude-code-setup` pages
 
 ### Requirement: The catalog changelog is generated
 `catalog/changelog.md` SHALL be git-cliff's output from `catalog/cliff.toml`, written whole by the release commit:
