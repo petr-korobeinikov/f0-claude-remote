@@ -46,11 +46,12 @@ The site SHALL serve `llms.txt` at its root, listing every sidebar page by the a
   `index.md` as the site's root, and the second holds each page's text once
 
 ### Requirement: The site calls no one else
-A built page SHALL load nothing from a host other than its own.
+A built page SHALL load nothing from a host other than its own,
+but the repository's facts the header shows from `api.github.com`.
 
 #### Scenario: No third-party host
 - **WHEN** a page of `docs-dev`'s site opens with the browser's network log on
-- **THEN** every request goes to `127.0.0.1:8000`
+- **THEN** every request goes to `127.0.0.1:8000`, but those to `api.github.com/repos/petr-korobeinikov/f0-claude-remote`
 
 ### Requirement: The site searches itself
 The site SHALL search its own pages in the browser, with no outside service.

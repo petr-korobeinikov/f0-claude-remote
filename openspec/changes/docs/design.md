@@ -13,6 +13,7 @@ The plan rests on:
 | `build --strict` exits 1 on a link to a missing page, naming file, line and column; a missing image passes | a build on 2026-11-07 |
 | `llmstxt` needs `site_url`, writes `llms.txt` from `sections` and `full_output`, and a `<path>/index.md` per listed page, absolute under `site_url` | `config.py`; a build on 2026-11-07 |
 | `serve -a 127.0.0.1:<port>` listens there alone, serves under `site_url`'s path and reloads over a WebSocket | a run on 2026-11-07 |
+| `repo_url` makes the header fetch stars, forks and the latest release from `api.github.com`; no setting turns it off | zensical-ui 0.0.41's bundle |
 | A build leaves `.cache/`, which holds its own `.gitignore` | a build on 2026-11-07; `staroxi-tales-kmp-app` |
 | A symlink under `docs/` is copied as the file it points to | a build on 2026-11-07 |
 | A deploy needs `pages: write`, `id-token: write` and GitHub Actions as Pages' source | GitHub docs |
@@ -22,7 +23,7 @@ The plan rests on:
 | `mise run launch` installs to `/ext/apps/Bluetooth/` | `app-build`'s Launch scenario, `fbt_extapps.py:210` |
 | qFlipper's File manager uploads a file to the SD card | docs.flipper.net, qFlipper |
 
-Rows 1, 3, 4, 5, 6 and 9 come from sources or a run: a bump can break them.
+Rows 1, 3 to 7 and 11 come from sources or a run: a bump can break them.
 
 ## Goals / Non-Goals
 
