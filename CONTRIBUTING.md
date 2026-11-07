@@ -209,7 +209,7 @@ and that path carries the version.
 `.github/workflows/ci.yml` runs on every push to `develop` and `main`
 and on every pull request,
 and `release.yml` calls it before it publishes,
-in three parallel jobs on `ubuntu-24.04`.
+in four parallel jobs on `ubuntu-24.04`.
 Each step is a command to run before pushing:
 
 | Job | Steps |
@@ -217,8 +217,12 @@ Each step is a command to run before pushing:
 | `test` | `mise run test` |
 | `build` | `mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'`, `mise run build`, `mise exec -- ufbt lint` |
 | `hygiene` | `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=` |
+| `docs` | `mise run docs-build` |
 
 On the Mac, `mise run setup` stands in for `build`'s first step.
 Actions are pinned by commit, mise by version and the tools by `mise.lock`,
 and no cache is restored;
 the runner image, with its `cc` and `gh`, stays unpinned.
+
+`.github/workflows/docs.yml` builds the site on every push to `develop`
+and publishes it to GitHub Pages.

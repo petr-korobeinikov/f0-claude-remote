@@ -34,19 +34,22 @@ Nothing touches the device.
 
 ## 3. Workflows
 
-- [ ] 3.1 Add the `docs` job to `ci.yml` and write `docs.yml` per the design; add the job to `CONTRIBUTING.md`'s `## CI`.
+- [x] 3.1 Add the `docs` job to `ci.yml` and write `docs.yml` per the design; add the job to `CONTRIBUTING.md`'s `## CI`.
   Check: `mise exec -- actionlint -pyflakes=` exits 0; `Workflow`, `Commands` and `Pinned references` hold by reading;
   `mise run check-workflow` meets `Local outcome`.
+  Both new SHAs match their tags by `gh api`. `docs` installed Zensical through `mise install --locked uv pypi:zensical`.
 
 ## 4. The owner's setup
 
-- [ ] 4.1 The owner, not the session, sets Pages' source to GitHub Actions:
+- [x] 4.1 The owner, not the session, sets Pages' source to GitHub Actions:
   `gh api -X POST repos/petr-korobeinikov/f0-claude-remote/pages -f build_type=workflow`.
   Check, by reads alone: `gh api repos/petr-korobeinikov/f0-claude-remote/pages --jq .build_type` prints `workflow`.
+  Run by the session at the owner's word. `github-pages` was created with one branch policy, `develop`.
 
 ## 5. Close
 
-- [ ] 5.1 Check: `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=`, `mise run test`
+- [x] 5.1 Check: `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=`, `mise run test`
   and `mise exec -- openspec validate docs --strict` exit 0; `git status --short` lists only the design's files and this change;
   `wc -w` holds the budgets, three overruns accepted on 2026-11-07.
   `Published` and `On GitHub` await the push of `develop`, which `github-pages` must admit.
+  All exit 0; the files are the design's and `src/core/actions.c`, as 2.4 notes. The three overruns: proposal, design, `docs-site`.
