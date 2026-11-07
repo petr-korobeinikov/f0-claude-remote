@@ -29,13 +29,32 @@ Hold BOOT, press RESET, release BOOT, and the board appears as `ESP32_S2`, here 
 
 ```shell
 dir=$(mktemp -d)
-curl -fsS -o "$dir/fw.tgz" \
+
+curl -fsS \
+  -o "$dir/fw.tgz" \
   https://update.flipperzero.one/builds/blackmagic-firmware/0.1.1/blackmagic-firmware-s2-full-0.1.1.tgz
-echo "2e63724446004bd359d895d6843bb8f95cc374e27e3e37569b2e035930f845aa  $dir/fw.tgz" | shasum -a 256 -c
-tar -xzf "$dir/fw.tgz" -C "$dir" ./bootloader.bin ./blackmagic.bin ./partition-table.bin
-.ufbt/toolchain/arm64-darwin/bin/python3 -I -m esptool --chip esp32s2 --port /dev/cu.usbmodem01 \
-  --before no_reset --after no_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 4MB \
-  0x1000 "$dir/bootloader.bin" 0x10000 "$dir/blackmagic.bin" 0x8000 "$dir/partition-table.bin"
+
+echo "2e63724446004bd359d895d6843bb8f95cc374e27e3e37569b2e035930f845aa  $dir/fw.tgz" \
+  | shasum -a 256 -c
+
+tar -xzf "$dir/fw.tgz" \
+  -C "$dir" \
+  ./bootloader.bin \
+  ./blackmagic.bin \
+  ./partition-table.bin
+
+.ufbt/toolchain/arm64-darwin/bin/python3 -I -m esptool \
+  --chip esp32s2 \
+  --port /dev/cu.usbmodem01 \
+  --before no_reset \
+  --after no_reset \
+  write_flash \
+  --flash_mode dio \
+  --flash_freq 80m \
+  --flash_size 4MB \
+  0x1000 "$dir/bootloader.bin" \
+  0x10000 "$dir/blackmagic.bin" \
+  0x8000 "$dir/partition-table.bin"
 ```
 
 Press RESET when it finishes.
