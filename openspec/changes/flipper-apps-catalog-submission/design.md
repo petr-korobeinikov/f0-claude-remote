@@ -33,12 +33,12 @@ a catalog link in the README or on the site, until the listing exists.
 
 | File | Its one task |
 |---|---|
-| `.github/workflows/release.yml` | Gains the `catalog` job, which prepares the fork's branch |
+| `.github/workflows/release.yml` | Gains the `flipper-apps-catalog` job, which prepares the fork's branch |
 | `CONTRIBUTING.md` | `## Release` documents the job, its setup included |
 
-**The `catalog` job:** `needs: release`, `runs-on: ubuntu-24.04`, `environment: catalog`,
+**The `flipper-apps-catalog` job:** `needs: release`, `runs-on: ubuntu-24.04`, `environment: flipper-apps-catalog`,
 no `permissions` of its own and no checkout;
-one step under `set -eu`, `GH_TOKEN` from `secrets.CATALOG_TOKEN`, `github.token` in a second variable.
+one step under `set -eu`, `GH_TOKEN` from `secrets.FLIPPER_APPS_CATALOG_TOKEN`, `github.token` in a second variable.
 With `fork=$GITHUB_REPOSITORY_OWNER/flipper-application-catalog`,
 `prefix=$GITHUB_REPOSITORY_OWNER/f0_claude_remote_` and `name=${GITHUB_REF_NAME#v}`, it:
 
@@ -56,20 +56,20 @@ With `fork=$GITHUB_REPOSITORY_OWNER/flipper-application-catalog`,
   `set -e` ignores a failed substitution in a `for` list, which then walks the error's body.
 - **Step 6 judged by the read's exit status,** not by empty output: a 404 prints its body.
 
-**`CONTRIBUTING.md`:** in `## Release`, the sentence on what the tag runs ends on the `catalog` job:
+**`CONTRIBUTING.md`:** in `## Release`, the sentence on what the tag runs ends on the `flipper-apps-catalog` job:
 the fork's `main` synced, the old branch deleted, `<owner>/f0_claude_remote_0.2` cut from `main` with the manifest,
 its pull request opened by hand.
-The paragraph on a failed run gains: a failed `catalog` job is rerun alone, the Release kept.
-After the notes block, `The catalog step needs the owner's setup, once:` and the three steps below,
+The paragraph on a failed run gains: a failed `flipper-apps-catalog` job is rerun alone, the Release kept.
+After the notes block, ``The `flipper-apps-catalog` job needs the owner's setup, once:`` and the three steps below,
 with the token's yearly revocation.
 
 **The owner's setup,** once, before this change applies:
 
 1. Fork `flipperdevices/flipper-application-catalog` into the owner's account, keeping its name.
 2. Create a fine-grained token with access to the fork alone, Contents and Workflows read and write, and no expiry.
-3. In this repository's Settings → Environments, create `catalog`,
+3. In this repository's Settings → Environments, create `flipper-apps-catalog`,
    limit its deployment branches and tags to one tag rule, `v*`,
-   and give it the secret `CATALOG_TOKEN` holding the token.
+   and give it the secret `FLIPPER_APPS_CATALOG_TOKEN` holding the token.
 
 **Test seam.**
 The step first runs at `v0.1`: it needs GitHub's environment, and no task writes to the fork.

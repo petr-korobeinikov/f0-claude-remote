@@ -7,7 +7,7 @@ a branch in the owner's fork, from which the owner opens the pull request.
 
 ## ADDED Requirements
 
-### Requirement: A release prepares the catalog branch
+### Requirement: A release prepares the Flipper Apps Catalog branch
 Once its Release is published, a release SHALL bring the fork's `main` level with upstream `main`,
 delete every fork branch `<owner>/f0_claude_remote_*`,
 and create `<owner>/f0_claude_remote_<name>` from `main`,
@@ -29,12 +29,13 @@ one commit ahead, adding or updating `applications/Bluetooth/f0_claude_remote/ma
 - **WHEN** `v0.2`'s run ends, `0.1` merged upstream
 - **THEN** `_0.1` is gone, and `_0.2`'s commit reads `Update Claude Remote to 0.2`
 
-### Requirement: The fork's token stays with the catalog job
-The fork's token SHALL be a secret of an environment `catalog` that only `v*` tags may deploy to,
+### Requirement: The fork's token stays with one job
+The fork's token SHALL be the secret `FLIPPER_APPS_CATALOG_TOKEN`
+of an environment `flipper-apps-catalog` that only `v*` tags may deploy to,
 not of the repository, and no other job SHALL reference either.
 
 #### Scenario: Environment
 - **WHEN** `release.yml`, the environment and the repository's secrets are read
-- **THEN** one job names `environment: catalog` and `CATALOG_TOKEN`;
-  the environment's one policy is the tag pattern `v*`, and its one secret `CATALOG_TOKEN`;
+- **THEN** one job names `environment: flipper-apps-catalog` and `FLIPPER_APPS_CATALOG_TOKEN`;
+  the environment's one policy is the tag pattern `v*`, and its one secret `FLIPPER_APPS_CATALOG_TOKEN`;
   the repository holds no secret of that name
