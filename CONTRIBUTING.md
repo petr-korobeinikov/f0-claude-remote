@@ -119,11 +119,15 @@ mise exec -- git-cliff --current --strip all
 [prek](https://prek.j178.dev/) holds the gate before a commit is allowed.
 It is pinned in `mise.toml` and configured in `prek.toml`,
 which gives each rule's reason.
-Every hook is one of prek's own Rust implementations,
+Every hook is one of prek's own Rust implementations
+or a binary pinned in `mise.toml`,
 so this repository clones no hook repositories
 and pins no third-party revs.
 
-File-hygiene hooks run at `pre-commit`.
+File-hygiene hooks run at `pre-commit`,
+and so does [shellcheck](https://www.shellcheck.net) over every shell script,
+the tasks under `.mise/tasks/` included.
+actionlint hands it the workflows' `run` steps.
 Three more read the message at `commit-msg`:
 a subject of at most 72 characters,
 in Conventional Commits,
@@ -149,7 +153,7 @@ Each step is a command to run before pushing:
 |---|---|
 | `test` | `mise run test` |
 | `build` | `mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'`, `mise run build`, `mise exec -- ufbt lint` |
-| `hygiene` | `mise exec -- prek run --all-files`, `mise exec -- actionlint -shellcheck= -pyflakes=` |
+| `hygiene` | `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=` |
 
 On the Mac, `mise run setup` stands in for `build`'s first step.
 Actions are pinned by commit, mise by version and the tools by `mise.lock`,

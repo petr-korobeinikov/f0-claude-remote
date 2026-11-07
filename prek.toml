@@ -1,9 +1,9 @@
 # prek — https://prek.j178.dev/ — installed from mise (aqua:j178/prek) and wired into
 # .git/hooks by `prek install`.
 #
-# Every file-hygiene hook here is one of prek's own Rust implementations (repo = "builtin"),
-# so this repository clones no hook repositories and pins no third-party revs: there is
-# nothing to `prek update` and nothing extra to audit.
+# Every hook here is one of prek's own Rust implementations (repo = "builtin") or a binary
+# mise.toml pins (repo = "local"), so this repository clones no hook repositories and pins no
+# third-party revs: there is nothing to `prek update`.
 
 # The message gates at the end read the commit message, so `prek install` wires commit-msg
 # too. Every other hook stays at pre-commit: left on every stage, they would run on the
@@ -34,6 +34,14 @@ hooks = [
   { id = "check-yaml" },
   { id = "check-json" },
   { id = "check-xml" },
+]
+
+# Every shell script, the extensionless tasks under .mise/tasks/ included: prek tells them by
+# their shebang. A workflow's run steps are actionlint's to hand to shellcheck.
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "shellcheck", name = "shellcheck", entry = "mise exec -- shellcheck", language = "system", types = ["shell"] },
 ]
 
 # A subject over 72 characters wraps in `git log --oneline`. The pattern reads the subject

@@ -41,7 +41,9 @@ jobs:
           install_args: uv pypi:ufbt
       # setup's deploy without its macOS-only sandbox, the pin read inside mise: an empty --branch
       # deploys the release channel.
-      - run: mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'
+      - run: |
+          # shellcheck disable=SC2016
+          mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'
       - run: mise run build
       - run: mise exec -- ufbt lint
 
@@ -55,7 +57,7 @@ jobs:
         with:
           version: 2026.11.2
           cache: false
-          install_args: actionlint aqua:j178/prek
+          install_args: actionlint aqua:j178/prek aqua:koalaman/shellcheck
       - run: mise exec -- prek run --all-files
-      # The runner's shellcheck is unpinned, and act's image has none.
-      - run: mise exec -- actionlint -shellcheck= -pyflakes=
+      # mise puts its pinned shellcheck first on PATH; pyflakes stays off, as no step runs Python.
+      - run: mise exec -- actionlint -pyflakes=
