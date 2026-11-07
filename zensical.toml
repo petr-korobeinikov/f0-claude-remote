@@ -20,6 +20,19 @@ nav = [
     { "Using the remote" = "guide/using-the-remote.md" },
     { "Troubleshooting" = "guide/troubleshooting.md" },
   ] },
+  { "Development" = [
+    { "Toolchain" = "development/toolchain.md" },
+    { "Build and run" = "development/build-and-run.md" },
+    { "Host tests" = "development/host-tests.md" },
+    { "CLion" = "development/clion.md" },
+    { "Debug probe" = "development/debug-probe.md" },
+    { "Debugging" = "development/debugging.md" },
+  ] },
+  { "Contributing" = [
+    { "Workflow" = "contributing/workflow.md" },
+    { "Hooks and CI" = "contributing/hooks-and-ci.md" },
+    { "Release" = "contributing/release.md" },
+  ] },
 ]
 
 [project.theme]
@@ -57,6 +70,19 @@ Guide = [
   "guide/claude-code-setup.md",
   "guide/using-the-remote.md",
   "guide/troubleshooting.md",
+]
+Development = [
+  "development/toolchain.md",
+  "development/build-and-run.md",
+  "development/host-tests.md",
+  "development/clion.md",
+  "development/debug-probe.md",
+  "development/debugging.md",
+]
+Contributing = [
+  "contributing/workflow.md",
+  "contributing/hooks-and-ci.md",
+  "contributing/release.md",
 ]
 
 [project.markdown_extensions]

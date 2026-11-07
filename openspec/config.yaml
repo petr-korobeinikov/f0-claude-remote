@@ -155,8 +155,8 @@ context: |
 
   ## Housekeeping
 
-  A housekeeping change reads `README.md` against the tree as a task of its
-  own: a statement there outlives the change that made it true, and the next
+  A housekeeping change reads `README.md` and `docs/` against the tree as a
+  task of its own: a statement there outlives the change that made it true, and the next
   reader, often an agent, acts on it. It does not read every comment again:
   the comment rule under Engineering holds each one to its why whenever the
   code under it changes.
