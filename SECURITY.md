@@ -30,7 +30,7 @@ and whoever holds the device holds those keys.
 The WiFi Devboard's GDB port and HTTP API have no authentication,
 and its API hands out the password of the network it joined.
 Take the board off the device after a session,
-as the [README](README.md#before-a-session) says.
+as [Debug probe](https://petr-korobeinikov.github.io/f0-claude-remote/development/debug-probe/#risks) says.
 
 ## Dependency Security Posture
 
