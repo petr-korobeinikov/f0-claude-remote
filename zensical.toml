@@ -28,6 +28,11 @@ nav = [
     { "Debug probe" = "development/debug-probe.md" },
     { "Debugging" = "development/debugging.md" },
   ] },
+  { "Internals" = [
+    { "Architecture" = "internals/architecture.md" },
+    { "Bluetooth" = "internals/bluetooth.md" },
+    { "Keys in Claude Code" = "internals/keys-in-claude-code.md" },
+  ] },
   { "Contributing" = [
     { "Workflow" = "contributing/workflow.md" },
     { "Hooks and CI" = "contributing/hooks-and-ci.md" },
@@ -78,6 +83,11 @@ Development = [
   "development/clion.md",
   "development/debug-probe.md",
   "development/debugging.md",
+]
+Internals = [
+  "internals/architecture.md",
+  "internals/bluetooth.md",
+  "internals/keys-in-claude-code.md",
 ]
 Contributing = [
   "contributing/workflow.md",
