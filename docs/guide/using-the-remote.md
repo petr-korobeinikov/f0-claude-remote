@@ -63,6 +63,13 @@ every other press does nothing, with no buzz and no flash.
 The recording stops, and the words said before the drop stay in the prompt.
 Dictation starts again only once OK is released and held again with the link up.
 
+**`Reconnect stopped`**, with `Any button: retry`, shows after a minute with no link,
+counted from the launch or the drop, with the backlight off.
+The Mac can no longer reach the device.
+Any button but Back lights the screen and returns to `No link` for another minute,
+sending nothing, with no buzz and no flash.
+Back leaves the app at once, on its press.
+
 ## The dolphin
 
 The work feeds the device's dolphin, by firmware 1.5.1:

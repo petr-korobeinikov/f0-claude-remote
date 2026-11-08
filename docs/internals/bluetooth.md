@@ -71,6 +71,21 @@ so the app holds no reconnect code.
 Disconnected from its settings, the Mac reconnected by itself in 866 ms
 (seen: [ble-transport, task 4.3](https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/openspec/changes/archive/2026-11-04-ble-transport/tasks.md)).
 
+The app stops advertising 60 s after its opening, a drop or the press that starts over,
+and that press starts it again
+(documented: [`furi_hal_bt.h`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/targets/furi_hal_include/furi_hal_bt.h#L132-L138)).
+The 60 s are the firmware's own fast phase, every 80–100 ms, before every 1–2.5 s
+(firmware 1.5.1's sources: [`gap.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/targets/f7/ble_glue/gap.c#L430-L435)),
+where a connect took 28 s and once timed out at 31 s
+(seen: [ble-transport, task 4.5](https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/openspec/changes/archive/2026-11-04-ble-transport/tasks.md)).
+Stopping cuts a connection in progress
+(firmware 1.5.1's sources: [`gap.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/targets/f7/ble_glue/gap.c#L481-L483)),
+waits until the radio is idle
+(firmware 1.5.1's sources: [`furi_hal_bt.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/targets/f7/furi_hal/furi_hal_bt.c#L261-L267))
+and reports the link down itself
+(firmware 1.5.1's sources: [`bt.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/applications/services/bt/bt_service/bt.c#L312-L313)),
+so `Reconnect stopped` ignores link reports until a press.
+
 A pressed key stays in the profile's report until a release clears it
 (firmware 1.5.1's sources: [`hid_profile.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/lib/ble_profile/extra_profiles/hid_profile.c#L188-L227)),
 so Ctrl+Q, held for voice, would go out with the next key after the link returns.

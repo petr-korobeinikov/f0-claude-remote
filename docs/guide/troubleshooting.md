@@ -7,7 +7,7 @@ description: Each known failure, its cause and its fix.
 | Symptom | Cause | Fix |
 |---|---|---|
 | No `Verify code` on the device while pairing, and closing the app hangs | The app was launched over the open Apps browser, which holds the dialog | Leave the browser with Back, and launch from the desktop |
-| Connect in the Mac's Bluetooth settings times out | After a minute of advertising the device advertises slowly, and a connect takes up to about 30 seconds | Press Connect again |
+| Connect in the Mac's Bluetooth settings times out | After a minute with no link the device stops advertising and shows `Reconnect stopped` | Press any button but Back on the device, then Connect again |
 | A recording ends about 2.2 s into the hold | Key repeat is off on the Mac | Turn key repeat on: Claude Code tells a held key by its repeats |
 | A dictated prompt is sent cut short | OK was tapped during `Voice: processing…`, which sends the interim text and drops the rest | Wait out `Voice: processing…` before tapping OK |
 | Holding Left buzzes, but `/clear` shows no change | The session holds no conversation, so there is nothing to clear | None needed |

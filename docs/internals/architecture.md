@@ -22,15 +22,16 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 |---|---|
 | `src/core/action.h` | Names the remote's actions |
 | `src/core/mode.h` | Names the remote's modes |
-| `src/core/keymap.h`, `src/core/keymap.c` | Maps a button event or a link change to an action, given the mode |
+| `src/core/keymap.h`, `src/core/keymap.c` | Maps a button event, a link change or the wait's end to an action, given the mode |
 | `src/core/feedback.h`, `src/core/feedback.c` | Says how an action confirms itself |
 | `src/core/deed.h`, `src/core/deed.c` | Says which deed an action earns |
-| `src/core/actions.h`, `src/core/actions.c` | Sends an action's keys |
-| `src/core/transport.h` | Names the keys the core presses |
+| `src/core/actions.h`, `src/core/actions.c` | Turns an action into calls on the transport |
+| `src/core/transport.h` | Names what the core needs of a link |
 | `src/ui/view.h`, `src/ui/view.c` | Draws a mode's board |
 | `src/ui/view_idle.h`, `src/ui/view_idle.c` | Draws the idle board's buttons |
 | `src/platform/main.c` | Hands the firmware's entry point to `app` |
 | `src/platform/app.h`, `src/platform/app.c` | Runs the application's event loop |
+| `src/platform/backlight.h`, `src/platform/backlight.c` | Holds the display lit while asked to |
 | `src/platform/keymap_input.h`, `src/platform/keymap_input.c` | Translates a firmware event for the keymap |
 | `src/platform/screen.h`, `src/platform/screen.c` | Keeps what the display shows |
 | `src/platform/transport_bluetooth.h`, `src/platform/transport_bluetooth.c` | Is the Mac's Bluetooth keyboard for the app's life |
@@ -51,6 +52,10 @@ The link takes the other queue:
 `transport_bluetooth.c`'s status callback, on the Bt thread, puts `true` or `false` on the link queue,
 and `app.c` hands it to `keymap.c`,
 whose answer `actions.c` sends as a press's would be.
+
+The wait takes a timer in `app.c`, which follows `keymap.c`'s `keymap_wait_ms` after every event.
+Its end goes to `keymap.c` too, whose answer `actions.c` turns into withdrawing the link,
+and `app.c` has `backlight.c` go dark.
 
 The queues exist because every function of an event loop must be called from the thread that made it
 (documented: [`event_loop.h`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/furi/core/event_loop.h#L15)).

@@ -10,7 +10,7 @@ A firmware bump can break the second list:
 - **Documented** (SDK headers):
   `furi_hal_bt_start_advertising`, `furi_hal_bt_stop_advertising` (`furi_hal_bt.h:132-138`);
   the backlight's always-on lock, its unlock and its force off (`notification_messages.h:84-94`);
-  a timer stops idempotently and reads not running once expired (`event_loop_timer.h:84-117`).
+  a timer stops idempotently (`event_loop_timer.h:84-91`).
 - **Firmware 1.5.1 sources alone:**
   advertising every 80–100 ms for 60 s after each start and each drop, then every 1–2.5 s
   (`gap.c:15`, `:143`, `:430-435`, `:474`);
@@ -70,8 +70,9 @@ void backlight_set(Backlight* backlight, bool lit);
   not a constant in `app.c`:
   the length is a rule, pinned on the host.
 - **`app.c` runs one timer that follows `keymap_wait_ms` after every event:
-  started when it turns nonzero with the timer idle, stopped when it reads 0,**
-  not a restart on each link-down report, since stopping reports one itself (`bt.c:312`);
+  started when it turns nonzero, stopped when it reads 0,**
+  not a restart on each link-down report, since stopping reports one itself (`bt.c:312`),
+  and not `furi_event_loop_timer_is_running`, stale while a stop is queued (`event_loop_timer.c:89-113`);
   its expiry performs `keymap_time_out`'s answer.
 - **Both actions reach the link through `actions` and `transport.h`,**
   not calls from `app.c` into `transport_bluetooth`:
