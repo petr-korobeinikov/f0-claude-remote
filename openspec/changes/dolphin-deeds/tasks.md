@@ -10,22 +10,26 @@ so the owner holds, with a scratch Claude Code session focused on the Mac.
 
 ## 1. The state file
 
-- [ ] 1.1 Read `.dolphin.state`. Check: 40 bytes; byte 14 at most 20; bytes 24-27, `butthurt`, at most 14. Else stop and raise it: the design's layout is wrong.
+- [x] 1.1 Read `.dolphin.state`. Check: 40 bytes; byte 14 at most 20; bytes 24-27, `butthurt`, at most 14. Else stop and raise it: the design's layout is wrong.
+  40 bytes; byte 14 is 0, `butthurt` 4, XP 193.
 
 ## 2. The rule
 
-- [ ] 2.1 Add `test/deed_test.c` with the design's tests. Check: with `src/core/deed.h` and `.c` empty, `mise run test` fails on the undeclared names; declare the design's names with a stub returning `DeedNone`: it fails on an assertion; implement: exit 0, 47 tests, 44 before.
+- [x] 2.1 Add `test/deed_test.c` with the design's tests. Check: with `src/core/deed.h` and `.c` empty, `mise run test` fails on the undeclared names; declare the design's names with a stub returning `DeedNone`: it fails on an assertion; implement: exit 0, 47 tests, 44 before.
 
 ## 3. The deed on the device
 
-- [ ] 3.1 In `app.c`, hand `deed_earned`'s answer to `dolphin_deed` through the design's table. Check: test, build and lint exit 0; `git grep -E '#include <(furi|gui|input|notification|bt|dolphin)' -- src/core` prints nothing; `git grep -n dolphin_deed -- src` finds `app.c` alone.
-- [ ] 3.2 Write the docs the proposal names: `using-the-remote.md`'s `## The dolphin`; `architecture.md`'s row for `deed.h` and `deed.c`, and `deed.c` in a press's path; a Features line in `README.md` and `docs/index.md`; a sentence in `catalog/description.md`. Check: `mise run docs-build` exits 0; `The dolphin`, `Home`, `Files`, `No refused construct`.
+- [x] 3.1 In `app.c`, hand `deed_earned`'s answer to `dolphin_deed` through the design's table. Check: test, build and lint exit 0; `git grep -E '#include <(furi|gui|input|notification|bt|dolphin)' -- src/core` prints nothing; `git grep -n dolphin_deed -- src` finds `app.c` alone.
+- [x] 3.2 Write the docs the proposal names: `using-the-remote.md`'s `## The dolphin`; `architecture.md`'s row for `deed.h` and `deed.c`, and `deed.c` in a press's path; a Features line in `README.md` and `docs/index.md`; a sentence in `catalog/description.md`. Check: `mise run docs-build` exits 0; `The dolphin`, `Home`, `Files`, `No refused construct`.
+  Beyond the plan: the XP in `host-tests.md`'s device-only list and in the guide page's `description:`.
 
 ## 4. With the owner
 
-- [ ] 4.1 Read the state: byte 14 must leave room for 11 and the XP must not be 300 or 1800, else wait for 05:00 or the desktop's level-up. Run `mise run launch`; read after 30 s. Observe: unchanged, `Launch`.
-- [ ] 4.2 The owner holds OK for a second; read after 30 s; the owner holds Left; read after 30 s. Observe: byte 14 and the XP up 1, then 10: `Dictation`, `Clear`.
+- [x] 4.1 Read the state: byte 14 must leave room for 11 and the XP must not be 300 or 1800, else wait for 05:00 or the desktop's level-up. Run `mise run launch`; read after 30 s. Observe: unchanged, `Launch`.
+  Byte 14 stays 0 and the XP 193, read 35 s after the launch.
+- [x] 4.2 The owner holds OK for a second; read after 30 s; the owner holds Left; read after 30 s. Observe: byte 14 and the XP up 1, then 10: `Dictation`, `Clear`.
+  One read, not two: the owner made two dictations and a `/clear`; byte 14 went 0 to 12, the XP 193 to 205, `butthurt` 4 to 3.
 
 ## 5. Close
 
-- [ ] 5.1 Check: `mise run test`; `mise run docs-build`; `mise exec -- prek run --all-files`; `mise exec -- openspec validate dolphin-deeds --strict` exit 0; after a build and lint, `git status --short` lists only this change's files; `wc -w` holds the budgets.
+- [x] 5.1 Check: `mise run test`; `mise run docs-build`; `mise exec -- prek run --all-files`; `mise exec -- openspec validate dolphin-deeds --strict` exit 0; after a build and lint, `git status --short` lists only this change's files; `wc -w` holds the budgets.

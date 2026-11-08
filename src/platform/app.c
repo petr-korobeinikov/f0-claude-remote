@@ -1,9 +1,11 @@
 #include "app.h"
 
+#include <dolphin/dolphin.h>
 #include <furi.h>
 #include <notification/notification_messages.h>
 
 #include "../core/actions.h"
+#include "../core/deed.h"
 #include "../core/feedback.h"
 #include "keymap_input.h"
 #include "screen.h"
@@ -19,8 +21,18 @@ struct App {
     Transport* transport;
 };
 
+/* Not games: these two draw on the catalog apps' daily cap and weigh the 1 XP and 10 wanted. */
+static const DolphinDeed app_dolphin_deeds[DeedMAX] = {
+    [DeedDictation] = DolphinDeedPluginGameStart,
+    [DeedClear] = DolphinDeedPluginGameWin,
+};
+
 static void app_perform(App* app, Action action) {
     actions_perform(app->transport, action);
+    Deed deed = deed_earned(action);
+    if(deed != DeedNone) {
+        dolphin_deed(app_dolphin_deeds[deed]);
+    }
     if(feedback_vibrates(action)) {
         notification_message(app->notification, &sequence_single_vibro);
     }

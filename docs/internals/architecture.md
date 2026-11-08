@@ -24,6 +24,7 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 | `src/core/mode.h` | Names the remote's modes |
 | `src/core/keymap.h`, `src/core/keymap.c` | Maps a button event or a link change to an action, given the mode |
 | `src/core/feedback.h`, `src/core/feedback.c` | Says how an action confirms itself |
+| `src/core/deed.h`, `src/core/deed.c` | Says which deed an action earns |
 | `src/core/actions.h`, `src/core/actions.c` | Sends an action's keys |
 | `src/core/transport.h` | Names the keys the core presses |
 | `src/ui/view.h`, `src/ui/view.c` | Draws a mode's board |
@@ -43,7 +44,8 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 5. `actions.c`: presses and releases the action's keys through `transport.h`.
 6. `transport_bluetooth.c`: puts each key into the HID profile's report.
 
-`app.c` then buzzes as `feedback.c` says, has `screen.c` flash, and hands it the mode.
+`app.c` then hands the firmware's dolphin the deed `deed.c` names,
+buzzes as `feedback.c` says, has `screen.c` flash, and hands it the mode.
 
 The link takes the other queue:
 `transport_bluetooth.c`'s status callback, on the Bt thread, puts `true` or `false` on the link queue,

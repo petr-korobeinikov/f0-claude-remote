@@ -34,6 +34,8 @@ so voice and one hand run the whole session, by feel.
 - **Feedback** —
   each action confirms itself with a buzz,
   so no buzz means nothing was sent.
+- **The dolphin** —
+  a dictation earns it 1 XP and a `/clear` 10.
 - **Bluetooth** —
   to the computer it is a keyboard, paired once,
   that reconnects by itself within a second of a drop.

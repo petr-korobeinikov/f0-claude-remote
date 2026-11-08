@@ -8,6 +8,7 @@ To the computer the Flipper is a keyboard, paired once,
 that reconnects by itself within a second of a drop.
 Each action confirms itself with a buzz,
 so no buzz means nothing was sent.
+A dictation earns the dolphin 1 XP and a /clear 10.
 
 ## Buttons
 

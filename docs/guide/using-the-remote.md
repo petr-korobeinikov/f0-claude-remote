@@ -1,5 +1,5 @@
 ---
-description: What each button does in Claude Code, how the device confirms it, and each screen.
+description: What each button does in Claude Code, how the device confirms it, each screen, and the dolphin's XP.
 ---
 
 # Using the remote
@@ -62,3 +62,19 @@ every other press does nothing, with no buzz and no flash.
 **`Voice stopped: release OK`** shows when the link drops during dictation.
 The recording stops, and the words said before the drop stay in the prompt.
 Dictation starts again only once OK is released and held again with the link up.
+
+## The dolphin
+
+The work feeds the device's dolphin, by firmware 1.5.1:
+
+| Deed | XP |
+|---|---|
+| A dictation, as voice starts | 1 |
+| A `/clear` | 10 |
+| A launch from the Apps menu, paid by the firmware | 2 |
+
+The firmware gives the Flipper Apps Catalog's apps 20 XP a day together, games included,
+and the day turns at 05:00 by the device's clock.
+Once the 20 XP are spent, the remote earns nothing until then.
+A launch by `mise run launch` earns nothing.
+The app's screen shows no XP: Passport shows the mood and the level.
