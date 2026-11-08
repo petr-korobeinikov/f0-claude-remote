@@ -56,8 +56,9 @@ the buzz and flash confirming it, and each screen.
 
 #### Scenario: Content
 - **WHEN** the page is read
-- **THEN** it holds the nine rows of the README's keys table before this change,
-  and the main screen, `Listening`, `No link` with `Keys are not sent`, and `Voice stopped: release OK`
+- **THEN** it holds the nine rows of the keys table,
+  and the main screen, `Listening`, `No link` with `Keys are not sent`, `Voice stopped: release OK`,
+  and `Reconnect stopped` with what a press does there
 
 ### Requirement: Using the remote gives the dolphin's XP
 `docs/guide/using-the-remote.md` SHALL give the XP each dictation and each `/clear` earn,
