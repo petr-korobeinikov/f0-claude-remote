@@ -66,13 +66,15 @@ A button SHALL act the same whether or not the backlight is on.
 - **WHEN** the backlight is off on `D_stopped` and Up is tapped
 - **THEN** a frame equals `D_disconnected`
 
-### Requirement: With no link only holding Back acts
-With no link, holding Back SHALL exit, and no other press SHALL act, vibrate or flash,
+### Requirement: With no link only holding Back or Right acts
+With no link, holding Back SHALL exit,
+holding Right on `D_disconnected` or `D_usb_disconnected` SHALL switch the link, as `usb-link` and `bluetooth-link` say,
+and no other press SHALL act, vibrate or flash,
 so a press with no buzz was not sent;
 `D_stopped` alone answers a press otherwise, as its requirements say.
 
 #### Scenario: Every other press
-- **WHEN** the link is offered with none up, every other button is tapped and held, and Back is tapped
+- **WHEN** the link is offered with none up, every button but Back and Right is tapped and held, and Back and Right are tapped
 - **THEN** nothing acts, the device does not vibrate and the screen does not change
 
 #### Scenario: Exit
