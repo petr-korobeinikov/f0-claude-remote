@@ -10,7 +10,7 @@
 #include "backlight.h"
 #include "keymap_input.h"
 #include "screen.h"
-#include "transport_bluetooth.h"
+#include "transport_hid.h"
 
 struct App {
     FuriEventLoop* event_loop;
@@ -118,14 +118,14 @@ App* app_alloc(void) {
     app->backlight = backlight_alloc();
     app->keymap = keymap_alloc();
     app->screen = screen_alloc(app->event_loop, app->input_queue, keymap_mode(app->keymap));
-    app->transport = transport_bluetooth_alloc(app->link_queue);
+    app->transport = transport_hid_alloc(app->link_queue);
     app_follow_wait(app);
     return app;
 }
 
 void app_free(App* app) {
     screen_free(app->screen);
-    transport_bluetooth_free(app->transport);
+    transport_hid_free(app->transport);
     keymap_free(app->keymap);
     backlight_free(app->backlight);
     furi_record_close(RECORD_NOTIFICATION);
