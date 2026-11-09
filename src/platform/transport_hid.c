@@ -5,6 +5,7 @@
 #include "transport_bluetooth.h"
 
 struct Transport {
+    FuriMessageQueue* link_queue;
     TransportBluetooth* bluetooth;
 };
 
@@ -21,27 +22,50 @@ static const uint16_t transport_hid_keys[TransportKeyMAX] = {
 
 Transport* transport_hid_alloc(FuriMessageQueue* link_queue) {
     Transport* transport = malloc(sizeof(Transport));
+    transport->link_queue = link_queue;
     transport->bluetooth = transport_bluetooth_alloc(link_queue);
     return transport;
 }
 
 void transport_hid_free(Transport* transport) {
-    transport_bluetooth_free(transport->bluetooth);
+    if(transport->bluetooth) {
+        transport_bluetooth_free(transport->bluetooth);
+    }
     free(transport);
 }
 
 void transport_press(Transport* transport, TransportKey key) {
-    transport_bluetooth_press(transport->bluetooth, transport_hid_keys[key]);
+    if(transport->bluetooth) {
+        transport_bluetooth_press(transport->bluetooth, transport_hid_keys[key]);
+    }
 }
 
 void transport_release(Transport* transport, TransportKey key) {
-    transport_bluetooth_release(transport->bluetooth, transport_hid_keys[key]);
+    if(transport->bluetooth) {
+        transport_bluetooth_release(transport->bluetooth, transport_hid_keys[key]);
+    }
 }
 
 void transport_offer(Transport* transport) {
-    transport_bluetooth_offer(transport->bluetooth);
+    if(transport->bluetooth) {
+        transport_bluetooth_offer(transport->bluetooth);
+    }
 }
 
 void transport_withdraw(Transport* transport) {
-    transport_bluetooth_withdraw(transport->bluetooth);
+    if(transport->bluetooth) {
+        transport_bluetooth_withdraw(transport->bluetooth);
+    }
+}
+
+/* A Connected that one link left queued would read as the other's. */
+void transport_use_usb(Transport* transport) {
+    transport_bluetooth_free(transport->bluetooth);
+    transport->bluetooth = NULL;
+    furi_message_queue_reset(transport->link_queue);
+}
+
+void transport_use_bluetooth(Transport* transport) {
+    furi_message_queue_reset(transport->link_queue);
+    transport->bluetooth = transport_bluetooth_alloc(transport->link_queue);
 }
