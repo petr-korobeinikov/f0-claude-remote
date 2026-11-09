@@ -32,7 +32,7 @@ and every button SHALL do what it does over Bluetooth.
 
 #### Scenario: Name
 - **WHEN** the cable is in on USB
-- **THEN** `system_profiler SPUSBDataType` lists `Claude Remote`
+- **THEN** `system_profiler SPUSBHostDataType` lists `Claude Remote`
 
 #### Scenario: Buttons
 - **WHEN** the owner runs a Claude Code session on USB, dictation included

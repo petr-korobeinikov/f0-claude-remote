@@ -16,6 +16,7 @@ nav = [
   { "Guide" = [
     { "Installation" = "guide/installation.md" },
     { "Pairing" = "guide/pairing.md" },
+    { "USB" = "guide/usb.md" },
     { "Claude Code setup" = "guide/claude-code-setup.md" },
     { "Using the remote" = "guide/using-the-remote.md" },
     { "Troubleshooting" = "guide/troubleshooting.md" },
@@ -31,6 +32,7 @@ nav = [
   { "Internals" = [
     { "Architecture" = "internals/architecture.md" },
     { "Bluetooth" = "internals/bluetooth.md" },
+    { "USB" = "internals/usb.md" },
     { "Keys in Claude Code" = "internals/keys-in-claude-code.md" },
   ] },
   { "Contributing" = [

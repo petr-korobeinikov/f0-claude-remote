@@ -39,5 +39,7 @@ so voice and one hand run the whole session, by feel.
 - **Bluetooth** —
   to the computer it is a keyboard, paired once,
   that reconnects by itself within a second of a drop.
+- **USB** —
+  with no Bluetooth link, hold Right and the cable takes over.
 - **Debugging from CLion** —
   breakpoints in the app's sources on the device, with no Flipper plugin.

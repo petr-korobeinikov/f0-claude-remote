@@ -6,6 +6,7 @@ whatever the computer's keyboard layout.
 
 To the computer the Flipper is a keyboard, paired once,
 that reconnects by itself within a second of a drop.
+With no Bluetooth link, holding Right makes it a USB keyboard over the cable.
 Each action confirms itself with a buzz,
 so no buzz means nothing was sent.
 A dictation earns the dolphin 1 XP and a /clear 10.

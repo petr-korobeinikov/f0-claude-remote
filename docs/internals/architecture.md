@@ -14,7 +14,7 @@ description: The three layers of the source, each file's one task, and the files
 
 An include points down the layers only, relative to its file, as `"../core/action.h"`.
 The core names what it needs, as the keys of `transport.h`,
-and the platform supplies it, as `transport_bluetooth.c` does.
+and the platform supplies it, as `transport_hid.c` does.
 
 ## Files
 
@@ -22,6 +22,7 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 |---|---|
 | `src/core/action.h` | Names the remote's actions |
 | `src/core/mode.h` | Names the remote's modes |
+| `src/core/link.h` | Names the remote's links |
 | `src/core/keymap.h`, `src/core/keymap.c` | Maps a button event, a link change or the wait's end to an action, given the mode |
 | `src/core/feedback.h`, `src/core/feedback.c` | Says how an action confirms itself |
 | `src/core/deed.h`, `src/core/deed.c` | Says which deed an action earns |
@@ -34,7 +35,9 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 | `src/platform/backlight.h`, `src/platform/backlight.c` | Holds the display lit while asked to |
 | `src/platform/keymap_input.h`, `src/platform/keymap_input.c` | Translates a firmware event for the keymap |
 | `src/platform/screen.h`, `src/platform/screen.c` | Keeps what the display shows |
-| `src/platform/transport_bluetooth.h`, `src/platform/transport_bluetooth.c` | Is the Mac's Bluetooth keyboard for the app's life |
+| `src/platform/transport_hid.h`, `src/platform/transport_hid.c` | Routes the core's keys to the link in use |
+| `src/platform/transport_bluetooth.h`, `src/platform/transport_bluetooth.c` | Is the Mac's Bluetooth keyboard for its own life |
+| `src/platform/transport_usb.h`, `src/platform/transport_usb.c` | Is the Mac's USB keyboard for its own life |
 
 ## A press's path
 
@@ -43,13 +46,15 @@ and the platform supplies it, as `transport_bluetooth.c` does.
 3. `keymap_input.c`: translates the firmware's key and type into the keymap's own.
 4. `keymap.c`: answers the action, given the mode, and moves the mode.
 5. `actions.c`: presses and releases the action's keys through `transport.h`.
-6. `transport_bluetooth.c`: puts each key into the HID profile's report.
+6. `transport_hid.c`: turns each key into its code, for the link in use.
+7. `transport_bluetooth.c` or `transport_usb.c`: puts the code into the link's report.
 
 `app.c` then hands the firmware's dolphin the deed `deed.c` names,
 buzzes as `feedback.c` says, has `screen.c` flash, and hands it the mode.
 
 The link takes the other queue:
-`transport_bluetooth.c`'s status callback, on the Bt thread, puts `true` or `false` on the link queue,
+`transport_bluetooth.c`'s status callback, on the Bt thread,
+or `transport_usb.c`'s, in the USB interrupt, puts `true` or `false` on the link queue,
 and `app.c` hands it to `keymap.c`,
 whose answer `actions.c` sends as a press's would be.
 
@@ -59,4 +64,4 @@ and `app.c` has `backlight.c` go dark.
 
 The queues exist because every function of an event loop must be called from the thread that made it
 (documented: [`event_loop.h`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/furi/core/event_loop.h#L15)).
-The draw callback, on the GUI thread, reads the mode and the flash as two `_Atomic` words.
+The draw callback, on the GUI thread, reads the mode, the link and the flash as three `_Atomic` words.

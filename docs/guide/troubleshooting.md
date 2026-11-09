@@ -14,4 +14,6 @@ description: Each known failure, its cause and its fix.
 | Holding OK, Up, Down or Left buzzes, and Claude Code does nothing | The keys are not bound, or another window is focused | Add the block from [Claude Code setup](claude-code-setup.md), and focus the Claude Code session |
 | `mise run launch` fails | A PIN locks the device, which drops its USB console | Unlock it; turn auto-lock off in Settings → Desktop while working |
 | A press gives no buzz | No link, dictation on, or a press with no action, such as a tap on Left: nothing was sent | Wait for `No link` to clear, or release OK |
+| `No link` goes too soon to hold Right for USB | A paired Mac in range reconnects within a second | Forget `Claude Remote` on the Mac, or turn its Bluetooth off |
+| `mise run launch` finds no device on USB | USB takes the device's console while it lasts | Hold Back to leave the app, or hold Right on `No link` with the cable out |
 | An editor marks the two effort lines in `keybindings.json` | Claude Code's schema has no space in a command's name | None needed: they run all the same |

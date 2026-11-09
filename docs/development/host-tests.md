@@ -28,12 +28,13 @@ A suite `test/<name>_test.c` is built with `src/core/<name>.c` and every `test/*
 - each test is a `static void test_…(void)` function on `assert`;
 - `main` runs each through `test_run` from `test/test.h`, which prints `ok <name>`;
 - code that sends keys gets a `Transport` from `transport_fake_alloc` in `test/transport_fake.h`,
-  and reads back each press and release with `transport_fake_count` and `transport_fake_event`.
+  reads back each press and release with `transport_fake_count` and `transport_fake_event`,
+  and the link in use with `transport_fake_on_usb`.
 
 A `.c` file under `test/` builds into no package, and lint checks it.
 
 ## What only the device checks
 
 The platform layer, `src/platform/`, and the view, `src/ui/`, run only on the device:
-the Bluetooth link, the buttons, the screen, the buzz and the flash, the dolphin's XP,
+the Bluetooth and USB links, the buttons, the screen, the buzz and the flash, the dolphin's XP,
 and what the keys do in Claude Code.

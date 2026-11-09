@@ -6,7 +6,7 @@ description: What each button does in Claude Code, how the device confirms it, e
 
 ## Buttons
 
-The device is a Bluetooth keyboard,
+The device is a keyboard, over Bluetooth or [USB](usb.md),
 so a press acts on whatever the Mac has focused,
 meant to be a Claude Code session.
 A tap is released before the device's long press fires, and a hold is kept until it fires:
@@ -38,7 +38,7 @@ which lists the previous conversation.
 Each action that sends buzzes once,
 and its part of the ring on the screen flashes:
 400 ms, or 100 ms for the arrows.
-Stopping dictation and leaving the app do not buzz.
+Stopping dictation, leaving the app and switching the link do not buzz.
 The buzz means sent, not applied:
 with another window focused it comes all the same.
 
@@ -55,16 +55,19 @@ as the legend `HOLD` and `TAP` in the top row says.
 No other button acts then, leaving included.
 
 **`No link`**, with `Reconnecting...` and `Keys are not sent`,
-shows while the Mac holds no link.
-Only holding Back acts:
-every other press does nothing, with no buzz and no flash.
+shows while the Mac holds no link,
+with `Connect the cable` in place of `Reconnecting...` on USB.
+A black plate, `Switch to` and a mark, shows Right's hold:
+it takes [USB](usb.md) from Bluetooth, and returns to Bluetooth from USB.
+Holding Back leaves the app.
+Every other press does nothing, with no buzz and no flash.
 
 **`Voice stopped: release OK`** shows when the link drops during dictation.
 The recording stops, and the words said before the drop stay in the prompt.
 Dictation starts again only once OK is released and held again with the link up.
 
 **`Reconnect stopped`**, with `Any button: retry`, shows after a minute with no link,
-counted from the launch or the drop, with the backlight off.
+counted from the launch, the drop or Right's hold, with the backlight off.
 The Mac can no longer reach the device.
 Any button but Back lights the screen and returns to `No link` for another minute,
 sending nothing, with no buzz and no flash.

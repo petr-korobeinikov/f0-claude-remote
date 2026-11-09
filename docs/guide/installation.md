@@ -7,7 +7,7 @@ description: What the app needs, and how to install, update and remove it from a
 ## What it needs
 
 - A Flipper Zero on firmware 1.5.1.
-- A computer that takes a Bluetooth keyboard.
+- A computer that takes a Bluetooth keyboard or, over a cable, a USB one.
   The app is tried only on a Mac,
   but nothing in it is specific to macOS.
 - Claude Code; the app is tried on 2.1.311.
