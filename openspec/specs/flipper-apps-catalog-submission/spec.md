@@ -19,11 +19,11 @@ one commit ahead, adding or updating `applications/Bluetooth/f0_claude_remote/ma
   and that branch's commit reads `Add Claude Remote 0.1`
 
 #### Scenario: Manifest
-- **WHEN** that manifest is read
+- **WHEN** the manifest of a release after `v0.1` is read
 - **THEN** it holds `sourcecode` with `type: git`, `origin` `https://github.com/petr-korobeinikov/f0-claude-remote.git`
-  and `commit_sha` equal to `git rev-parse v0.1^{commit}`,
+  and `commit_sha` equal to `git rev-parse` of its tag's commit,
   `description: "@catalog/description.md"`, `changelog: "@catalog/changelog.md"`,
-  the screenshot `screenshots/main.png`, and no field `application.fam` supplies
+  the screenshot `asset/screenshot/main.png`, and no field `application.fam` supplies
 
 #### Scenario: Next submission
 - **WHEN** `v0.2`'s run ends, `0.1` merged upstream

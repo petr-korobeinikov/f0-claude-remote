@@ -7,7 +7,7 @@ Takes a user from nothing to a working remote through Home, Quick start and the 
 ## Requirements
 
 ### Requirement: Home says what the app is
-`docs/index.md` SHALL show `screenshots/main.png`, the tagline, the README's Why and Features,
+`docs/index.md` SHALL show `asset/screenshot/main.png`, the tagline, the README's Why and Features,
 and lead to Quick start.
 
 #### Scenario: Home
