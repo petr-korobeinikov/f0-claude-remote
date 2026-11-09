@@ -9,8 +9,8 @@ App(
     fap_description="Drives Claude Code from the device's buttons over Bluetooth or USB",
     fap_author="Petr Korobeinikov",
     fap_weburl="https://github.com/petr-korobeinikov/f0-claude-remote",
-    fap_icon="f0_claude_remote.png",
-    fap_icon_assets="images",
+    fap_icon="asset/icon/f0_claude_remote.png",
+    fap_icon_assets="asset/image",
     fap_libs=["ble_profile"],  # ble_profile_hid is not among the firmware's exports
     sources=["*.c*", "!test"],
 )

@@ -92,7 +92,7 @@ jobs:
           description: "@catalog/description.md"
           changelog: "@catalog/changelog.md"
           screenshots:
-            - screenshots/main.png
+            - asset/screenshot/main.png
           EOF
           content=$(base64 -w 0 manifest.yml)
 

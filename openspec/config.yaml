@@ -119,6 +119,12 @@ context: |
   sits in its layer's folder. An include crosses a layer downward only and
   relative to its file, as `"../core/action.h"`.
 
+  The app's pictures live in `asset/`, one folder per purpose: `asset/icon/`
+  for the Apps menu's icon, `asset/image/` for what the screens draw and
+  `asset/screenshot/` for the screenshots. Folder names are in the singular,
+  but for `docs/` with the folders under it, and for a name a tool fixes, as
+  `.github/workflows/`.
+
   A header is the interface: a `.h` holds only the public contract, and
   everything internal stays in the `.c`, raw data behind functions. A
   dependency points at a header rather than at whatever fulfills it: the core
