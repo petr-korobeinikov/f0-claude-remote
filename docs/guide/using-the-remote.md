@@ -57,7 +57,8 @@ No other button acts then, leaving included.
 **`No link`**, with `Reconnecting...` and `Keys are not sent`,
 shows while the Mac holds no link,
 with `Connect the cable` in place of `Reconnecting...` on USB.
-A black plate, `Switch to` and a mark, shows Right's hold:
+A black plate, `Switch to` and a mark, shows Right's hold,
+as `HOLD` in the top row says:
 it takes [USB](usb.md) from Bluetooth, and returns to Bluetooth from USB.
 Holding Back leaves the app.
 Every other press does nothing, with no buzz and no flash.
