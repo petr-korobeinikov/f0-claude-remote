@@ -19,7 +19,7 @@ the buzz and flash confirming it, and each screen.
 #### Scenario: Content
 - **WHEN** the page is read
 - **THEN** it holds the nine rows of the keys table,
-  and the main screen, `Listening`, `No link` with `Keys are not sent` and Right's hold for USB,
+  and the main screen, `Listening`, `No link` with `Keys are not sent` and Right's hold for USB and back,
   `Voice stopped: release OK`,
   and `Reconnect stopped` with what a press does there
 
@@ -38,7 +38,7 @@ as symptom, cause and fix.
 ## ADDED Requirements
 
 ### Requirement: USB is written down
-`docs/guide/usb.md` SHALL say when USB can be taken, how, what the Mac asks, and what USB changes.
+`docs/guide/usb.md` SHALL say when USB can be taken, how, what the Mac asks, what USB changes, and how it returns.
 
 #### Scenario: Content
 - **WHEN** the page is read
@@ -46,5 +46,6 @@ as symptom, cause and fix.
   that a paired Mac in range takes forgetting the device or turning Bluetooth off,
   the hold of Right on `No link`, the cable, the Mac's alert for a new accessory,
   that the keys and `keybindings.json` stay the same,
-  that the device has no console until leaving,
+  that the device has no console until leaving USB,
+  that the hold of Right on `No link` with the cable out returns to Bluetooth,
   and that the next launch opens on Bluetooth

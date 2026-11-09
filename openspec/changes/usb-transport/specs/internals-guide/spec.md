@@ -20,7 +20,7 @@ and the files a press passes through, with the queues between threads.
 ### Requirement: USB explains the switch
 `docs/internals/usb.md` SHALL explain the switch:
 why it is a hold on `No link` and not a second application or the cable,
-why the console goes, the keyboard's name, the order of the switch and of leaving,
+why the console goes, the keyboard's name, the order of the switch, of the return and of leaving,
 why the link queue is emptied, the status callback's interrupt, and the 60 s counted afresh.
 
 #### Scenario: Marks

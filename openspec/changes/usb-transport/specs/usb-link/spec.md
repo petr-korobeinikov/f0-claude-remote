@@ -1,13 +1,13 @@
 ## Purpose
 
 Makes the device the Mac's USB keyboard when Bluetooth has no link,
-from a hold on the no-link screen until the application ends.
+from a hold on the no-link screen until the return or leaving.
 
 ## ADDED Requirements
 
 ### Requirement: Holding Right on the no-link screen takes USB
 Holding Right on `D_disconnected`, from a press made there, until the long press fires,
-SHALL end the Bluetooth link and make the device a USB keyboard until the application ends,
+SHALL end the Bluetooth link and make the device a USB keyboard,
 with no buzz, no flash and no key sent.
 
 #### Scenario: Taken
@@ -21,10 +21,6 @@ with no buzz, no flash and no key sent.
 #### Scenario: Another screen
 - **WHEN** Right is held on `D_disc_voice`, `D_Main` or `D_voice`
 - **THEN** the application stays on Bluetooth
-
-#### Scenario: Held again
-- **WHEN** Right is held on `D_usb_disconnected`
-- **THEN** nothing acts and the screen does not change
 
 #### Scenario: Opened again
 - **WHEN** the application ends on USB and opens again
@@ -74,8 +70,8 @@ and then SHALL stop waiting until a button is pressed.
 - **WHEN** a button but Back is pressed on `D_usb_stopped` with the cable in
 - **THEN** `D_usb_main` shows with no other press
 
-### Requirement: USB takes the device's console until leaving
-On USB the device SHALL offer no USB console, and ending the application SHALL return it.
+### Requirement: USB takes the device's console while it lasts
+On USB the device SHALL offer no USB console, and leaving USB SHALL return it.
 
 #### Scenario: On USB
 - **WHEN** the application is on USB with the cable in
@@ -84,3 +80,7 @@ On USB the device SHALL offer no USB console, and ending the application SHALL r
 #### Scenario: Leaving
 - **WHEN** Back is held until the long press fires on USB
 - **THEN** the application ends, and `mise run launch` exits 0
+
+#### Scenario: Returning
+- **WHEN** the application is back on Bluetooth with the cable in
+- **THEN** `mise run launch` exits 0

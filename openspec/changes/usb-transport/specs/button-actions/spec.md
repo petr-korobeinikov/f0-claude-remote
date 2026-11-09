@@ -6,7 +6,8 @@
 ## MODIFIED Requirements
 
 ### Requirement: With no link only holding Back or Right acts
-With no link, holding Back SHALL exit, holding Right on `D_disconnected` SHALL take USB, as `usb-link` says,
+With no link, holding Back SHALL exit,
+holding Right on `D_disconnected` or `D_usb_disconnected` SHALL switch the link, as `usb-link` and `bluetooth-link` say,
 and no other press SHALL act, vibrate or flash,
 so a press with no buzz was not sent;
 `D_stopped` alone answers a press otherwise, as its requirements say.

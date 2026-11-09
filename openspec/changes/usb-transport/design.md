@@ -2,10 +2,8 @@
 
 ## Context
 
-See `proposal.md` for why.
-The boards are the wireframe's `D_disconnected` and `D_usb_*`, at the version task 1.1 records;
+The boards are the wireframe's `D_disconnected` and `D_disc_voice`, redrawn on `D_stopped`'s rows, and `D_usb_*`, at the version task 1.1 records;
 their tables are the draw list.
-`I_usb` 7×9 and `I_usb_off` 10×9 fill the Bluetooth marks' boxes, so no text moves.
 A firmware bump can break the second list:
 
 - **Documented:**
@@ -24,14 +22,15 @@ A firmware bump can break the second list:
   setting it reports a link already up (`furi_hal_usb_hid.c:279-289`);
   a release clears the report with no link (`:303-311`, `:455`);
   a pending event on an emptied queue calls nothing (`event_loop.c:107`).
-- **Unknown until the device says** (task 6.1):
-  whether the Mac's alert and Keyboard Setup Assistant appear for these IDs, and the link's delay.
+- **Unknown until the device says:**
+  whether the Mac's alert and Keyboard Setup Assistant appear for these IDs, and the link's delay (task 6.1);
+  whether Bluetooth starts again within one run, as it does across two launches (`bt.c:395-408`, task 4.3).
 
 ## Goals / Non-Goals
 
-**Goals:** the specs; the rule in the core.
+**Goals:** the specs.
 
-**Non-Goals:** a way back to Bluetooth; anything saved; USB offered on another board;
+**Non-Goals:** anything saved; USB offered on another board;
 a second application or Flipper Apps Catalog listing; frames read on USB.
 
 ## Decisions
@@ -51,38 +50,32 @@ USB's mode and keyboard, the key codes and the queue exist only in the firmware;
 `link.h` sits in the core because the UI reaches no further.
 
 ```c
-typedef enum {
-    LinkBluetooth,
-    LinkUsb,
-} Link;
-
 void transport_use_usb(Transport* transport);
-bool transport_fake_on_usb(const Transport* transport);
+void transport_use_bluetooth(Transport* transport);
 Transport* transport_hid_alloc(FuriMessageQueue* link_queue);
 void transport_hid_free(Transport* transport);
 TransportUsb* transport_usb_alloc(FuriMessageQueue* link_queue);
 void transport_usb_free(TransportUsb* usb);
 void transport_usb_press(TransportUsb* usb, uint16_t key);
 void transport_usb_offer(TransportUsb* usb);
-void screen_set_link(Screen* screen, Link link);
-void view_draw(Canvas* canvas, Mode mode, Link link, Action flash);
 ```
 
-`_release` follows `_press`; `transport_bluetooth.h` takes the same names, and `_withdraw`.
+`_release` follows `_press`; `transport_bluetooth.h` takes the same names.
 
-Tests: in `ModeNoLink`, Right's press then long answers `ActionUseUsb`, once, staying there;
+Tests: in `ModeNoLink`, Right's press then long answers `ActionUseUsb`, once, staying there,
+the next such hold `ActionUseBluetooth`, and the next `ActionUseUsb`;
 its tap answers nothing;
-a long whose press came in `ModeStopped` or `ModeIdle` answers nothing;
+a long whose press came in `ModeStopped` or `ModeIdle` answers nothing, on either link;
 so does Right's long in every other mode.
 
-- **`keymap` notes at each press of Right whether it came in `ModeNoLink`,**
+- **`keymap` notes at each press of Right whether it came in `ModeNoLink`, drops the note at the hold, and keeps the link in use,**
   not a table entry, which would act on `D_Main`.
 - **`transport_hid.c` routes by `if` and holds the key table,**
   not a table of function pointers, as BadUSB's `bad_usb_hid.c`:
   two links and four calls read top to bottom, and both take the same codes.
-- **`transport_use_usb` frees Bluetooth, empties the link queue, then allocates USB,**
+- **`transport_use_usb` frees Bluetooth, empties the link queue, then allocates USB, and `transport_use_bluetooth` the reverse,**
   not the switch alone:
-  a Bluetooth `Connected` left queued would read as USB's.
+  a `Connected` left queued would read as the new link's.
 - **`transport_usb_alloc` follows the stock order, then sets the callback,
   with a static config named `Claude Remote` on the default IDs,**
   not `NULL`, nor IDs of its own that nobody assigned;
@@ -90,12 +83,12 @@ so does Right's long in every other mode.
 - **`transport_usb_offer` puts the current state on the queue,**
   not nothing:
   `ModeStopped` ignored the report that came, and none follows until the cable moves.
-- **`app_perform`, on `ActionUseUsb`, hands the screen `LinkUsb` and zeroes `wait_ms` before `actions_perform`,**
+- **`app_perform`, on either switch, hands the screen its `Link` and zeroes `wait_ms` before `actions_perform`,**
   not after:
   the switch holds the loop at least 700 ms, and `app_follow_wait` then restarts the timer.
 - **`Link` reaches `view` as one more `_Atomic` word in `screen`,**
   not `ModeUsb*`, which would double `keymap`'s tables, nor `#ifdef`: there is one build.
-- **`view.c` picks the mark and the line by `Link`, and draws the plate for `ModeNoLink` on Bluetooth,**
+- **`view.c` picks the mark, the line and the target on `ModeNoLink`'s plate by `Link`,**
   not a file per link:
   they share their rows.
 
@@ -103,6 +96,6 @@ so does Right's long in every other mode.
 
 - The Mac's alert declined → the Mac ignores the keyboard while the status may read `Connected`; `guide/usb.md` names the alert.
 - `Connected` follows bus activity, before the Mac configures the keyboard (`furi_hal_usb_hid.c:433`) → a press in that gap sends nothing.
-- A wrong hold leaves Bluetooth → leaving and opening again returns it.
-- USB's linked boards cannot be read as frames → `D_usb_disconnected` and `D_usb_stopped` are read in task 4.2, before USB lands; the rest differ by the mark.
+- A wrong hold leaves Bluetooth → holding Right again with the cable out returns it.
+- USB's linked boards cannot be read as frames → `D_usb_disconnected` and `D_usb_stopped` are read in tasks 4.2 and 4.3, before USB lands; the rest differ by the mark.
 - Keys go 2–4 ms apart (`furi_hal_usb_hid.c:458`) → BadUSB types at that pace; task 6.2 tries the chords.
