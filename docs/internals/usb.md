@@ -26,7 +26,8 @@ USB is offered on `No link` alone, as a Mac in range returns by itself within a 
 Right alone has no hold of its own,
 and the long press fires 300 ms after the press
 (firmware 1.5.1's sources: [`input.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/applications/services/input/input.c#L13-L14)),
-so `keymap.c` counts a hold only from a press made on that same screen.
+so `keymap.c` counts Right's hold, as every tap and hold but Back's,
+only from a press made on that same screen.
 
 ## The console
 
@@ -123,3 +124,4 @@ and none follows until the cable moves,
 so the press that starts over puts the current state on the link queue itself:
 a cable plugged in there left the screen dark, and Up brought the main screen at once
 (seen: [usb-transport, task 6.3](https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/openspec/changes/archive/2026-11-09-usb-transport/tasks.md)).
+That press's tap or hold sends nothing there, as it began on another screen.

@@ -42,8 +42,8 @@ A flag per button, and what `keymap_handle` does with it:
   which needs a value for no press that `Mode` lacks.
 - **`right_pressed_on_no_link` goes, and the switch reads Right's flag,**
   not kept beside the flags: it is the same rule for one button.
-- **One function sets the mode and clears the flags when the mode differs, and the switch clears them too,**
-  not a clear at each place that sets `keymap->mode` now:
+- **One function sets the mode or the link and clears the flags when either differs,**
+  not a clear at each place that sets `keymap->mode` or `keymap->on_usb` now:
   one forgotten clear reopens the bug.
 - **The check stands at the top of `keymap_handle`, for `Short` and `Long` only, and lets `ActionExit` through,**
   not inside each mode's case:
