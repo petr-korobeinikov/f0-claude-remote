@@ -1,3 +1,13 @@
+v0.2:
+
+- Earn the dolphin xp for dictations and /clear
+- Stop advertising after a minute with no link
+- Switch the link by holding right
+- Draw the usb boards and switch plate
+- Act as a usb keyboard over the cable
+- Show the hold legend on no link
+- Act on the screen a gesture began on
+
 v0.1:
 
 - Show the remote's one screen
