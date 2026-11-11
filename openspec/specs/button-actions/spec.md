@@ -9,7 +9,8 @@ which confirms itself on the device.
 
 ### Requirement: Each button takes its actions
 With the link up, a tap, released before the device's long press fires, and a hold, kept until it fires,
-SHALL take the actions in the scenarios below, once each, and nothing else SHALL act.
+SHALL take the actions in the scenarios below, once each, as far as `A tap or hold acts on the screen it began on` allows,
+and nothing else SHALL act.
 
 #### Scenario: Tap
 - **WHEN** Up, Down or OK is tapped
@@ -127,3 +128,18 @@ with no buzz, no flash and no key sent.
 #### Scenario: OK held
 - **WHEN** OK is held on `D_stopped` past the long press
 - **THEN** voice does not start
+
+### Requirement: A tap or hold acts on the screen it began on
+A tap, or a hold other than Back's, SHALL act only if the screen, a flash aside, has not changed since its press.
+
+#### Scenario: Started over on a cable
+- **WHEN** Up is tapped, or OK, Up, Down or Left is held, on `D_usb_stopped` with the cable in
+- **THEN** `D_usb_main` shows, the device does not vibrate, voice does not start, and no key is sent
+
+#### Scenario: The link returns during a tap
+- **WHEN** Up goes down on `D_disconnected`, and the link returns before its release
+- **THEN** the device does not vibrate, and no key is sent
+
+#### Scenario: Back held through a drop
+- **WHEN** Back goes down on `D_Main`, and the link drops before its long press fires
+- **THEN** the application ends
