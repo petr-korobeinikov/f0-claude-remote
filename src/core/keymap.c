@@ -23,24 +23,6 @@ static const Action keymap_actions[KeymapKeyMAX][KeymapEventMAX] = {
     [KeymapKeyBack] = {[KeymapEventLong] = ActionExit},
 };
 
-/* ModeStopped stays: stopping waits for the radio to go idle (furi_hal_bt.c:261-267), and stopping
- * reports a link down itself (bt.c:312), so a report read there is stale. */
-static const Mode keymap_link_up_modes[] = {
-    [ModeIdle] = ModeIdle,
-    [ModeVoice] = ModeVoice,
-    [ModeNoLink] = ModeIdle,
-    [ModeVoiceCut] = ModeIdle,
-    [ModeStopped] = ModeStopped,
-};
-
-static const Mode keymap_link_down_modes[] = {
-    [ModeIdle] = ModeNoLink,
-    [ModeVoice] = ModeVoiceCut,
-    [ModeNoLink] = ModeNoLink,
-    [ModeVoiceCut] = ModeVoiceCut,
-    [ModeStopped] = ModeStopped,
-};
-
 static const Link keymap_other_links[LinkMAX] = {
     [LinkBluetooth] = LinkUsb,
     [LinkUsb] = LinkBluetooth,
@@ -136,11 +118,31 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
     return action == ActionExit ? ActionExit : ActionNone;
 }
 
+/* ModeStopped stays: stopping waits for the radio to go idle (furi_hal_bt.c:261-267), and stopping
+ * reports a link down itself (bt.c:312), so a report read there is stale. */
 Action keymap_set_connected(Keymap* keymap, bool connected) {
-    Mode previous = keymap->mode;
-    keymap_set_mode(
-        keymap, connected ? keymap_link_up_modes[previous] : keymap_link_down_modes[previous]);
-    return previous == ModeVoice && keymap->mode == ModeVoiceCut ? ActionVoiceStop : ActionNone;
+    switch(keymap->mode) {
+    case ModeIdle:
+        if(!connected) {
+            keymap_set_mode(keymap, ModeNoLink);
+        }
+        break;
+    case ModeVoice:
+        if(!connected) {
+            keymap_set_mode(keymap, ModeVoiceCut);
+            return ActionVoiceStop;
+        }
+        break;
+    case ModeNoLink:
+    case ModeVoiceCut:
+        if(connected) {
+            keymap_set_mode(keymap, ModeIdle);
+        }
+        break;
+    case ModeStopped:
+        break;
+    }
+    return ActionNone;
 }
 
 Action keymap_time_out(Keymap* keymap) {

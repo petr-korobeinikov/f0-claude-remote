@@ -115,6 +115,12 @@ context: |
   enumerator a switch leaves out. What a function returns for a value no
   case names follows the switch.
 
+  A table indexed by an enum takes its length from the enum's `…MAX`,
+  never from its rows. An enum a `switch` is over has no `…MAX`, which
+  every such switch would have to name, and indexes no table: a row left
+  out reads as zero with no warning, where a case left out stops the
+  build.
+
   A named constant is a `static const` of its type, since a `#define` is
   text with no type of its own. A `#define` names a constant only where C
   requires an integer constant expression, which a `const` object is not,
