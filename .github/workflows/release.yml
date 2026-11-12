@@ -64,6 +64,7 @@ jobs:
     steps:
       - run: |
           set -eu
+          upstream=flipperdevices/flipper-application-catalog
           fork=$GITHUB_REPOSITORY_OWNER/flipper-application-catalog
           prefix=$GITHUB_REPOSITORY_OWNER/f0_claude_remote_
           name=${GITHUB_REF_NAME#v}
@@ -75,12 +76,17 @@ jobs:
           # set -e ignores a failed substitution in a for list, which would then walk the error body.
           refs=$(gh api "repos/$fork/git/matching-refs/heads/$prefix" --jq '.[].ref')
           for ref in $refs; do
-              gh api --method DELETE "repos/$fork/git/$ref"
+              # The fork's token stays with the fork.
+              open=$(GH_TOKEN=$REPOSITORY_TOKEN gh api \
+                  "repos/$upstream/pulls?state=open&head=$GITHUB_REPOSITORY_OWNER:${ref#refs/heads/}" --jq length)
+              # Deleting the head of an open pull request closes it.
+              if [ "$open" -eq 0 ]; then
+                  gh api --method DELETE "repos/$fork/git/$ref"
+              fi
           done
 
           gh api "repos/$fork/git/refs" --silent -f ref="refs/heads/$prefix$name" -f sha="$main"
 
-          # The fork's token stays with the fork.
           commit=$(GH_TOKEN=$REPOSITORY_TOKEN gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_REF" --jq .sha)
 
           cat > manifest.yml <<EOF

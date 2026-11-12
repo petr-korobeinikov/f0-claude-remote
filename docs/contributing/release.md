@@ -39,7 +39,7 @@ then the tag checked against `fap_version`,
 the app built, and the Release drafted with its notes and `f0_claude_remote.fap`,
 then the `flipper-apps-catalog` job:
 the fork's `main` synced with the Flipper Apps Catalog's,
-the previous version's branch deleted,
+each earlier version's branch deleted unless a pull request is open from it,
 and `<owner>/f0_claude_remote_0.2` cut from `main`
 with `applications/Bluetooth/f0_claude_remote/manifest.yml`,
 its pull request opened by hand;
