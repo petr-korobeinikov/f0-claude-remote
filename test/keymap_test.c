@@ -141,6 +141,12 @@ static void test_fresh_keymap_has_no_link(void) {
     keymap_free(keymap);
 }
 
+static void test_fresh_keymap_is_on_bluetooth(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_link(keymap) == LinkBluetooth);
+    keymap_free(keymap);
+}
+
 static void test_link_up_ends_no_link(void) {
     Keymap* keymap = keymap_alloc();
     keymap_set_connected(keymap, true);
@@ -223,14 +229,38 @@ static void test_right_held_again_switches_back_and_forth(void) {
     Keymap* keymap = keymap_alloc();
     keymap_handle(keymap, KeymapKeyRight, KeymapEventPress);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventLong) == ActionUseUsb);
+    assert(keymap_link(keymap) == LinkUsb);
     keymap_handle(keymap, KeymapKeyRight, KeymapEventRelease);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionNone);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventLong) == ActionUseBluetooth);
     assert(keymap_mode(keymap) == ModeNoLink);
+    assert(keymap_link(keymap) == LinkBluetooth);
     keymap_handle(keymap, KeymapKeyRight, KeymapEventRelease);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionNone);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventLong) == ActionUseUsb);
     assert(keymap_mode(keymap) == ModeNoLink);
+    assert(keymap_link(keymap) == LinkUsb);
+    keymap_free(keymap);
+}
+
+static void test_link_stays_through_every_mode(void) {
+    Keymap* keymap = keymap_test_alloc_on_usb();
+    keymap_set_connected(keymap, true);
+    assert(keymap_mode(keymap) == ModeIdle);
+    assert(keymap_link(keymap) == LinkUsb);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventPress);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventLong);
+    assert(keymap_mode(keymap) == ModeVoice);
+    assert(keymap_link(keymap) == LinkUsb);
+    keymap_set_connected(keymap, false);
+    assert(keymap_mode(keymap) == ModeVoiceCut);
+    assert(keymap_link(keymap) == LinkUsb);
+    keymap_time_out(keymap);
+    assert(keymap_mode(keymap) == ModeStopped);
+    assert(keymap_link(keymap) == LinkUsb);
+    keymap_handle(keymap, KeymapKeyUp, KeymapEventPress);
+    assert(keymap_mode(keymap) == ModeNoLink);
+    assert(keymap_link(keymap) == LinkUsb);
     keymap_free(keymap);
 }
 
@@ -601,6 +631,7 @@ int main(void) {
     test_run(test_voice_ignores_every_other_event);
     test_run(test_buttons_act_again_after_voice);
     test_run(test_fresh_keymap_has_no_link);
+    test_run(test_fresh_keymap_is_on_bluetooth);
     test_run(test_link_up_ends_no_link);
     test_run(test_link_down_ends_idle);
     test_run(test_link_down_cuts_voice);
@@ -610,6 +641,7 @@ int main(void) {
     test_run(test_no_link_acts_only_on_held_back_or_right);
     test_run(test_right_held_on_no_link_takes_usb_once);
     test_run(test_right_held_again_switches_back_and_forth);
+    test_run(test_link_stays_through_every_mode);
     test_run(test_right_pressed_on_usb_stopped_returns_nothing);
     test_run(test_right_pressed_on_usb_idle_returns_nothing);
     test_run(test_right_held_elsewhere_on_usb_returns_nothing);

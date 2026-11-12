@@ -8,7 +8,8 @@
 
 typedef struct Screen Screen;
 
-Screen* screen_alloc(FuriEventLoop* event_loop, FuriMessageQueue* input_queue, Mode mode);
+Screen*
+    screen_alloc(FuriEventLoop* event_loop, FuriMessageQueue* input_queue, Mode mode, Link link);
 
 void screen_free(Screen* screen);
 

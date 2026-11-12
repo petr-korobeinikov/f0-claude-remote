@@ -10,7 +10,7 @@ static const uint32_t keymap_link_wait_ms = 60000;
 struct Keymap {
     Mode mode;
     bool pressed[KeymapKeyMAX];
-    bool on_usb;
+    Link link;
 };
 
 /* Esc acts on press: past the long press a slow one would otherwise do nothing. */
@@ -41,27 +41,37 @@ static const Mode keymap_link_down_modes[] = {
     [ModeStopped] = ModeStopped,
 };
 
+static const Link keymap_other_links[LinkMAX] = {
+    [LinkBluetooth] = LinkUsb,
+    [LinkUsb] = LinkBluetooth,
+};
+
+static const Action keymap_use_actions[LinkMAX] = {
+    [LinkBluetooth] = ActionUseBluetooth,
+    [LinkUsb] = ActionUseUsb,
+};
+
 static void keymap_forget_presses(Keymap* keymap) {
     memset(keymap->pressed, 0, sizeof(keymap->pressed));
 }
 
-static void keymap_set_screen(Keymap* keymap, Mode mode, bool on_usb) {
-    if(mode != keymap->mode || on_usb != keymap->on_usb) {
+static void keymap_set_screen(Keymap* keymap, Mode mode, Link link) {
+    if(mode != keymap->mode || link != keymap->link) {
         keymap->mode = mode;
-        keymap->on_usb = on_usb;
+        keymap->link = link;
         keymap_forget_presses(keymap);
     }
 }
 
 static void keymap_set_mode(Keymap* keymap, Mode mode) {
-    keymap_set_screen(keymap, mode, keymap->on_usb);
+    keymap_set_screen(keymap, mode, keymap->link);
 }
 
 Keymap* keymap_alloc(void) {
     Keymap* keymap = malloc(sizeof(Keymap));
     keymap->mode = ModeNoLink;
     keymap_forget_presses(keymap);
-    keymap->on_usb = false;
+    keymap->link = LinkBluetooth;
     return keymap;
 }
 
@@ -88,11 +98,6 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
         return ActionNone;
     }
 
-    if(key == KeymapKeyRight && event == KeymapEventLong && keymap->mode == ModeNoLink) {
-        keymap_set_screen(keymap, ModeNoLink, !keymap->on_usb);
-        return keymap->on_usb ? ActionUseUsb : ActionUseBluetooth;
-    }
-
     switch(keymap->mode) {
     case ModeIdle:
         if(action == ActionVoiceStart) {
@@ -111,6 +116,11 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
         }
         break;
     case ModeNoLink:
+        if(key == KeymapKeyRight && event == KeymapEventLong) {
+            Link link = keymap_other_links[keymap->link];
+            keymap_set_screen(keymap, ModeNoLink, link);
+            return keymap_use_actions[link];
+        }
         break;
     case ModeStopped:
         if(event != KeymapEventPress) {
@@ -147,4 +157,8 @@ uint32_t keymap_wait_ms(const Keymap* keymap) {
 
 Mode keymap_mode(const Keymap* keymap) {
     return keymap->mode;
+}
+
+Link keymap_link(const Keymap* keymap) {
+    return keymap->link;
 }

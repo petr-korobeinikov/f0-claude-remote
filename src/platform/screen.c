@@ -31,10 +31,11 @@ static void screen_flash_callback(void* context) {
     view_port_update(screen->view_port);
 }
 
-Screen* screen_alloc(FuriEventLoop* event_loop, FuriMessageQueue* input_queue, Mode mode) {
+Screen*
+    screen_alloc(FuriEventLoop* event_loop, FuriMessageQueue* input_queue, Mode mode, Link link) {
     Screen* screen = malloc(sizeof(Screen));
     screen->mode = mode;
-    screen->link = LinkBluetooth;
+    screen->link = link;
     screen->flash = ActionNone;
     screen->flash_timer = furi_event_loop_timer_alloc(
         event_loop, screen_flash_callback, FuriEventLoopTimerTypeOnce, screen);

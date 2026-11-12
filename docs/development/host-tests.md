@@ -29,7 +29,7 @@ A suite `test/<name>_test.c` is built with `src/core/<name>.c` and every `test/*
 - `main` runs each through `test_run` from `test/test.h`, which prints `ok <name>`;
 - code that sends keys gets a `Transport` from `transport_fake_alloc` in `test/transport_fake.h`,
   reads back each press and release with `transport_fake_count` and `transport_fake_event`,
-  and the link in use with `transport_fake_on_usb`.
+  and the link in use with `transport_fake_link`.
 
 A `.c` file under `test/` builds into no package, and lint checks it.
 

@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "action.h"
+#include "link.h"
 #include "mode.h"
 
 typedef enum {
@@ -40,3 +41,5 @@ Action keymap_time_out(Keymap* keymap);
 uint32_t keymap_wait_ms(const Keymap* keymap);
 
 Mode keymap_mode(const Keymap* keymap);
+
+Link keymap_link(const Keymap* keymap);

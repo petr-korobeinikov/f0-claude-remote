@@ -20,4 +20,4 @@ TransportFakeEvent transport_fake_event(const Transport* transport, size_t index
 
 bool transport_fake_offered(const Transport* transport);
 
-bool transport_fake_on_usb(const Transport* transport);
+Link transport_fake_link(const Transport* transport);

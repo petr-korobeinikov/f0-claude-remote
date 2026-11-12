@@ -36,6 +36,7 @@ and the platform supplies it, as `transport_hid.c` does.
 | `src/platform/keymap_input.h`, `src/platform/keymap_input.c` | Translates a firmware event for the keymap |
 | `src/platform/screen.h`, `src/platform/screen.c` | Keeps what the display shows |
 | `src/platform/transport_hid.h`, `src/platform/transport_hid.c` | Routes the core's keys to the link in use |
+| `src/platform/transport_link.h` | Names what `transport_hid.c` needs of a link |
 | `src/platform/transport_bluetooth.h`, `src/platform/transport_bluetooth.c` | Is the Mac's Bluetooth keyboard for its own life |
 | `src/platform/transport_usb.h`, `src/platform/transport_usb.c` | Is the Mac's USB keyboard for its own life |
 
@@ -49,8 +50,9 @@ and the platform supplies it, as `transport_hid.c` does.
 6. `transport_hid.c`: turns each key into its code, for the link in use.
 7. `transport_bluetooth.c` or `transport_usb.c`: puts the code into the link's report.
 
-`app.c` then hands the firmware's dolphin the deed `deed.c` names,
-buzzes as `feedback.c` says, has `screen.c` flash, and hands it the mode.
+Before step 5, `app.c` hands `screen.c` the mode and the link `keymap.c` holds.
+After step 7, it hands the firmware's dolphin the deed `deed.c` names,
+buzzes as `feedback.c` says, and has `screen.c` flash.
 
 The link takes the other queue:
 `transport_bluetooth.c`'s status callback, on the Bt thread,

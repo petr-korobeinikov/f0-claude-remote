@@ -32,10 +32,8 @@ static const DolphinDeed app_dolphin_deeds[DeedMAX] = {
 };
 
 static void app_perform(App* app, Action action) {
-    /* Before the switch, which holds this loop at least 700 ms: the board changes at once, and a
-     * wait of zero makes app_follow_wait start the 60 s afresh. */
+    /* A wait of zero makes app_follow_wait start the 60 s afresh. */
     if(action == ActionUseUsb || action == ActionUseBluetooth) {
-        screen_set_link(app->screen, action == ActionUseUsb ? LinkUsb : LinkBluetooth);
         app->wait_ms = 0;
     }
     actions_perform(app->transport, action);
@@ -71,11 +69,13 @@ static void app_follow_wait(App* app) {
     app->wait_ms = wait_ms;
 }
 
+/* The board goes first: a switch then holds this loop at least 700 ms. */
 static void app_settle(App* app, Action action) {
+    screen_set_mode(app->screen, keymap_mode(app->keymap));
+    screen_set_link(app->screen, keymap_link(app->keymap));
     if(action != ActionNone) {
         app_perform(app, action);
     }
-    screen_set_mode(app->screen, keymap_mode(app->keymap));
     app_follow_wait(app);
 }
 
@@ -123,8 +123,9 @@ App* app_alloc(void) {
     app->notification = furi_record_open(RECORD_NOTIFICATION);
     app->backlight = backlight_alloc();
     app->keymap = keymap_alloc();
-    app->screen = screen_alloc(app->event_loop, app->input_queue, keymap_mode(app->keymap));
-    app->transport = transport_hid_alloc(app->link_queue);
+    app->screen = screen_alloc(
+        app->event_loop, app->input_queue, keymap_mode(app->keymap), keymap_link(app->keymap));
+    app->transport = transport_hid_alloc(app->link_queue, keymap_link(app->keymap));
     app_follow_wait(app);
     return app;
 }

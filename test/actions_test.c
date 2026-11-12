@@ -129,11 +129,11 @@ static void test_start_over_offers_sending_nothing(void) {
 
 static void test_use_usb_switches_sending_nothing(void) {
     Transport* transport = transport_fake_alloc();
-    assert(!transport_fake_on_usb(transport));
+    assert(transport_fake_link(transport) == LinkBluetooth);
 
     actions_perform(transport, ActionUseUsb);
 
-    assert(transport_fake_on_usb(transport));
+    assert(transport_fake_link(transport) == LinkUsb);
     assert(transport_fake_count(transport) == 0);
     transport_fake_free(transport);
 }
@@ -144,7 +144,7 @@ static void test_use_bluetooth_switches_back_sending_nothing(void) {
 
     actions_perform(transport, ActionUseBluetooth);
 
-    assert(!transport_fake_on_usb(transport));
+    assert(transport_fake_link(transport) == LinkBluetooth);
     assert(transport_fake_count(transport) == 0);
     transport_fake_free(transport);
 }
