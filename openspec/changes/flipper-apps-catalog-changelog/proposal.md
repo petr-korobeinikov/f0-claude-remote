@@ -3,7 +3,7 @@
 ## Why
 
 The Flipper Apps Catalog's changelog lists a fix to the release workflow:
-`catalog/changelog.md:19`, `- Look up the tag's commit by its full ref`,
+`catalog/changelog.md:29`, `- Look up the tag's commit by its full ref`,
 is `76ab21a`, `fix(release)`, which changed one line of `.github/workflows/release.yml`
 and nothing the app ships.
 `catalog/cliff.toml:30` takes every `feat` and `fix`, whatever its scope.
@@ -12,9 +12,9 @@ the catalog's text ships with every release, so its change lands among the first
 
 Settled by the owner on 2026-11-10:
 
-- **The rule acts from `0.2`, and a section stays as its release wrote it:**
+- **The rule acts from `0.3`, and a section stays as its release wrote it:**
   a release puts its own section on top of the file,
-  not a regeneration of the whole file, which would take line 19 out of `v0.1:` too.
+  not a regeneration of the whole file, which would take line 29 out of `v0.1:` too.
   `v0.1:` keeps its 17 lines.
 
 Proposed here, for the owner to strike:
@@ -51,5 +51,5 @@ None.
 ## Impact
 
 `catalog/cliff.toml`, `.mise/tasks/release`, `openspec/config.yaml` and `docs/contributing/release.md`.
-`catalog/changelog.md` stays as it is until `0.2`;
+`catalog/changelog.md` stays as it is until `0.3`;
 `CHANGELOG.md`, `cliff.toml` and the app stay as they are.

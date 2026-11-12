@@ -11,7 +11,7 @@ the change lands in the release task and the Flipper Apps Catalog's git-cliff co
 | `76ab21a` changed `.github/workflows/release.yml` alone; the file's three earlier commits are `ci(release)` | `git log -- .github/workflows/release.yml` |
 | A parser's `message` regex reads the type and scope; a match ends the search unless `continue = true` | git-cliff docs, `configuration/git` |
 | `-p, --prepend [<PATH>]` prepends the entries to the given changelog file | `git-cliff --help`, 2.14.2 |
-| `--unreleased --tag v0.2` prints `v0.2:`'s section ending in a blank line, as `previous.version` is `v0.1` | seen on `develop`, 2026-11-10 |
+| `--unreleased --tag v0.3` prints `v0.3:`'s section ending in a blank line, as `previous.version` is `v0.2` | seen on `develop`, 2026-11-12 |
 | git-cliff drops a release left with no commit | `release`'s design, `changelog.rs:176` |
 
 ## Goals / Non-Goals

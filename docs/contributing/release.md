@@ -12,7 +12,8 @@ mise run release 0.2
 
 It starts `release/0.2`,
 sets `fap_version` in `application.fam`,
-regenerates `CHANGELOG.md` and `catalog/changelog.md` with git-cliff,
+regenerates `CHANGELOG.md` with git-cliff,
+puts the release's section on top of `catalog/changelog.md`,
 builds the app, and commits the three files as `chore: release 0.2`.
 Then it finishes the branch, which tags `v0.2`,
 returns to `develop`,
@@ -80,7 +81,12 @@ The `flipper-apps-catalog` job needs the owner's setup, once:
 
 ## Changelog
 
-`CHANGELOG.md` and `catalog/changelog.md` are git-cliff's output from `cliff.toml`,
+`CHANGELOG.md` is git-cliff's output from `cliff.toml`,
 written whole by the release commit and never edited by hand.
 A release's section lists each Conventional Commit since the previous tag once, grouped by type,
 and leaves out merges, the release commit and `chore(openspec)` commits.
+
+`catalog/changelog.md` gains each release's section on top, from `catalog/cliff.toml`,
+and keeps the sections below as their releases wrote them; it is never edited by hand either.
+A section lists one line per `feat` or `fix` commit since the previous tag, ungrouped,
+and leaves out those scoped `release`, as the release machinery ships nothing in the app.

@@ -13,14 +13,14 @@ or `- Internal changes only` when there is none.
 - **THEN** it is `v0.1:`, a blank line and one `- ` line per subject in the history matching `^(feat|fix)`
 
 #### Scenario: Next release
-- **WHEN** `0.2` is cut after `feat(view): draw the plate` and `fix(release): read the tag`
-- **THEN** the file opens with `v0.2:`, a blank line, `- Draw the plate` and a blank line,
-  followed by the file as `v0.1` left it
+- **WHEN** `0.3` is cut after `feat(view): draw the plate` and `fix(release): read the tag`
+- **THEN** the file opens with `v0.3:`, a blank line, `- Draw the plate` and a blank line,
+  followed by the file as `v0.2` left it
 
 #### Scenario: Release with neither
-- **WHEN** `0.2` is cut after a single `chore` commit
-- **THEN** the file opens with `v0.2:`, a blank line, `- Internal changes only` and a blank line,
-  followed by the file as `v0.1` left it
+- **WHEN** `0.3` is cut after a single `chore` commit
+- **THEN** the file opens with `v0.3:`, a blank line, `- Internal changes only` and a blank line,
+  followed by the file as `v0.2` left it
 
 #### Scenario: Rerun on a release commit
 - **WHEN** `mise exec -- git-cliff --config catalog/cliff.toml --current` runs with `v<name>` checked out

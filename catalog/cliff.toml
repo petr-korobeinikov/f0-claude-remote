@@ -27,6 +27,8 @@ topo_order = false
 sort_commits = "oldest"
 # Nothing is skipped: git-cliff drops a release left with no commit.
 commit_parsers = [
+  # The release machinery ships nothing in the .fap.
+  { message = '^(feat|fix)\(release\)', group = "hidden" },
   { message = "^(feat|fix)", group = "shown" },
   { message = ".*", group = "hidden" },
 ]

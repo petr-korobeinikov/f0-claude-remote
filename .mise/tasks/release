@@ -59,7 +59,7 @@ awk -v line="    fap_version=\"$name\"," '
 cat "$dir/application.fam" > application.fam
 
 git-cliff --tag "v$name" --output CHANGELOG.md
-git-cliff --config catalog/cliff.toml --tag "v$name" --output catalog/changelog.md
+git-cliff --config catalog/cliff.toml --unreleased --tag "v$name" --prepend catalog/changelog.md
 
 # The build is the one check the release commit can break.
 ufbt
