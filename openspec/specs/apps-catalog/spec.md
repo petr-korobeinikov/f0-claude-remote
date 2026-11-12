@@ -29,20 +29,27 @@ and link the site for pairing and keybindings.
   and links the site's `guide/pairing` and `guide/claude-code-setup` pages
 
 ### Requirement: The catalog changelog is generated
-`catalog/changelog.md` SHALL be git-cliff's output from `catalog/cliff.toml`, written whole by the release commit:
-every release newest first, as `v<name>:`, a blank line,
-and one `- ` line per `feat` or `fix` subject in its range, oldest first, type, scope and backticks dropped,
-or `- Internal changes only` when it has none.
+The release commit SHALL put git-cliff's section for its release, from `catalog/cliff.toml`, on top of `catalog/changelog.md`,
+and keep every section below it as committed.
+A section is `v<name>:`, a blank line,
+and one `- ` line per `feat` or `fix` commit in its range not scoped `release`, oldest first,
+its subject with type, scope and backticks dropped,
+or `- Internal changes only` when there is none.
 
 #### Scenario: First release
-- **WHEN** `0.1`'s release commit is made
-- **THEN** the file is `v0.1:`, a blank line and one `- ` line per subject in the history matching `^(feat|fix)`
+- **WHEN** the file is read at `v0.1`, written before `release`-scoped commits were left out
+- **THEN** it is `v0.1:`, a blank line and one `- ` line per subject in the history matching `^(feat|fix)`
+
+#### Scenario: Next release
+- **WHEN** `0.3` is cut after `feat(view): draw the plate` and `fix(release): read the tag`
+- **THEN** the file opens with `v0.3:`, a blank line, `- Draw the plate` and a blank line,
+  followed by the file as `v0.2` left it
 
 #### Scenario: Release with neither
-- **WHEN** `0.2` is cut after a single `chore` commit
-- **THEN** the file opens with `v0.2:`, a blank line and `- Internal changes only`,
-  then the `v0.1:` section, unchanged
+- **WHEN** `0.3` is cut after a single `chore` commit
+- **THEN** the file opens with `v0.3:`, a blank line, `- Internal changes only` and a blank line,
+  followed by the file as `v0.2` left it
 
 #### Scenario: Rerun on a release commit
-- **WHEN** `mise exec -- git-cliff --config catalog/cliff.toml --tag v<name> --output catalog/changelog.md` reruns on a release commit
-- **THEN** `git diff --exit-code catalog/changelog.md` exits 0
+- **WHEN** `mise exec -- git-cliff --config catalog/cliff.toml --current` runs with `v<name>` checked out
+- **THEN** the file opens with exactly what it prints

@@ -8,7 +8,8 @@ Cuts a release and publishes its GitHub Release.
 
 ### Requirement: The task cuts the release
 `mise run release <name>` on `develop` SHALL start `release/<name>`,
-write `fap_version="<name>"` into `application.fam`, regenerate `CHANGELOG.md` and `catalog/changelog.md`, build the app,
+write `fap_version="<name>"` into `application.fam`, regenerate `CHANGELOG.md`,
+put the release's section on top of `catalog/changelog.md`, build the app,
 commit those three files alone as `chore: release <name>`,
 finish the branch, which tags `v<name>`, return to `develop`,
 and push `main`, `develop` and the tag to `origin` atomically.
