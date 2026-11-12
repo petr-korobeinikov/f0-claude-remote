@@ -8,13 +8,13 @@ with a bond of its own that survives restarts and a radio handed back on leaving
 ## Requirements
 
 ### Requirement: The application is a keyboard of its own
-While the application is open on Bluetooth, the device SHALL advertise as a keyboard
+While the application offers the link on Bluetooth, the device SHALL advertise as a keyboard
 named `Claude Remote`,
 at an address and with a key file of its own,
 whatever the device's Bluetooth setting.
 
 #### Scenario: Name
-- **WHEN** the application is open and the Mac's Bluetooth settings are open
+- **WHEN** the application offers the link and the Mac's Bluetooth settings are open
 - **THEN** they list `Claude Remote`
 
 #### Scenario: Bluetooth off in the device's settings
