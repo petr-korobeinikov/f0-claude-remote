@@ -18,8 +18,13 @@ so fixes are best-effort.
 
 ## What the App Can Do
 
-To the Mac the device is a Bluetooth keyboard,
-paired once in the Mac's settings and confirmed on the device.
+To the Mac the device is a keyboard.
+Over Bluetooth it is paired once in the Mac's settings and confirmed on the device.
+Over USB nothing is paired:
+holding Right on `No link` makes it a keyboard to the computer at the cable's other end,
+named `Claude Remote` on Logitech's IDs `046D:C529`, the firmware's default;
+a Mac laptop with Apple silicon asks to allow it the first time,
+as [USB](https://petr-korobeinikov.github.io/f0-claude-remote/guide/usb/#what-the-mac-asks) says.
 A press acts on whatever the Mac has focused.
 The app has no lock yet,
 so a stray tap on OK can send a draft or approve a permission prompt,
