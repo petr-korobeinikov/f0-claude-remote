@@ -28,9 +28,10 @@ Decisions:
   and an event that token causes starts no workflow.
 - **The `github-pages` environment changes only if it refuses `main`,**
   not limited to `main` alone: the owner keeps repository settings as they are unless the fix needs one.
-- **The site goes back to `v0.1`'s pages now,** by a manual run of `docs.yml` on `main`,
-  not left on `develop`'s until `0.2`:
-  `0.1` is what the Release and the Flipper Apps Catalog give until then.
+- **The site is published from `main` now,** by a manual run of `docs.yml` on `main`,
+  not left until `0.3`'s release:
+  the run proves `github-pages` publishes from `main` before a release relies on it.
+  `0.2`, released 2026-11-11, put its text on the site already, from `develop`'s push (`c1a2c26`).
 - **`docs-deploy`'s Purpose is edited in its main spec directly,**
   as OpenSpec's spec instructions direct for an existing capability,
   not by a new capability replacing `docs-deploy`:
@@ -41,7 +42,7 @@ Decisions:
 
 - `docs.yml` publishes the site on each push to `main` instead of `develop`.
 - The `github-pages` environment admits `main`, if it does not yet.
-- A manual run of `docs.yml` on `main` puts `v0.1`'s pages on the site.
+- A manual run of `docs.yml` on `main` puts `v0.2`'s pages on the site.
 - `docs/contributing/` says the site comes from `main` and that a release publishes it.
 
 ## Capabilities

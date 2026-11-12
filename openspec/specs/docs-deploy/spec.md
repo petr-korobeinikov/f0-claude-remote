@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Publishes the documentation site on GitHub Pages from `develop`,
+Publishes the documentation site on GitHub Pages,
 with Pages' permissions held by the publishing job alone.
 
 ## Requirements

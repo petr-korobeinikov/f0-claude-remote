@@ -8,9 +8,9 @@ the change lands in the docs workflow, two contributor pages, `docs-deploy`'s Pu
 
 | Fact | Where |
 |---|---|
-| `main` is `v0.1`, `558cb3e`, and its `docs/guide/` holds no `usb.md` | `git rev-parse main 'v0.1^{commit}'`, `git ls-tree main docs/guide/`, 2026-11-11 |
+| `main` is `v0.2`, `4a5bf24`; its `docs/` is `origin/develop`'s, and `develop`'s `docs/development/host-tests.md:32` names `transport_fake_link` where `main`'s names `transport_fake_on_usb` | `git rev-parse main 'v0.2^{commit}'`, `git diff main origin/develop -- docs`, `git diff main develop -- docs`, 2026-11-12 |
 | Only `mise run release` moves `main`, in the push it ends on | `.mise/tasks/release:78`; `release` spec |
-| `v0.1`'s site builds with `develop`'s tools; only `zensical.toml`'s two USB pages differ | `git diff --stat v0.1 develop -- mise.toml mise.lock .mise zensical.toml docs/templates` |
+| `v0.2`'s site builds with `develop`'s tools; only `.mise/tasks/release` differs | `git diff --stat v0.2 develop -- mise.toml mise.lock .mise zensical.toml docs/templates` |
 | A `workflow_dispatch` runs only if its workflow is on the default branch; `--ref` picks the branch it runs on, with that branch's workflow | GitHub Docs, Manually running a workflow |
 | An environment a workflow creates has no protection rule; GitHub advises limiting `github-pages` to the default branch | GitHub Docs, Managing environments for deployment; Configuring a publishing source |
 | An event `GITHUB_TOKEN` causes starts no workflow, `workflow_dispatch` and `repository_dispatch` aside | GitHub Docs, Triggering a workflow |
@@ -70,11 +70,11 @@ with Pages' permissions held by the publishing job alone.
 ```
 
 Test seam: the published state is the only place the change shows.
-`gh api` reads the environment, `curl` reads the site,
-and `v0.1`'s pages differ from `develop`'s where USB came in: `guide/usb/` answers 404 on them.
+`gh api` reads the environment and the run, `curl` reads the site:
+the run's head is `main`'s commit, and `development/host-tests/index.md` names `transport_fake_on_usb`.
 `mise run docs-build` builds the edited pages.
 
 ## Risks / Trade-offs
 
-- `v0.1`'s `docs.yml` fails on today's runners → it takes `develop`'s tools, which build on every push (the facts).
+- `v0.2`'s `docs.yml` fails on today's runners → it takes `develop`'s tools, which build on every push (the facts).
 - The site shows a release's pages before its Release is published → `publish` ends that run, and a failed run is cut again under the same name (`docs/contributing/release.md`), which moves `main` again.

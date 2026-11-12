@@ -18,6 +18,7 @@ builds the app, and commits the three files as `chore: release 0.2`.
 Then it finishes the branch, which tags `v0.2`,
 returns to `develop`,
 and pushes `main`, `develop` and `v0.2` to `origin` in one atomic push.
+The push of `main` publishes the site, through `.github/workflows/docs.yml`.
 
 It refuses a name other than the latest tag's `MINOR` plus one,
 a branch other than `develop`, and a worktree that is not clean.

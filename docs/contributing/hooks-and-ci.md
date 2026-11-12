@@ -55,5 +55,8 @@ the runner image, with its `cc` and `gh`, stays unpinned.
 `mise run check-workflow` runs these jobs on the Mac through `act`,
 with no Docker socket, host network or GitHub token in their containers.
 
-`.github/workflows/docs.yml` builds the site on every push to `develop`
-and publishes it to GitHub Pages.
+`.github/workflows/docs.yml` builds the site on every push to `main`,
+which only a release makes,
+and publishes it to GitHub Pages,
+so the site shows the latest Release.
+A manual run publishes the branch it runs on, so it picks `main`.

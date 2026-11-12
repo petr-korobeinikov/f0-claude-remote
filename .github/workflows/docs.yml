@@ -2,7 +2,8 @@ name: docs
 
 on:
   push:
-    branches: [develop]
+    # main moves only with a release, so the site shows the latest Release.
+    branches: [main]
   workflow_dispatch:
 
 permissions:
