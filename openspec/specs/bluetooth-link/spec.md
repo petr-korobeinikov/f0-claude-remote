@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Makes the device the Mac's Bluetooth keyboard for as long as the application is open,
+Makes the device the Mac's Bluetooth keyboard, offered a minute at a time,
 with a bond of its own that survives restarts and a radio handed back on leaving.
 
 ## Requirements
