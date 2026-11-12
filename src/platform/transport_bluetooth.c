@@ -5,7 +5,7 @@
 #include <furi_hal_bt.h>
 #include <storage/storage.h>
 
-#define TRANSPORT_BLUETOOTH_NVM_MS 200
+static const uint32_t transport_bluetooth_nvm_ms = 200;
 
 struct TransportBluetooth {
     Bt* bt;
@@ -39,7 +39,7 @@ TransportBluetooth* transport_bluetooth_alloc(FuriMessageQueue* link_queue) {
 
     /* The stock order, hid.c:200-239: the second core writes its NVM after a disconnect. */
     bt_disconnect(bluetooth->bt);
-    furi_delay_ms(TRANSPORT_BLUETOOTH_NVM_MS);
+    furi_delay_ms(transport_bluetooth_nvm_ms);
     bt_keys_storage_set_storage_path(bluetooth->bt, APP_DATA_PATH(".bt_hid.keys"));
     bluetooth->profile =
         bt_profile_start(bluetooth->bt, &bluetooth->profile_template, &transport_bluetooth_params);
@@ -53,7 +53,7 @@ TransportBluetooth* transport_bluetooth_alloc(FuriMessageQueue* link_queue) {
 void transport_bluetooth_free(TransportBluetooth* bluetooth) {
     bt_set_status_changed_callback(bluetooth->bt, NULL, NULL);
     bt_disconnect(bluetooth->bt);
-    furi_delay_ms(TRANSPORT_BLUETOOTH_NVM_MS);
+    furi_delay_ms(transport_bluetooth_nvm_ms);
     bt_keys_storage_set_default_path(bluetooth->bt);
     furi_check(bt_profile_restore_default(bluetooth->bt));
     furi_record_close(RECORD_BT);

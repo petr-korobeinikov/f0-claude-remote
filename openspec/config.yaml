@@ -109,6 +109,11 @@ context: |
   rules are Flipper's: `CODING_STYLE.md` for names, its `.clang-format` for
   the look, and `.editorconfig` holds what an editor can enforce.
 
+  A named constant is a `static const` of its type, since a `#define` is
+  text with no type of its own. A `#define` names a constant only where C
+  requires an integer constant expression, which a `const` object is not,
+  as an array's length.
+
   One file, one screen of code, one task, stated in one sentence with no
   "and". Outgrowing a screen is a signal to look for the seam, never a license
   to split by moving code to a second file. Linters and numeric limits are
