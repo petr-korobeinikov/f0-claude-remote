@@ -54,7 +54,8 @@ void actions_perform(Transport* transport, Action action) {
     case ActionUseBluetooth:
         transport_use(transport, LinkBluetooth);
         break;
-    default:
+    case ActionNone:
+    case ActionExit:
         break;
     }
 }

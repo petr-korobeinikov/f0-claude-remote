@@ -110,6 +110,11 @@ context: |
   rules are Flipper's: `CODING_STYLE.md` for names, its `.clang-format` for
   the look, and `.editorconfig` holds what an editor can enforce.
 
+  A `switch` over an enum names every enumerator and has no `default:`:
+  both builds run `-Wall -Werror`, so `-Wswitch` stops them at an
+  enumerator a switch leaves out. What a function returns for a value no
+  case names follows the switch.
+
   A named constant is a `static const` of its type, since a `#define` is
   text with no type of its own. A `#define` names a constant only where C
   requires an integer constant expression, which a `const` object is not,

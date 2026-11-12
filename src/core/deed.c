@@ -6,7 +6,20 @@ Deed deed_earned(Action action) {
         return DeedDictation;
     case ActionClear:
         return DeedClear;
-    default:
-        return DeedNone;
+    case ActionNone:
+    case ActionEnter:
+    case ActionArrowUp:
+    case ActionArrowDown:
+    case ActionEsc:
+    case ActionEffortHigh:
+    case ActionEffortMax:
+    case ActionVoiceStop:
+    case ActionExit:
+    case ActionGiveUp:
+    case ActionStartOver:
+    case ActionUseUsb:
+    case ActionUseBluetooth:
+        break;
     }
+    return DeedNone;
 }

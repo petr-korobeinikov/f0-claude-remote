@@ -109,7 +109,14 @@ static void view_idle_draw_flash(Canvas* canvas, Action flash) {
     case ActionEsc:
         canvas_draw_box(canvas, 93, 34, 26, 9);
         break;
-    default:
+    case ActionNone:
+    case ActionVoiceStart:
+    case ActionVoiceStop:
+    case ActionExit:
+    case ActionGiveUp:
+    case ActionStartOver:
+    case ActionUseUsb:
+    case ActionUseBluetooth:
         break;
     }
     canvas_set_color(canvas, ColorBlack);
