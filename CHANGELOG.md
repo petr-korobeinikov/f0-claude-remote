@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.3 — 2026-11-13
+
+### 🚜 Refactor
+
+- *(bluetooth)* Give the nvm wait a type (`932c756`)
+- *(link)* Hold the link in the keymap (`916b426`)
+- Name every action in switches over Action (`63c8fa3`)
+- *(keymap)* Answer a link report in a switch over Mode (`4bd210b`)
+- *(keymap)* Hold the wait's restart rule (`45611df`)
+- *(view)* Keep what a link shows in a table (`43b23ec`)
+- *(display)* Hold the backlight's rule (`32a40c2`)
+- *(transport)* Follow the keymap's link (`4201fc7`)
+
+### 📚 Documentation
+
+- *(security)* Name the usb link (`429f647`)
+- *(bluetooth-link)* Hold advertising to the offer (`da428b5`)
+- Adopt the template's develop-first workflow (`1cd45b4`)
+- *(pairing)* Hold the radio only on bluetooth (`cb3059f`)
+- *(openspec)* Fill out two spec purposes (`5a92901`)
+
+### 🧪 Testing
+
+- *(deed)* Pin the deed of every action (`ba89d3b`)
+
+### 🏗️ Build & CI
+
+- *(release)* Keep a fork branch with an open pull request (`4feb253`)
+- *(release)* Prepend each release to the catalog changelog (`9abb2ef`)
+- *(docs)* Publish the site from main (`edaeaff`)
+- Check the sources with clang-tidy (`2418317`)
+- *(clang-tidy)* Query the compiler the build ran (`2cd3b17`)
+
 ## 0.2 — 2026-11-11
 
 ### 🚀 Features

@@ -1,3 +1,7 @@
+v0.3:
+
+- Internal changes only
+
 v0.2:
 
 - Earn the dolphin xp for dictations and /clear
