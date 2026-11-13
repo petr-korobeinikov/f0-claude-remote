@@ -36,12 +36,30 @@ then offer the latest Release's `.fap` and the source, each with its update and 
   and the source runs `mise trust`, `mise install`, `mise run setup` and `mise run launch`
 
 ### Requirement: Pairing is written down
-`docs/guide/pairing.md` SHALL hold the README's pairing steps and what follows them:
-reconnecting, pairing again, and the radio while the app is open.
+`docs/guide/pairing.md` SHALL hold the pairing steps, moved from the README, and what follows them:
+reconnecting, pairing again, and the radio, held only while the app is on Bluetooth.
 
 #### Scenario: Moved
-- **WHEN** both files are read
-- **THEN** the page holds each statement of the README's `### Pairing` before this change, and the README none
+- **WHEN** `README.md` is read
+- **THEN** it holds none of the page's steps
+
+#### Scenario: Steps
+- **WHEN** the page is read
+- **THEN** it holds, in order, `mise run launch` not over the open Apps browser, a press if `Reconnect stopped` shows,
+  Connect on `Claude Remote` in the Mac's Bluetooth settings, OK in `Verify code`
+  and closing Keyboard Setup Assistant
+
+#### Scenario: After pairing
+- **WHEN** the page is read
+- **THEN** it says the Mac connects by itself within a second of a drop,
+  the app reconnects with no press when it opens again,
+  past a minute with no link the device needs a press on `Reconnect stopped`,
+  and pairing again starts by forgetting the device on the Mac
+
+#### Scenario: The radio
+- **WHEN** the page is read
+- **THEN** it says the app holds the radio while on Bluetooth, so the phone app's connection waits,
+  and hands it back on taking USB or leaving, the device's Bluetooth then standing as its setting says
 
 ### Requirement: Claude Code setup gives the block
 `docs/guide/claude-code-setup.md` SHALL give the `keybindings.json` block, where that file lives,

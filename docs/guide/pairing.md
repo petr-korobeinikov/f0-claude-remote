@@ -33,7 +33,7 @@ Past a minute with no link, the device needs a press first, on `Reconnect stoppe
 To pair again, forget the device on the Mac first.
 Connecting then shows `Verify code` again.
 
-While the app is open it holds the radio,
+While the app is on Bluetooth it holds the radio,
 so the phone app's connection waits.
-On leaving, it hands the radio back,
+On taking [USB](usb.md) or leaving, it hands the radio back,
 and the device's Bluetooth stands as its setting says.
