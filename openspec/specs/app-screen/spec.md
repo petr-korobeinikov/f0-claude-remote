@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Shows the remote's one screen.
+Shows the remote's one screen: the link's status and every button's action, with boards of their own for voice, a voice cut by the link, a stopped offer and USB.
 
 ## Requirements
 

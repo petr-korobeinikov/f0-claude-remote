@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Cuts a release and publishes its GitHub Release.
+Cuts a release by one command on `develop` and publishes its GitHub Release from the pushed tag, a draft until every job has passed.
 
 ## Requirements
 
