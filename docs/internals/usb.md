@@ -112,7 +112,7 @@ so a drop during voice leaves no Ctrl+Q behind, as over Bluetooth.
 ## The 60 s, counted afresh
 
 Each hold starts the 60 s again:
-`app.c` zeroes its wait, and starting the timer restarts it
+`keymap.c` answers the switch with a start, and starting the timer restarts it
 (documented: [`event_loop_timer.h`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/furi/core/event_loop_timer.h#L69-L74)).
 The stop came 60.43 s after the hold on USB and 60.49 s after it on Bluetooth
 (seen: [usb-transport, tasks 4.2 and 4.3](https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/openspec/changes/archive/2026-11-09-usb-transport/tasks.md)).

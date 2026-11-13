@@ -11,6 +11,7 @@ struct Keymap {
     Mode mode;
     bool pressed[KeymapKeyMAX];
     Link link;
+    KeymapWait wait;
 };
 
 /* Esc acts on press: past the long press a slow one would otherwise do nothing. */
@@ -33,12 +34,39 @@ static const Action keymap_use_actions[LinkMAX] = {
     [LinkUsb] = ActionUseUsb,
 };
 
+static uint32_t keymap_mode_wait_ms(Mode mode) {
+    switch(mode) {
+    case ModeNoLink:
+    case ModeVoiceCut:
+        return keymap_link_wait_ms;
+    case ModeIdle:
+    case ModeVoice:
+    case ModeStopped:
+        break;
+    }
+    return 0;
+}
+
+static KeymapWait keymap_wait_entering(const Keymap* keymap, Mode mode, Link link) {
+    bool waited = keymap_mode_wait_ms(keymap->mode) > 0;
+    bool waits = keymap_mode_wait_ms(mode) > 0;
+
+    if(waits && (!waited || link != keymap->link)) {
+        return KeymapWaitStart;
+    }
+    if(waited && !waits) {
+        return KeymapWaitStop;
+    }
+    return KeymapWaitKeep;
+}
+
 static void keymap_forget_presses(Keymap* keymap) {
     memset(keymap->pressed, 0, sizeof(keymap->pressed));
 }
 
 static void keymap_set_screen(Keymap* keymap, Mode mode, Link link) {
     if(mode != keymap->mode || link != keymap->link) {
+        keymap->wait = keymap_wait_entering(keymap, mode, link);
         keymap->mode = mode;
         keymap->link = link;
         keymap_forget_presses(keymap);
@@ -54,6 +82,7 @@ Keymap* keymap_alloc(void) {
     keymap->mode = ModeNoLink;
     keymap_forget_presses(keymap);
     keymap->link = LinkBluetooth;
+    keymap->wait = KeymapWaitStart;
     return keymap;
 }
 
@@ -62,6 +91,8 @@ void keymap_free(Keymap* keymap) {
 }
 
 Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
+    keymap->wait = KeymapWaitKeep;
+
     bool ok_released = key == KeymapKeyOk && event == KeymapEventRelease;
     bool gesture = event == KeymapEventShort || event == KeymapEventLong;
     Action action = keymap_actions[key][event];
@@ -121,6 +152,8 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
 /* ModeStopped stays: stopping waits for the radio to go idle (furi_hal_bt.c:261-267), and stopping
  * reports a link down itself (bt.c:312), so a report read there is stale. */
 Action keymap_set_connected(Keymap* keymap, bool connected) {
+    keymap->wait = KeymapWaitKeep;
+
     switch(keymap->mode) {
     case ModeIdle:
         if(!connected) {
@@ -146,6 +179,8 @@ Action keymap_set_connected(Keymap* keymap, bool connected) {
 }
 
 Action keymap_time_out(Keymap* keymap) {
+    keymap->wait = KeymapWaitKeep;
+
     if(keymap_wait_ms(keymap) == 0) {
         return ActionNone;
     }
@@ -153,8 +188,12 @@ Action keymap_time_out(Keymap* keymap) {
     return ActionGiveUp;
 }
 
+KeymapWait keymap_wait(const Keymap* keymap) {
+    return keymap->wait;
+}
+
 uint32_t keymap_wait_ms(const Keymap* keymap) {
-    return keymap->mode == ModeNoLink || keymap->mode == ModeVoiceCut ? keymap_link_wait_ms : 0;
+    return keymap_mode_wait_ms(keymap->mode);
 }
 
 Mode keymap_mode(const Keymap* keymap) {

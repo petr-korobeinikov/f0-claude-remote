@@ -17,7 +17,6 @@ struct App {
     FuriMessageQueue* input_queue;
     FuriMessageQueue* link_queue;
     FuriEventLoopTimer* wait_timer;
-    uint32_t wait_ms;
     NotificationApp* notification;
     Backlight* backlight;
     Keymap* keymap;
@@ -32,10 +31,6 @@ static const DolphinDeed app_dolphin_deeds[DeedMAX] = {
 };
 
 static void app_perform(App* app, Action action) {
-    /* A wait of zero makes app_follow_wait start the 60 s afresh. */
-    if(action == ActionUseUsb || action == ActionUseBluetooth) {
-        app->wait_ms = 0;
-    }
     actions_perform(app->transport, action);
     Deed deed = deed_earned(action);
     if(deed != DeedNone) {
@@ -56,17 +51,18 @@ static void app_perform(App* app, Action action) {
     }
 }
 
-/* Not furi_event_loop_timer_is_running: it reads stale while a stop waits in the timer's queue
- * (event_loop_timer.c:89-113), so a report right after one would skip the start. And not a restart
- * on each report: a link-down report repeats, and stopping sends one itself (bt.c:312). */
 static void app_follow_wait(App* app) {
-    uint32_t wait_ms = keymap_wait_ms(app->keymap);
-    if(wait_ms == 0) {
+    switch(keymap_wait(app->keymap)) {
+    case KeymapWaitStart:
+        furi_event_loop_timer_start(
+            app->wait_timer, furi_ms_to_ticks(keymap_wait_ms(app->keymap)));
+        break;
+    case KeymapWaitStop:
         furi_event_loop_timer_stop(app->wait_timer);
-    } else if(app->wait_ms == 0) {
-        furi_event_loop_timer_start(app->wait_timer, furi_ms_to_ticks(wait_ms));
+        break;
+    case KeymapWaitKeep:
+        break;
     }
-    app->wait_ms = wait_ms;
 }
 
 /* The board goes first: a switch then holds this loop at least 700 ms. */
@@ -119,7 +115,6 @@ App* app_alloc(void) {
         app->event_loop, app->link_queue, FuriEventLoopEventIn, app_link_callback, app);
     app->wait_timer = furi_event_loop_timer_alloc(
         app->event_loop, app_wait_callback, FuriEventLoopTimerTypeOnce, app);
-    app->wait_ms = 0;
     app->notification = furi_record_open(RECORD_NOTIFICATION);
     app->backlight = backlight_alloc();
     app->keymap = keymap_alloc();

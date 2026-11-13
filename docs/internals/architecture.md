@@ -60,7 +60,7 @@ or `transport_usb.c`'s, in the USB interrupt, puts `true` or `false` on the link
 and `app.c` hands it to `keymap.c`,
 whose answer `actions.c` sends as a press's would be.
 
-The wait takes a timer in `app.c`, which follows `keymap.c`'s `keymap_wait_ms` after every event.
+The wait takes a timer in `app.c`, started and stopped as `keymap.c`'s `keymap_wait` answers after every event.
 Its end goes to `keymap.c` too, whose answer `actions.c` turns into withdrawing the link,
 and `app.c` has `backlight.c` go dark.
 

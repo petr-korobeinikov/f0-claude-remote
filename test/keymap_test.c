@@ -579,6 +579,135 @@ static void test_press_during_wait_changes_nothing(void) {
     keymap_free(keymap);
 }
 
+static void test_opening_starts_the_wait(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_free(keymap);
+}
+
+static void test_drop_starts_the_wait(void) {
+    Keymap* keymap = keymap_test_alloc_connected();
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_set_connected(keymap, false);
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_free(keymap);
+
+    keymap = keymap_test_alloc_voice();
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_set_connected(keymap, false);
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_free(keymap);
+}
+
+static void test_starting_over_starts_the_wait(void) {
+    Keymap* keymap = keymap_test_alloc_stopped();
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_handle(keymap, KeymapKeyUp, KeymapEventPress);
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_free(keymap);
+}
+
+static void test_each_switch_starts_the_wait_afresh(void) {
+    Keymap* keymap = keymap_alloc();
+    keymap_handle(keymap, KeymapKeyRight, KeymapEventPress);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_handle(keymap, KeymapKeyRight, KeymapEventLong);
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_handle(keymap, KeymapKeyRight, KeymapEventRelease);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_handle(keymap, KeymapKeyRight, KeymapEventPress);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_handle(keymap, KeymapKeyRight, KeymapEventLong);
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_free(keymap);
+}
+
+static void test_link_up_stops_the_wait(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_set_connected(keymap, true);
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_free(keymap);
+
+    keymap = keymap_test_alloc_voice_cut();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_set_connected(keymap, true);
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_free(keymap);
+}
+
+static void test_wait_end_stops_the_wait(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_time_out(keymap);
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_free(keymap);
+}
+
+static void test_presses_with_no_link_keep_the_wait(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    for(KeymapKey key = KeymapKeyUp; key < KeymapKeyMAX; key++) {
+        for(KeymapEvent event = KeymapEventPress; event < KeymapEventMAX; event++) {
+            if(key != KeymapKeyRight || event != KeymapEventLong) {
+                keymap_handle(keymap, key, event);
+                assert(keymap_wait(keymap) == KeymapWaitKeep);
+            }
+        }
+    }
+    keymap_free(keymap);
+}
+
+static void test_ok_released_after_cut_keeps_the_wait(void) {
+    Keymap* keymap = keymap_test_alloc_voice_cut();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventRelease);
+    assert(keymap_mode(keymap) == ModeNoLink);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_free(keymap);
+}
+
+static void test_repeated_link_down_keeps_the_wait(void) {
+    Keymap* keymap = keymap_alloc();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_set_connected(keymap, false);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_free(keymap);
+
+    keymap = keymap_test_alloc_voice_cut();
+    assert(keymap_wait(keymap) == KeymapWaitStart);
+    keymap_set_connected(keymap, false);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_free(keymap);
+}
+
+static void test_events_with_a_link_keep_the_wait(void) {
+    Keymap* keymap = keymap_test_alloc_connected();
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_time_out(keymap);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_set_connected(keymap, true);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventPress);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventLong);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_handle(keymap, KeymapKeyOk, KeymapEventRelease);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_free(keymap);
+}
+
+static void test_events_once_stopped_keep_the_wait(void) {
+    Keymap* keymap = keymap_test_alloc_stopped();
+    assert(keymap_wait(keymap) == KeymapWaitStop);
+    keymap_set_connected(keymap, true);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_set_connected(keymap, false);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_time_out(keymap);
+    assert(keymap_wait(keymap) == KeymapWaitKeep);
+    keymap_free(keymap);
+}
+
 static void test_started_over_on_a_cable_sends_nothing(void) {
     static const struct {
         KeymapKey key;
@@ -675,6 +804,17 @@ int main(void) {
     test_run(test_starting_over_waits_again);
     test_run(test_wait_runs_only_while_offering_with_no_link);
     test_run(test_press_during_wait_changes_nothing);
+    test_run(test_opening_starts_the_wait);
+    test_run(test_drop_starts_the_wait);
+    test_run(test_starting_over_starts_the_wait);
+    test_run(test_each_switch_starts_the_wait_afresh);
+    test_run(test_link_up_stops_the_wait);
+    test_run(test_wait_end_stops_the_wait);
+    test_run(test_presses_with_no_link_keep_the_wait);
+    test_run(test_ok_released_after_cut_keeps_the_wait);
+    test_run(test_repeated_link_down_keeps_the_wait);
+    test_run(test_events_with_a_link_keep_the_wait);
+    test_run(test_events_once_stopped_keep_the_wait);
     test_run(test_started_over_on_a_cable_sends_nothing);
     test_run(test_tap_through_link_return_does_nothing);
     test_run(test_back_held_through_drop_exits);
