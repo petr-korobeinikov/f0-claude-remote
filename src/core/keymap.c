@@ -29,11 +29,6 @@ static const Link keymap_other_links[LinkMAX] = {
     [LinkUsb] = LinkBluetooth,
 };
 
-static const Action keymap_use_actions[LinkMAX] = {
-    [LinkBluetooth] = ActionUseBluetooth,
-    [LinkUsb] = ActionUseUsb,
-};
-
 static uint32_t keymap_mode_wait_ms(Mode mode) {
     switch(mode) {
     case ModeNoLink:
@@ -130,9 +125,7 @@ Action keymap_handle(Keymap* keymap, KeymapKey key, KeymapEvent event) {
         break;
     case ModeNoLink:
         if(key == KeymapKeyRight && event == KeymapEventLong) {
-            Link link = keymap_other_links[keymap->link];
-            keymap_set_screen(keymap, ModeNoLink, link);
-            return keymap_use_actions[link];
+            keymap_set_screen(keymap, ModeNoLink, keymap_other_links[keymap->link]);
         }
         break;
     case ModeStopped:

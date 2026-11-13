@@ -1,7 +1,5 @@
 #pragma once
 
-#include "link.h"
-
 typedef enum {
     TransportKeyArrowDown,
     TransportKeyArrowUp,
@@ -23,5 +21,3 @@ void transport_release(Transport* transport, TransportKey key);
 void transport_offer(Transport* transport);
 
 void transport_withdraw(Transport* transport);
-
-void transport_use(Transport* transport, Link link);

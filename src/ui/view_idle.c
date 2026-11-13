@@ -115,8 +115,6 @@ static void view_idle_draw_flash(Canvas* canvas, Action flash) {
     case ActionExit:
     case ActionGiveUp:
     case ActionStartOver:
-    case ActionUseUsb:
-    case ActionUseBluetooth:
         break;
     }
     canvas_set_color(canvas, ColorBlack);

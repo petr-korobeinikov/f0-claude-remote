@@ -51,7 +51,8 @@ and the platform supplies it, as `transport_hid.c` does.
 6. `transport_hid.c`: turns each key into its code, for the link in use.
 7. `transport_bluetooth.c` or `transport_usb.c`: puts the code into the link's report.
 
-Before step 5, `app.c` hands `screen.c` the mode and the link `keymap.c` holds.
+Before step 5, `app.c` hands `screen.c` the mode and the link `keymap.c` holds,
+then `transport_hid.c` that link, which switches to it unless it is the one in use.
 After step 7, it hands the firmware's dolphin the deed `deed.c` names,
 buzzes as `feedback.c` says, and has `screen.c` flash.
 

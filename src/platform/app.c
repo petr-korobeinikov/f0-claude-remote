@@ -67,6 +67,7 @@ static void app_follow_wait(App* app) {
 static void app_settle(App* app, Action action) {
     screen_set_mode(app->screen, keymap_mode(app->keymap));
     screen_set_link(app->screen, keymap_link(app->keymap));
+    transport_hid_set_link(app->transport, keymap_link(app->keymap));
     if(action != ActionNone) {
         app_perform(app, action);
     }

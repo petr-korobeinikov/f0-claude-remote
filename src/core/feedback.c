@@ -16,8 +16,6 @@ bool feedback_vibrates(Action action) {
     case ActionExit:
     case ActionGiveUp:
     case ActionStartOver:
-    case ActionUseUsb:
-    case ActionUseBluetooth:
         break;
     }
     return false;
@@ -41,8 +39,6 @@ uint32_t feedback_flash_ms(Action action) {
     case ActionExit:
     case ActionGiveUp:
     case ActionStartOver:
-    case ActionUseUsb:
-    case ActionUseBluetooth:
         break;
     }
     return 0;

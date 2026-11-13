@@ -48,12 +48,6 @@ void actions_perform(Transport* transport, Action action) {
     case ActionStartOver:
         transport_offer(transport);
         break;
-    case ActionUseUsb:
-        transport_use(transport, LinkUsb);
-        break;
-    case ActionUseBluetooth:
-        transport_use(transport, LinkBluetooth);
-        break;
     case ActionNone:
     case ActionExit:
         break;

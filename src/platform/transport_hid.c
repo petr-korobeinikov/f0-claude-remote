@@ -48,6 +48,16 @@ void transport_hid_free(Transport* transport) {
     free(transport);
 }
 
+/* A Connected that one link left queued would read as the other's. */
+void transport_hid_set_link(Transport* transport, Link link) {
+    if(transport_hid_links[link] == transport->link) {
+        return;
+    }
+    transport_hid_close(transport);
+    furi_message_queue_reset(transport->link_queue);
+    transport_hid_open(transport, link);
+}
+
 void transport_press(Transport* transport, TransportKey key) {
     transport->link->press(transport->instance, transport_hid_keys[key]);
 }
@@ -62,11 +72,4 @@ void transport_offer(Transport* transport) {
 
 void transport_withdraw(Transport* transport) {
     transport->link->withdraw(transport->instance);
-}
-
-/* A Connected that one link left queued would read as the other's. */
-void transport_use(Transport* transport, Link link) {
-    transport_hid_close(transport);
-    furi_message_queue_reset(transport->link_queue);
-    transport_hid_open(transport, link);
 }

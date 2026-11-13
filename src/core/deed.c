@@ -17,8 +17,6 @@ Deed deed_earned(Action action) {
     case ActionExit:
     case ActionGiveUp:
     case ActionStartOver:
-    case ActionUseUsb:
-    case ActionUseBluetooth:
         break;
     }
     return DeedNone;

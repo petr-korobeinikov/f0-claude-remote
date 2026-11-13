@@ -127,28 +127,6 @@ static void test_start_over_offers_sending_nothing(void) {
     transport_fake_free(transport);
 }
 
-static void test_use_usb_switches_sending_nothing(void) {
-    Transport* transport = transport_fake_alloc();
-    assert(transport_fake_link(transport) == LinkBluetooth);
-
-    actions_perform(transport, ActionUseUsb);
-
-    assert(transport_fake_link(transport) == LinkUsb);
-    assert(transport_fake_count(transport) == 0);
-    transport_fake_free(transport);
-}
-
-static void test_use_bluetooth_switches_back_sending_nothing(void) {
-    Transport* transport = transport_fake_alloc();
-    actions_perform(transport, ActionUseUsb);
-
-    actions_perform(transport, ActionUseBluetooth);
-
-    assert(transport_fake_link(transport) == LinkBluetooth);
-    assert(transport_fake_count(transport) == 0);
-    transport_fake_free(transport);
-}
-
 int main(void) {
     test_run(test_enter_sends_enter);
     test_run(test_arrow_up_sends_arrow_up);
@@ -162,7 +140,5 @@ int main(void) {
     test_run(test_none_and_exit_send_nothing);
     test_run(test_give_up_withdraws_sending_nothing);
     test_run(test_start_over_offers_sending_nothing);
-    test_run(test_use_usb_switches_sending_nothing);
-    test_run(test_use_bluetooth_switches_back_sending_nothing);
     return 0;
 }

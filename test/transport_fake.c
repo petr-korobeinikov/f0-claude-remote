@@ -9,7 +9,6 @@ struct Transport {
     TransportFakeEvent events[TRANSPORT_FAKE_EVENTS];
     size_t count;
     bool offered;
-    Link link;
 };
 
 static void transport_fake_record(Transport* transport, TransportKey key, bool pressed) {
@@ -24,7 +23,6 @@ Transport* transport_fake_alloc(void) {
     assert(transport);
     transport->count = 0;
     transport->offered = true;
-    transport->link = LinkBluetooth;
     return transport;
 }
 
@@ -45,10 +43,6 @@ bool transport_fake_offered(const Transport* transport) {
     return transport->offered;
 }
 
-Link transport_fake_link(const Transport* transport) {
-    return transport->link;
-}
-
 void transport_press(Transport* transport, TransportKey key) {
     transport_fake_record(transport, key, true);
 }
@@ -63,8 +57,4 @@ void transport_offer(Transport* transport) {
 
 void transport_withdraw(Transport* transport) {
     transport->offered = false;
-}
-
-void transport_use(Transport* transport, Link link) {
-    transport->link = link;
 }
