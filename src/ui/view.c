@@ -4,8 +4,32 @@
 
 #include "view_idle.h"
 
+typedef struct {
+    const Icon* mark;
+    const Icon* no_link_mark;
+    const char* no_link_message;
+    const Icon* switch_mark;
+} ViewLink;
+
+static const ViewLink view_links[LinkMAX] = {
+    [LinkBluetooth] =
+        {
+            .mark = &I_bluetooth,
+            .no_link_mark = &I_bluetooth_off,
+            .no_link_message = "Reconnecting...",
+            .switch_mark = &I_usb,
+        },
+    [LinkUsb] =
+        {
+            .mark = &I_usb,
+            .no_link_mark = &I_usb_off,
+            .no_link_message = "Connect the cable",
+            .switch_mark = &I_bluetooth,
+        },
+};
+
 static void view_draw_status_row(Canvas* canvas, Link link) {
-    canvas_draw_icon(canvas, 2, 1, link == LinkUsb ? &I_usb : &I_bluetooth);
+    canvas_draw_icon(canvas, 2, 1, view_links[link].mark);
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str(canvas, 12, 9, "Connected");
     canvas_draw_line(canvas, 0, 12, 127, 12);
@@ -24,7 +48,7 @@ static void view_draw_voice(Canvas* canvas, Link link) {
 }
 
 static void view_draw_no_link_status_row(Canvas* canvas, Link link) {
-    canvas_draw_icon(canvas, 2, 1, link == LinkUsb ? &I_usb_off : &I_bluetooth_off);
+    canvas_draw_icon(canvas, 2, 1, view_links[link].no_link_mark);
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str(canvas, 15, 9, "No link");
     canvas_draw_line(canvas, 0, 12, 127, 12);
@@ -32,11 +56,8 @@ static void view_draw_no_link_status_row(Canvas* canvas, Link link) {
 
 static void view_draw_no_link(Canvas* canvas, Link link, int32_t hint_x, const char* hint) {
     view_draw_no_link_status_row(canvas, link);
-    if(link == LinkUsb) {
-        canvas_draw_str_aligned(canvas, 64, 28, AlignCenter, AlignBottom, "Connect the cable");
-    } else {
-        canvas_draw_str(canvas, 27, 28, "Reconnecting...");
-    }
+    canvas_draw_str_aligned(
+        canvas, 64, 28, AlignCenter, AlignBottom, view_links[link].no_link_message);
     canvas_set_font(canvas, FontSecondary);
     canvas_draw_str(canvas, hint_x, 41, hint);
 }
@@ -46,7 +67,7 @@ static void view_draw_switch_plate(Canvas* canvas, Link link) {
     canvas_set_color(canvas, ColorWhite);
     canvas_draw_icon(canvas, 35, 49, &I_right);
     canvas_draw_str(canvas, 42, 56, "Switch to");
-    canvas_draw_icon(canvas, 86, 48, link == LinkUsb ? &I_bluetooth : &I_usb);
+    canvas_draw_icon(canvas, 86, 48, view_links[link].switch_mark);
     canvas_set_color(canvas, ColorBlack);
 }
 
