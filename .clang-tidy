@@ -1,0 +1,50 @@
+# Each check acts on C, fires alike in the toolchain's clangd and in CLion's, and marks a defect
+# or an accident. A style, a policy and a guess stay out.
+Checks:
+    - -*
+    - bugprone-branch-clone
+    - bugprone-chained-comparison
+    - bugprone-implicit-widening-of-multiplication-result
+    - bugprone-incorrect-roundings
+    - bugprone-infinite-loop
+    - bugprone-integer-division
+    - bugprone-macro-repeated-side-effects
+    - bugprone-misplaced-operator-in-strlen-in-alloc
+    - bugprone-misplaced-pointer-arithmetic-in-alloc
+    - bugprone-misplaced-widening-cast
+    - bugprone-multiple-statement-macro
+    - bugprone-narrowing-conversions
+    - bugprone-not-null-terminated-result
+    - bugprone-redundant-branch-condition
+    - bugprone-reserved-identifier
+    - bugprone-sizeof-expression
+    - bugprone-string-literal-with-embedded-nul
+    - bugprone-suspicious-include
+    - bugprone-suspicious-memory-comparison
+    - bugprone-suspicious-memset-usage
+    - bugprone-suspicious-missing-comma
+    - bugprone-suspicious-realloc-usage
+    - bugprone-suspicious-semicolon
+    - bugprone-suspicious-string-compare
+    - bugprone-swapped-arguments
+    - bugprone-terminating-continue
+    - bugprone-too-small-loop-variable
+    - bugprone-unused-return-value
+    - cert-err34-c
+    - cert-flp30-c
+    - misc-confusable-identifiers
+    - misc-misleading-bidirectional
+    - misc-misleading-identifier
+    - misc-misplaced-const
+    - misc-redundant-expression
+    - readability-avoid-const-params-in-decls
+    - readability-duplicate-include
+    - readability-inconsistent-declaration-parameter-name
+    - readability-misplaced-array-index
+    - readability-non-const-parameter
+    - readability-redundant-casting
+    - readability-redundant-control-flow
+    - readability-redundant-function-ptr-dereference
+
+# clangd's check mode fails on errors alone.
+WarningsAsErrors: "*"

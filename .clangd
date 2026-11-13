@@ -1,0 +1,8 @@
+# clang knows no -mword-relocations, which the build hands arm-none-eabi-gcc.
+CompileFlags:
+    Remove: [-mword-relocations]
+
+# clangd leaves out a check it has not timed, bugprone-chained-comparison among them.
+Diagnostics:
+    ClangTidy:
+        FastCheckFilter: None

@@ -19,11 +19,11 @@ and how the SDK and a tool are bumped.
 
 ### Requirement: Build and run gives the daily commands
 `docs/development/build-and-run.md` SHALL give `mise run build`, `mise run launch` with what it needs of the device,
-and `mise exec -- ufbt lint`, and say why `ufbt flash` is no launch.
+`mise exec -- ufbt lint` and `mise run clang-tidy`, and say why `ufbt flash` is no launch.
 
 #### Scenario: As written
-- **WHEN** the page's build and lint commands run in a set-up clone
-- **THEN** both exit 0
+- **WHEN** the page's build, lint and clang-tidy commands run in a set-up clone
+- **THEN** each exits 0
 
 ### Requirement: Host tests says how the core is tested
 `docs/development/host-tests.md` SHALL give `mise run test` and what it compiles with,
@@ -35,12 +35,13 @@ and what only the device can check.
 - **THEN** it prints one `ok` line per test and exits 0
 
 ### Requirement: CLion opens a clone with no plugin
-`docs/development/clion.md` SHALL take a set-up clone to navigation and the run configurations:
-`clion .`, the compilation database, the two tracked `.idea` files, and `Flipper` picked once.
+`docs/development/clion.md` SHALL take a set-up clone to navigation, the run configurations and the checks its editor shows:
+`clion .`, the compilation database, the two tracked `.idea` files, `Flipper` picked once, and `.clang-tidy`.
 
 #### Scenario: Content
 - **WHEN** the page is read
-- **THEN** it names `Build`, `Launch`, `Debug` and `Test`, `.idea/misc.xml`, `.idea/debug-profiles.xml` and `Flipper`
+- **THEN** it names `Build`, `Launch`, `Debug` and `Test`, `.idea/misc.xml`, `.idea/debug-profiles.xml`, `Flipper`,
+  `.clang-tidy` and `mise run clang-tidy`
 
 ### Requirement: Development holds the moved lines
 The six pages SHALL hold `CONTRIBUTING.md`'s opening and `## Toolchain`

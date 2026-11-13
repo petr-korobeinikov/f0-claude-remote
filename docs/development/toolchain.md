@@ -42,7 +42,7 @@ Project tasks are files in `.mise/tasks/`:
 - `release` cuts a release from `develop` and pushes it; see [Release](../contributing/release.md).
 
 The rest have their pages:
-`build` and `launch` [Build and run](build-and-run.md),
+`build`, `launch` and `clang-tidy` [Build and run](build-and-run.md),
 `test` [Host tests](host-tests.md),
 and `debug` [Debugging](debugging.md).
 

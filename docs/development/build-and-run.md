@@ -7,6 +7,7 @@ description: The daily commands that build the app, start it on the device and l
 ```shell
 mise run build
 mise run launch
+mise run clang-tidy
 ```
 
 From `.mise/tasks/`:
@@ -14,6 +15,7 @@ From `.mise/tasks/`:
 - `build` builds the app.
 - `launch` builds it, uploads it to the device and starts it.
   `ufbt flash` is not the same thing: it rewrites the device's firmware.
+- `clang-tidy` builds it, then checks every `.c` and `.h` under `src/` against `.clang-tidy`.
 
 A build leaves `dist/f0_claude_remote.fap` for hardware target 7,
 its log reading `Target: 7, API: 88.2`.

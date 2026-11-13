@@ -1,0 +1,24 @@
+#!/bin/sh
+#MISE description="Check the sources against .clang-tidy"
+#MISE depends=["build"]
+set -eu
+
+# The toolchain's bin stays off PATH, in a folder named for the platform.
+set -- "$UFBT_HOME"/toolchain/*/bin
+bin=$1
+
+# clangd puts a user-wide config above the project's.
+home=$(mktemp -d)
+trap 'rm -rf "$home"' EXIT
+
+# A header's finding shows only when the header is read itself, and clangd's editor features,
+# left on, would count failures of their own.
+status=0
+for file in src/*/*.c src/*/*.h; do
+    if ! output=$(HOME="$home" XDG_CONFIG_HOME="$home" "$bin/clangd" --check="$file" \
+        --check-locations=false --query-driver="$bin/arm-none-eabi-gcc" --log=error 2>&1); then
+        printf '%s\n%s\n' "$file" "$output"
+        status=1
+    fi
+done
+exit "$status"

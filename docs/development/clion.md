@@ -39,3 +39,8 @@ CLion started from Toolbox navigates the same.
 picked once per clone; CLion keeps the choice.
 [Debugging](debugging.md#in-clion) starts there.
 Opening the clone and picking the profile leave `git status --short` empty.
+
+## Checks
+
+CLion takes its clang-tidy checks from `.clang-tidy`, in place of its own default set,
+and `mise run clang-tidy` runs the same list.

@@ -47,6 +47,7 @@ jobs:
           mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'
       - run: mise run build
       - run: mise exec -- ufbt lint
+      - run: mise run clang-tidy
 
   hygiene:
     runs-on: ubuntu-24.04

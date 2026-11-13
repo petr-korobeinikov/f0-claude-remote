@@ -43,7 +43,7 @@ Each step is a command to run before pushing:
 | Job | Steps |
 |---|---|
 | `test` | `mise run test` |
-| `build` | `mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'`, `mise run build`, `mise exec -- ufbt lint` |
+| `build` | `mise exec -- sh -c 'ufbt update --branch "$FLIPPER_SDK_VERSION"'`, `mise run build`, `mise exec -- ufbt lint`, `mise run clang-tidy` |
 | `hygiene` | `mise exec -- prek run --all-files`, `mise exec -- actionlint -pyflakes=` |
 | `docs` | `mise run docs-build` |
 
