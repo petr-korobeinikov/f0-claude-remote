@@ -3,9 +3,10 @@
 #MISE depends=["build"]
 set -eu
 
-# The toolchain's bin stays off PATH, in a folder named for the platform.
-set -- "$UFBT_HOME"/toolchain/*/bin
-bin=$1
+# The toolchain's bin stays off PATH. ufbt links the toolchain in use as current, beside the
+# folder named for the platform that the compile database names, so the driver is a glob.
+toolchain=$UFBT_HOME/toolchain
+bin=$toolchain/current/bin
 
 # clangd puts a user-wide config above the project's.
 home=$(mktemp -d)
@@ -16,7 +17,8 @@ trap 'rm -rf "$home"' EXIT
 status=0
 for file in src/*/*.c src/*/*.h; do
     if ! output=$(HOME="$home" XDG_CONFIG_HOME="$home" "$bin/clangd" --check="$file" \
-        --check-locations=false --query-driver="$bin/arm-none-eabi-gcc" --log=error 2>&1); then
+        --check-locations=false --query-driver="$toolchain/*/bin/arm-none-eabi-gcc" \
+        --log=error 2>&1); then
         printf '%s\n%s\n' "$file" "$output"
         status=1
     fi
