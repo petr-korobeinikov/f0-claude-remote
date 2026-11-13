@@ -9,11 +9,11 @@ struct Backlight {
     bool lit;
 };
 
-Backlight* backlight_alloc(void) {
+Backlight* backlight_alloc(bool lit) {
     Backlight* backlight = malloc(sizeof(Backlight));
     backlight->notification = furi_record_open(RECORD_NOTIFICATION);
-    notification_message(backlight->notification, &sequence_display_backlight_enforce_on);
-    backlight->lit = true;
+    backlight->lit = false;
+    backlight_set(backlight, lit);
     return backlight;
 }
 

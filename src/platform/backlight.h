@@ -4,7 +4,7 @@
 
 typedef struct Backlight Backlight;
 
-Backlight* backlight_alloc(void);
+Backlight* backlight_alloc(bool lit);
 
 void backlight_free(Backlight* backlight);
 

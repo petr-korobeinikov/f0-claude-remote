@@ -26,6 +26,7 @@ and the platform supplies it, as `transport_hid.c` does.
 | `src/core/keymap.h`, `src/core/keymap.c` | Maps a button event, a link change or the wait's end to an action, given the mode |
 | `src/core/feedback.h`, `src/core/feedback.c` | Says how an action confirms itself |
 | `src/core/deed.h`, `src/core/deed.c` | Says which deed an action earns |
+| `src/core/display.h`, `src/core/display.c` | Says whether a mode keeps the display lit |
 | `src/core/actions.h`, `src/core/actions.c` | Turns an action into calls on the transport |
 | `src/core/transport.h` | Names what the core needs of a link |
 | `src/ui/view.h`, `src/ui/view.c` | Draws a mode's board |
@@ -62,7 +63,7 @@ whose answer `actions.c` sends as a press's would be.
 
 The wait takes a timer in `app.c`, started and stopped as `keymap.c`'s `keymap_wait` answers after every event.
 Its end goes to `keymap.c` too, whose answer `actions.c` turns into withdrawing the link,
-and `app.c` has `backlight.c` go dark.
+and `app.c` has `backlight.c` go dark, as `display.c` says of the new mode.
 
 The queues exist because every function of an event loop must be called from the thread that made it
 (documented: [`event_loop.h`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/furi/core/event_loop.h#L15)).

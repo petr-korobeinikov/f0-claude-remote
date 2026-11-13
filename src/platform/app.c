@@ -6,6 +6,7 @@
 
 #include "../core/actions.h"
 #include "../core/deed.h"
+#include "../core/display.h"
 #include "../core/feedback.h"
 #include "backlight.h"
 #include "keymap_input.h"
@@ -43,9 +44,6 @@ static void app_perform(App* app, Action action) {
     if(flash_ms > 0) {
         screen_flash(app->screen, action, flash_ms);
     }
-    if(action == ActionGiveUp || action == ActionStartOver) {
-        backlight_set(app->backlight, action == ActionStartOver);
-    }
     if(action == ActionExit) {
         furi_event_loop_stop(app->event_loop);
     }
@@ -72,6 +70,7 @@ static void app_settle(App* app, Action action) {
     if(action != ActionNone) {
         app_perform(app, action);
     }
+    backlight_set(app->backlight, display_lit(keymap_mode(app->keymap)));
     app_follow_wait(app);
 }
 
@@ -116,8 +115,8 @@ App* app_alloc(void) {
     app->wait_timer = furi_event_loop_timer_alloc(
         app->event_loop, app_wait_callback, FuriEventLoopTimerTypeOnce, app);
     app->notification = furi_record_open(RECORD_NOTIFICATION);
-    app->backlight = backlight_alloc();
     app->keymap = keymap_alloc();
+    app->backlight = backlight_alloc(display_lit(keymap_mode(app->keymap)));
     app->screen = screen_alloc(
         app->event_loop, app->input_queue, keymap_mode(app->keymap), keymap_link(app->keymap));
     app->transport = transport_hid_alloc(app->link_queue, keymap_link(app->keymap));
