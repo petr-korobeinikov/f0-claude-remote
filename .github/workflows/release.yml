@@ -99,6 +99,12 @@ jobs:
           changelog: "@catalog/changelog.md"
           screenshots:
             - asset/screenshot/main.png
+            - asset/screenshot/main-usb.png
+            - asset/screenshot/voice-bt.png
+            - asset/screenshot/no-link-bt.png
+            - asset/screenshot/no-link-usb.png
+            - asset/screenshot/voice-cut-bt.png
+            - asset/screenshot/stopped-bt.png
           EOF
           content=$(base64 -w 0 manifest.yml)
 
