@@ -27,7 +27,7 @@ so voice and one hand run the whole session, by feel.
   hold OK and speak into the prompt;
   nothing is sent until you tap OK.
 - **The prompt** —
-  Enter, the arrows for history and menus, Esc to stop a turn.
+  Enter, the arrows for history, menus and the effort slider, Esc to stop a turn.
 - **Commands** —
   hold a button for `/clear` or the effort level,
   whatever the Mac's keyboard layout, and the draft stays.

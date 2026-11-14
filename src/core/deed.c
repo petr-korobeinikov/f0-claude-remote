@@ -10,6 +10,8 @@ Deed deed_earned(Action action) {
     case ActionEnter:
     case ActionArrowUp:
     case ActionArrowDown:
+    case ActionArrowLeft:
+    case ActionArrowRight:
     case ActionEsc:
     case ActionEffortHigh:
     case ActionEffortMax:

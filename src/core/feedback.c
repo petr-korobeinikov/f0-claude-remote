@@ -5,6 +5,8 @@ bool feedback_vibrates(Action action) {
     case ActionEnter:
     case ActionArrowUp:
     case ActionArrowDown:
+    case ActionArrowLeft:
+    case ActionArrowRight:
     case ActionEsc:
     case ActionEffortHigh:
     case ActionEffortMax:
@@ -26,6 +28,8 @@ uint32_t feedback_flash_ms(Action action) {
     switch(action) {
     case ActionArrowUp:
     case ActionArrowDown:
+    case ActionArrowLeft:
+    case ActionArrowRight:
         return 100;
     case ActionEnter:
     case ActionEsc:

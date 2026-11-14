@@ -2,6 +2,8 @@
 
 typedef enum {
     TransportKeyArrowDown,
+    TransportKeyArrowLeft,
+    TransportKeyArrowRight,
     TransportKeyArrowUp,
     TransportKeyControlF,
     TransportKeyControlL,

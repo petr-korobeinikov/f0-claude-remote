@@ -21,6 +21,12 @@ void actions_perform(Transport* transport, Action action) {
     case ActionArrowDown:
         actions_tap(transport, TransportKeyArrowDown);
         break;
+    case ActionArrowLeft:
+        actions_tap(transport, TransportKeyArrowLeft);
+        break;
+    case ActionArrowRight:
+        actions_tap(transport, TransportKeyArrowRight);
+        break;
     case ActionEsc:
         actions_tap(transport, TransportKeyEsc);
         break;

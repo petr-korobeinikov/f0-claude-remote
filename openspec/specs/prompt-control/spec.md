@@ -27,17 +27,21 @@ with nothing configured on the Mac.
 - **WHEN** Claude Code shows a menu, Down is tapped, then OK
 - **THEN** the next option is picked
 
+#### Scenario: The side arrows
+- **WHEN** Claude Code shows the slider of `/effort` above its lowest level, Left is tapped, then Right
+- **THEN** the slider moves one level down, then back
+
 #### Scenario: Esc
-- **WHEN** Claude is working and Right goes down
+- **WHEN** Claude is working and Right is held until the long press fires
 - **THEN** the turn stops
 
 ### Requirement: Each plain action is one key
-Enter, the up arrow, the down arrow and Esc
+Enter, the four arrows and Esc
 SHALL each press and release their key once,
 with no modifier.
 
 #### Scenario: The plain keys
-- **WHEN** Enter, the up arrow, the down arrow or Esc acts
+- **WHEN** Enter, an arrow or Esc acts
 - **THEN** the keys are, in order, that key down and up, and nothing else
 
 ### Requirement: Holding Left runs /clear

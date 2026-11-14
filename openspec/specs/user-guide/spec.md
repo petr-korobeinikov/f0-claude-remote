@@ -75,7 +75,8 @@ the buzz and flash confirming it, and each screen.
 
 #### Scenario: Content
 - **WHEN** the page is read
-- **THEN** it holds the nine rows of the keys table,
+- **THEN** it holds the eleven rows of the keys table,
+  what the left arrow does on an empty prompt,
   and the main screen, `Listening`, `No link` with `Keys are not sent` and Right's hold for USB and back,
   `Voice stopped: release OK`,
   and `Reconnect stopped` with what a press does there

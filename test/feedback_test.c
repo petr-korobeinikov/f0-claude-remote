@@ -5,6 +5,8 @@ static void test_sent_actions_vibrate(void) {
     assert(feedback_vibrates(ActionEnter));
     assert(feedback_vibrates(ActionArrowUp));
     assert(feedback_vibrates(ActionArrowDown));
+    assert(feedback_vibrates(ActionArrowLeft));
+    assert(feedback_vibrates(ActionArrowRight));
     assert(feedback_vibrates(ActionEsc));
     assert(feedback_vibrates(ActionEffortHigh));
     assert(feedback_vibrates(ActionEffortMax));
@@ -23,6 +25,8 @@ static void test_the_rest_stay_silent(void) {
 static void test_arrows_flash_for_100_ms(void) {
     assert(feedback_flash_ms(ActionArrowUp) == 100);
     assert(feedback_flash_ms(ActionArrowDown) == 100);
+    assert(feedback_flash_ms(ActionArrowLeft) == 100);
+    assert(feedback_flash_ms(ActionArrowRight) == 100);
 }
 
 static void test_enter_and_commands_flash_for_400_ms(void) {

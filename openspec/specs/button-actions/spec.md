@@ -7,31 +7,6 @@ which confirms itself on the device.
 
 ## Requirements
 
-### Requirement: Each button takes its actions
-With the link up, a tap, released before the device's long press fires, and a hold, kept until it fires,
-SHALL take the actions in the scenarios below, once each, as far as `A tap or hold acts on the screen it began on` allows,
-and nothing else SHALL act.
-
-#### Scenario: Tap
-- **WHEN** Up, Down or OK is tapped
-- **THEN** the up arrow, the down arrow or Enter acts, on the release
-
-#### Scenario: Hold
-- **WHEN** Up, Down, Left or Back is held
-- **THEN** effort high, effort max, clear or exit acts when the long press fires
-
-#### Scenario: A hold does not repeat
-- **WHEN** Up stays down for 2 seconds after its long press fired
-- **THEN** effort high has acted once
-
-#### Scenario: Esc acts on the press
-- **WHEN** Right goes down
-- **THEN** Esc acts at once, and neither keeping Right down nor releasing it acts again
-
-#### Scenario: A tap with no action
-- **WHEN** Left or Back is tapped
-- **THEN** nothing acts
-
 ### Requirement: Voice lasts as long as OK is held
 Holding OK SHALL start voice, and releasing it SHALL stop voice.
 While voice is on, no other button SHALL act, exit included.
@@ -49,7 +24,7 @@ While voice is on, no other button SHALL act, exit included.
 - **THEN** exit acts
 
 ### Requirement: An action confirms itself with one buzz
-Enter, both arrows, Esc, effort high, effort max, clear and the start of voice
+Enter, the four arrows, Esc, effort high, effort max, clear and the start of voice
 SHALL each vibrate the device once, for 100 ms.
 
 #### Scenario: An action
@@ -57,7 +32,7 @@ SHALL each vibrate the device once, for 100 ms.
 - **THEN** the device vibrates once
 
 #### Scenario: The silent rest
-- **WHEN** voice stops, exit acts, or Left or Back is tapped
+- **WHEN** voice stops, exit acts, or Back is tapped
 - **THEN** the device does not vibrate
 
 ### Requirement: A press acts with the backlight off
@@ -114,7 +89,7 @@ Exit, and a press with no action, SHALL send no key.
 - **THEN** no key is sent
 
 #### Scenario: A press with no action
-- **WHEN** Left or Back is tapped
+- **WHEN** Back is tapped
 - **THEN** no key is sent
 
 ### Requirement: A press on the stopped screen starts over
@@ -143,3 +118,28 @@ A tap, or a hold other than Back's, SHALL act only if the screen, a flash aside,
 #### Scenario: Back held through a drop
 - **WHEN** Back goes down on `D_Main`, and the link drops before its long press fires
 - **THEN** the application ends
+
+### Requirement: Each button acts on a tap or a hold
+With the link up, a tap, released before the device's long press fires, and a hold, kept until it fires,
+SHALL take the actions in the scenarios below, once each, as far as `A tap or hold acts on the screen it began on` allows,
+and nothing else SHALL act.
+
+#### Scenario: Tap
+- **WHEN** Up, Down, Left, Right or OK is tapped
+- **THEN** the up, down, left or right arrow, or Enter, acts, on the release
+
+#### Scenario: Hold
+- **WHEN** Up, Down, Left, Right or Back is held
+- **THEN** effort high, effort max, clear, Esc or exit acts when the long press fires
+
+#### Scenario: A hold does not repeat
+- **WHEN** Up stays down for 2 seconds after its long press fired
+- **THEN** effort high has acted once
+
+#### Scenario: Nothing acts on the press
+- **WHEN** a button goes down
+- **THEN** nothing acts before its release or its long press
+
+#### Scenario: A tap with no action
+- **WHEN** Back is tapped
+- **THEN** nothing acts

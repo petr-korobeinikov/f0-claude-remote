@@ -5,6 +5,8 @@ typedef enum {
     ActionEnter,
     ActionArrowUp,
     ActionArrowDown,
+    ActionArrowLeft,
+    ActionArrowRight,
     ActionEsc,
     ActionEffortHigh,
     ActionEffortMax,

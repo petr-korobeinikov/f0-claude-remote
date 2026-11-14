@@ -45,8 +45,8 @@ and a legend saying so.
 
 #### Scenario: Hold and press read apart
 - **WHEN** the screen is idle
-- **THEN** `HOLD`, `/effort high`, `/effort max`, the microphone, `/clear`, `exit`, the left arrow and the Back mark stand white on a black plate,
-  and `TAP`, the up, down and right arrows, the Enter arrow and `Esc` stand black in a thin frame
+- **THEN** `HOLD`, `/effort high`, `/effort max`, the microphone, `/clear`, `Esc`, `exit` and the Back mark stand white on a black plate,
+  and `TAP`, the four arrows and the Enter arrow stand black in a thin frame
 
 #### Scenario: The board
 - **WHEN** the link comes up with voice off and no flash running
@@ -95,7 +95,7 @@ with no legend and no ring.
 
 ### Requirement: A sent action flashes its element
 Effort high, effort max, clear, Esc and Enter SHALL each invert the inside of their part of their element for 400 ms,
-and the up and down arrows theirs for 100 ms,
+and the four arrows theirs for 100 ms,
 with the element's frame unchanged.
 
 #### Scenario: The long flash
@@ -105,12 +105,12 @@ with the element's frame unchanged.
   and 400 ms later one equals `D_Main`
 
 #### Scenario: The short flash
-- **WHEN** the up or down arrow acts
-- **THEN** a frame read off the device equals `D_sent_up` or `D_sent_down`,
+- **WHEN** an arrow acts
+- **THEN** a frame read off the device equals `D_sent_up`, `D_sent_down`, `D_sent_left` or `D_sent_right`,
   and 100 ms later one equals `D_Main`
 
 #### Scenario: Only the half that acted flashes
-- **WHEN** an action of Up, Down or OK flashes
+- **WHEN** an action of Up, Down, Left, Right or OK flashes
 - **THEN** the other half of its element does not change
 
 #### Scenario: Acting again restarts it

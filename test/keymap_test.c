@@ -47,11 +47,12 @@ static Action keymap_test_fresh(KeymapKey key, KeymapEvent event) {
 static void test_tap_acts(void) {
     assert(keymap_test_fresh(KeymapKeyUp, KeymapEventShort) == ActionArrowUp);
     assert(keymap_test_fresh(KeymapKeyDown, KeymapEventShort) == ActionArrowDown);
+    assert(keymap_test_fresh(KeymapKeyLeft, KeymapEventShort) == ActionArrowLeft);
+    assert(keymap_test_fresh(KeymapKeyRight, KeymapEventShort) == ActionArrowRight);
     assert(keymap_test_fresh(KeymapKeyOk, KeymapEventShort) == ActionEnter);
 }
 
-static void test_tap_on_left_or_back_does_nothing(void) {
-    assert(keymap_test_fresh(KeymapKeyLeft, KeymapEventShort) == ActionNone);
+static void test_tap_on_back_does_nothing(void) {
     assert(keymap_test_fresh(KeymapKeyBack, KeymapEventShort) == ActionNone);
 }
 
@@ -59,21 +60,14 @@ static void test_hold_acts(void) {
     assert(keymap_test_fresh(KeymapKeyUp, KeymapEventLong) == ActionEffortHigh);
     assert(keymap_test_fresh(KeymapKeyDown, KeymapEventLong) == ActionEffortMax);
     assert(keymap_test_fresh(KeymapKeyLeft, KeymapEventLong) == ActionClear);
+    assert(keymap_test_fresh(KeymapKeyRight, KeymapEventLong) == ActionEsc);
     assert(keymap_test_fresh(KeymapKeyOk, KeymapEventLong) == ActionVoiceStart);
     assert(keymap_test_fresh(KeymapKeyBack, KeymapEventLong) == ActionExit);
 }
 
-static void test_right_acts_on_press_alone(void) {
-    assert(keymap_test_fresh(KeymapKeyRight, KeymapEventPress) == ActionEsc);
-    assert(keymap_test_fresh(KeymapKeyRight, KeymapEventShort) == ActionNone);
-    assert(keymap_test_fresh(KeymapKeyRight, KeymapEventLong) == ActionNone);
-}
-
-static void test_press_acts_only_on_right(void) {
+static void test_press_never_acts(void) {
     for(KeymapKey key = KeymapKeyUp; key < KeymapKeyMAX; key++) {
-        if(key != KeymapKeyRight) {
-            assert(keymap_test_fresh(key, KeymapEventPress) == ActionNone);
-        }
+        assert(keymap_test_fresh(key, KeymapEventPress) == ActionNone);
     }
 }
 
@@ -278,7 +272,7 @@ static void test_right_pressed_on_usb_stopped_returns_nothing(void) {
 static void test_right_pressed_on_usb_idle_returns_nothing(void) {
     Keymap* keymap = keymap_test_alloc_on_usb();
     keymap_set_connected(keymap, true);
-    assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionEsc);
+    assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionNone);
     keymap_set_connected(keymap, false);
     assert(keymap_mode(keymap) == ModeNoLink);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventLong) == ActionNone);
@@ -286,11 +280,11 @@ static void test_right_pressed_on_usb_idle_returns_nothing(void) {
     keymap_free(keymap);
 }
 
-static void test_right_held_elsewhere_on_usb_returns_nothing(void) {
+static void test_right_held_elsewhere_on_usb_keeps_usb(void) {
     Keymap* idle = keymap_test_alloc_on_usb();
     keymap_set_connected(idle, true);
     keymap_handle(idle, KeymapKeyRight, KeymapEventPress);
-    assert(keymap_handle(idle, KeymapKeyRight, KeymapEventLong) == ActionNone);
+    assert(keymap_handle(idle, KeymapKeyRight, KeymapEventLong) == ActionEsc);
     assert(keymap_link(idle) == LinkUsb);
     keymap_free(idle);
 
@@ -347,7 +341,7 @@ static void test_right_pressed_on_stopped_takes_no_usb(void) {
 
 static void test_right_pressed_on_idle_takes_no_usb(void) {
     Keymap* keymap = keymap_test_alloc_connected();
-    assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionEsc);
+    assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventPress) == ActionNone);
     keymap_set_connected(keymap, false);
     assert(keymap_mode(keymap) == ModeNoLink);
     assert(keymap_handle(keymap, KeymapKeyRight, KeymapEventLong) == ActionNone);
@@ -363,7 +357,7 @@ static void test_right_held_elsewhere_takes_no_usb(void) {
     };
     for(size_t i = 0; i < sizeof(keymaps) / sizeof(keymaps[0]); i++) {
         keymap_handle(keymaps[i], KeymapKeyRight, KeymapEventPress);
-        assert(keymap_handle(keymaps[i], KeymapKeyRight, KeymapEventLong) == ActionNone);
+        keymap_handle(keymaps[i], KeymapKeyRight, KeymapEventLong);
         assert(keymap_link(keymaps[i]) == LinkBluetooth);
         keymap_free(keymaps[i]);
     }
@@ -760,10 +754,9 @@ static void test_back_held_through_drop_exits(void) {
 
 int main(void) {
     test_run(test_tap_acts);
-    test_run(test_tap_on_left_or_back_does_nothing);
+    test_run(test_tap_on_back_does_nothing);
     test_run(test_hold_acts);
-    test_run(test_right_acts_on_press_alone);
-    test_run(test_press_acts_only_on_right);
+    test_run(test_press_never_acts);
     test_run(test_repeat_never_acts);
     test_run(test_release_without_voice_does_nothing);
     test_run(test_hold_ok_turns_voice_on);
@@ -785,7 +778,7 @@ int main(void) {
     test_run(test_link_stays_through_every_mode);
     test_run(test_right_pressed_on_usb_stopped_returns_nothing);
     test_run(test_right_pressed_on_usb_idle_returns_nothing);
-    test_run(test_right_held_elsewhere_on_usb_returns_nothing);
+    test_run(test_right_held_elsewhere_on_usb_keeps_usb);
     test_run(test_right_tapped_on_usb_no_link_does_nothing);
     test_run(test_right_tapped_on_no_link_does_nothing);
     test_run(test_right_long_with_no_press_does_nothing);

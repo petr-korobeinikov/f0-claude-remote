@@ -17,15 +17,18 @@ A tap is released before the device's long press fires, and a hold is kept until
 | OK, hold | Ctrl+Q, held until the release | Dictates into the prompt, sending nothing |
 | Up, tap | Up arrow | Recalls the previous message, or moves up a menu |
 | Down, tap | Down arrow | Recalls the next message, or moves down a menu |
-| Right, press | Esc | Stops the turn |
+| Left, tap | Left arrow | Lowers the `/effort` slider a level, or moves to a dialog's previous tab |
+| Right, tap | Right arrow | Raises the `/effort` slider a level, moves to a dialog's next tab, or takes a suggested prompt |
+| Right, hold | Esc | Stops the turn |
 | Up, hold | Ctrl+X, Ctrl+F | Sets effort to `high` |
 | Down, hold | Ctrl+X, Ctrl+X | Sets effort to `max` |
 | Left, hold | Ctrl+X, Ctrl+L | Runs `/clear` |
 | Back, hold | Nothing | Leaves the app on the device |
 
 A hold acts once, however long the button stays down.
-Esc acts as Right goes down.
-Tapping Left or Back does nothing.
+Tapping Back does nothing.
+On an empty prompt the left arrow sends the session to the background and opens agent view:
+Esc returns, and `leftArrowOpensAgents` in `/config` turns that off.
 
 Effort and `/clear` keep the prompt's draft.
 Effort `high` is saved as the default for new sessions, and `max` lasts the session.

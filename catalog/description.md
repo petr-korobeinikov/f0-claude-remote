@@ -16,7 +16,8 @@ A dictation earns the dolphin 1 XP and a /clear 10.
 - **OK, tap:** Enter, which sends the prompt or picks a menu's option
 - **OK, hold:** Ctrl+Q, held until the release, which dictates into the prompt
 - **Up and Down, tap:** the arrows, for message history and menus
-- **Right, press:** Esc, which stops the turn
+- **Left and Right, tap:** the arrows, for the effort slider and a dialog's tabs
+- **Right, hold:** Esc, which stops the turn
 - **Up, hold:** Ctrl+X, Ctrl+F, which sets effort to high
 - **Down, hold:** Ctrl+X, Ctrl+X, which sets effort to max
 - **Left, hold:** Ctrl+X, Ctrl+L, which runs /clear

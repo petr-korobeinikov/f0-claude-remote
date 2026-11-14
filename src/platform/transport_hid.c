@@ -13,6 +13,8 @@ struct Transport {
 
 static const uint16_t transport_hid_keys[TransportKeyMAX] = {
     [TransportKeyArrowDown] = HID_KEYBOARD_DOWN_ARROW,
+    [TransportKeyArrowLeft] = HID_KEYBOARD_LEFT_ARROW,
+    [TransportKeyArrowRight] = HID_KEYBOARD_RIGHT_ARROW,
     [TransportKeyArrowUp] = HID_KEYBOARD_UP_ARROW,
     [TransportKeyControlF] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_F,
     [TransportKeyControlL] = KEY_MOD_LEFT_CTRL | HID_KEYBOARD_L,

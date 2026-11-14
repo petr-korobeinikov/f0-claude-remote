@@ -14,12 +14,11 @@ struct Keymap {
     KeymapWait wait;
 };
 
-/* Esc acts on press: past the long press a slow one would otherwise do nothing. */
 static const Action keymap_actions[KeymapKeyMAX][KeymapEventMAX] = {
     [KeymapKeyUp] = {[KeymapEventShort] = ActionArrowUp, [KeymapEventLong] = ActionEffortHigh},
     [KeymapKeyDown] = {[KeymapEventShort] = ActionArrowDown, [KeymapEventLong] = ActionEffortMax},
-    [KeymapKeyLeft] = {[KeymapEventLong] = ActionClear},
-    [KeymapKeyRight] = {[KeymapEventPress] = ActionEsc},
+    [KeymapKeyLeft] = {[KeymapEventShort] = ActionArrowLeft, [KeymapEventLong] = ActionClear},
+    [KeymapKeyRight] = {[KeymapEventShort] = ActionArrowRight, [KeymapEventLong] = ActionEsc},
     [KeymapKeyOk] = {[KeymapEventShort] = ActionEnter, [KeymapEventLong] = ActionVoiceStart},
     [KeymapKeyBack] = {[KeymapEventLong] = ActionExit},
 };

@@ -23,7 +23,7 @@ and the firmware has no query for what the cable ends in
 USB is offered on `No link` alone, as a Mac in range returns by itself within a second
 (seen: [ble-transport, task 4.3](https://github.com/petr-korobeinikov/f0-claude-remote/blob/develop/openspec/changes/archive/2026-11-04-ble-transport/tasks.md)).
 
-Right alone has no hold of its own,
+With no link no key is sent, so Right's hold, Esc with the link up, switches the link there,
 and the long press fires 300 ms after the press
 (firmware 1.5.1's sources: [`input.c`](https://github.com/flipperdevices/flipperzero-firmware/blob/1.5.1/applications/services/input/input.c#L13-L14)),
 so `keymap.c` counts Right's hold, as every tap and hold but Back's,
