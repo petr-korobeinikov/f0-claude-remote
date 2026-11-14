@@ -26,6 +26,7 @@ The idle screen, with the link up, voice off and no flash running, SHALL show a 
 with a thin frame on every action taken by a press,
 a black plate on every held one,
 and a legend saying so.
+The ring and Back's plate SHALL stand in one outline, shaped as the recess the device's case has around its buttons.
 
 #### Scenario: Status row
 - **WHEN** the screen is idle
@@ -41,7 +42,13 @@ and a legend saying so.
   `/clear` and a left arrow on its left,
   a right arrow and `Esc` on its right,
   `/effort max` and a down arrow at its bottom,
-  and a Back mark and `exit` at the lower right of the display
+  and a Back mark and `exit` under `Esc`
+
+#### Scenario: The recess
+- **WHEN** the screen is idle
+- **THEN** one outline holds the split element and Back's plate, and passes under the ring's four plates:
+  round about the ring, then narrowing to a round end past Back's plate, with a level bottom,
+  and no line of it inside a plate
 
 #### Scenario: Hold and press read apart
 - **WHEN** the screen is idle
