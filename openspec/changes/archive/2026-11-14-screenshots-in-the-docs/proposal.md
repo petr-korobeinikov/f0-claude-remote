@@ -39,7 +39,7 @@ Decisions:
 
 ## What Changes
 
-- `docs/assets/main.png` gives way to the folder link `docs/assets/screenshot`;
+- `docs/assets/main.png` gives way to `docs/assets/screenshot/`, a link per screenshot, by the fallback;
   Home and `Using the remote` point at `assets/screenshot/main.png`.
 - `Using the remote` shows five more screenshots, `USB` one.
 - The README gains `## Screens` with six screenshots.
@@ -52,12 +52,12 @@ None.
 
 ### Modified Capabilities
 
-- `app-build`: the site's one link outside `asset/` is the screenshot folder's.
+- `app-build`: the site's links outside `asset/` are one per screenshot.
 - `docs-site`: the build copies every screenshot under `.site/assets/screenshot/`.
 - `user-guide`: `Using the remote` and `USB` show their screens, and the README shows all seven.
 
 ## Impact
 
-`docs/assets/main.png` (removed), `docs/assets/screenshot` (new link), `docs/index.md`,
+`docs/assets/main.png` (removed), `docs/assets/screenshot/` (seven new links), `docs/index.md`,
 `docs/guide/using-the-remote.md`, `docs/guide/usb.md` and `README.md`.
 `asset/screenshot/`, `.github/workflows/release.yml`, `zensical.toml` and `catalog/` stay as they are.

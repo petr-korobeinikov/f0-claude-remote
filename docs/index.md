@@ -6,7 +6,7 @@ description: F0 Claude Remote is a Flipper Zero app that acts as a Bluetooth rem
 
 *Your voice runs Claude Code. Your Flipper Zero runs the shortcuts.*
 
-![The app's main screen on the device](assets/main.png)
+![The app's main screen on the device](assets/screenshot/main.png)
 
 **F0 Claude Remote** is a Flipper Zero app
 that acts as a Bluetooth remote for Claude Code.

@@ -15,6 +15,9 @@ Hold Right on it until the long press fires,
 and connect the cable, before or after.
 The hold counts only if Right went down on that screen,
 and it neither buzzes nor flashes.
+
+![The main screen on USB](../assets/screenshot/main-usb.png)
+
 The status row then carries the USB mark,
 `Connect the cable` until the cable is in,
 and `Connected` once it is.

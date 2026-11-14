@@ -47,15 +47,20 @@ with another window focused it comes all the same.
 
 ## Screens
 
-![The main screen](../assets/main.png)
+![The main screen](../assets/screenshot/main.png)
 
 **The main screen** shows the link above a ring of the buttons.
 An action taken by a press stands in a thin frame,
 and one taken by a hold on a black plate,
 as the legend `HOLD` and `TAP` in the top row says.
 
+![Listening](../assets/screenshot/voice-bt.png)
+
 **`Listening`**, white on black, shows while OK is held.
 No other button acts then, leaving included.
+
+![No link on Bluetooth](../assets/screenshot/no-link-bt.png)
+![No link on USB](../assets/screenshot/no-link-usb.png)
 
 **`No link`**, with `Reconnecting...` and `Keys are not sent`,
 shows while the Mac holds no link,
@@ -66,9 +71,13 @@ it takes [USB](usb.md) from Bluetooth, and returns to Bluetooth from USB.
 Holding Back leaves the app.
 Every other press does nothing, with no buzz and no flash.
 
+![Voice stopped](../assets/screenshot/voice-cut-bt.png)
+
 **`Voice stopped: release OK`** shows when the link drops during dictation.
 The recording stops, and the words said before the drop stay in the prompt.
 Dictation starts again only once OK is released and held again with the link up.
+
+![Reconnect stopped](../assets/screenshot/stopped-bt.png)
 
 **`Reconnect stopped`**, with `Any button: retry`, shows after a minute with no link,
 counted from the launch, the drop or Right's hold, with the backlight off.

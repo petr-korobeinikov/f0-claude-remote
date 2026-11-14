@@ -30,6 +30,23 @@ The Flipper's buttons do the rest, so voice and one hand run the whole session.
 - **USB:** with no Bluetooth link, hold Right and the cable takes over.
 - **Debugging:** breakpoints on the device from CLion, with no plugin.
 
+## Screens
+
+<table>
+<tr>
+<td><img src="asset/screenshot/main-usb.png" alt="The main screen on USB" width="256"></td>
+<td><img src="asset/screenshot/voice-bt.png" alt="Listening" width="256"></td>
+</tr>
+<tr>
+<td><img src="asset/screenshot/no-link-bt.png" alt="No link on Bluetooth" width="256"></td>
+<td><img src="asset/screenshot/no-link-usb.png" alt="No link on USB" width="256"></td>
+</tr>
+<tr>
+<td><img src="asset/screenshot/voice-cut-bt.png" alt="Voice stopped" width="256"></td>
+<td><img src="asset/screenshot/stopped-bt.png" alt="Reconnect stopped" width="256"></td>
+</tr>
+</table>
+
 ## Installation
 
 On a Mac with [mise](https://mise.jdx.dev), the Flipper unlocked on USB:
